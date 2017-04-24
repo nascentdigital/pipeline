@@ -2,10 +2,35 @@
 Fast and flexible collection manipulation for Android / Java.
 
 ```java
-String[] petNames = Pipeline.from(pets)
-    .where(p -> p.age < 15)
-    .map(p -> p.name)
-    .toArray();
+class Person {
+    String name;
+    int age;
+}
+
+class Family { 
+    Person mom;
+    Person dad;
+    List<Person> children;
+}
+
+// create list of families
+List<Familiy> families = ...;
+```
+
+```java
+// get all single mom's
+List<Person> singleMothers = Pipeline.from(families)
+    .where(f -> f.dad == null)
+    .map(f -> f.mom)
+    .toList();
+```
+
+```java
+// get all unique child names
+String[] uniqueChildNames = Pipeline.from(families)
+    .flatMap(f -> f.children)
+    .distinct()
+    .toArray(String.class);
 ```
 
 
