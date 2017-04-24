@@ -13,12 +13,13 @@ String[] petNames = Pipeline.from(pets)
 dependencies {
 
   // latest one on maven central
-  compile 'com.nascentdigital:pipeline-v1:0.0'
+  compile 'com.nascentdigital:pipeline:1.0.0'
 }
 ```
 
 
-
+## Development
+Ensure that you pull the local repository to a folder named `/<project dir>/nascent-pipeline`.
 
 
 
