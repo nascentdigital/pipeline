@@ -26,9 +26,11 @@ List<Person> singleMothers = Pipeline.from(families)
 ```
 
 ```java
-// get all unique child names
+// get all unique teenager names
 String[] uniqueChildNames = Pipeline.from(families)
     .flatMap(f -> f.children)
+    .where(c -> c.age >= 13 && c.age <= 19 )
+    .map(c -> c.name)
     .distinct()
     .toArray(String.class);
 ```
