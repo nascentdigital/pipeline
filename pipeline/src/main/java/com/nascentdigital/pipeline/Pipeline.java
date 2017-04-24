@@ -4,6 +4,7 @@ package com.nascentdigital.pipeline;
 import com.nascentdigital.pipeline.operations.ArraySourceOperation;
 import com.nascentdigital.pipeline.operations.ConcatOperation;
 import com.nascentdigital.pipeline.operations.FilterOperation;
+import com.nascentdigital.pipeline.operations.FlatProjectionOperation;
 import com.nascentdigital.pipeline.operations.GroupByOperation;
 import com.nascentdigital.pipeline.operations.IterableSourceOperation;
 import com.nascentdigital.pipeline.operations.ProjectionOperation;
@@ -82,6 +83,13 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * @param addition The sequence to concatenate to the first sequence.
      */
     public Pipeline<TElement> concat(Iterable<TElement> addition) {
+
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        }
+
+        // or return new pipeline using iterable
         return new Pipeline<>(new ConcatOperation<>(this, addition));
     }
 
@@ -91,6 +99,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * @param addition The sequence to concatenate to the first sequence.
      */
     public Pipeline<TElement> concat(TElement[] addition) {
+
+        // return self if array is null
+        if (addition == null) {
+            return this;
+        }
+
+        // TODO: create custom array concatenator for performance
+        // or return new pipeline using array
         return new Pipeline<>(new ConcatOperation<>(this, Arrays.asList(addition)));
     }
 
@@ -144,6 +160,18 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public <TProjected> Pipeline<TProjected> map(Selector<TElement, TProjected> selector) {
         return new Pipeline<>(new ProjectionOperation<>(this, selector));
+    }
+
+    /**
+     * Projects each element of a sequence to an {@link Iterable} sub-sequence and flattens the
+     * resulting sequences into one sequence.
+     *
+     * @param selector A transform function to extract the sub-sequences that will be flattened.
+     * @param <TProjected> The type of the elements of the sequence returned by <i>selector</i>.
+     */
+    public <TProjected> Pipeline<TProjected> flatMap(Selector<TElement,
+            Iterable<TProjected>> selector) {
+        return new Pipeline<>(new FlatProjectionOperation<>(this, selector));
     }
 
     // endregion

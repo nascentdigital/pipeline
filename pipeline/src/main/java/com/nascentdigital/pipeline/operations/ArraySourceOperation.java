@@ -23,8 +23,16 @@ public class ArraySourceOperation<TElement> implements PipelineOperation<TElemen
 
     // region Iterable<TElement> interface
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Iterator iterator() {
+    public java.util.Iterator<TElement> iterator() {
+
+        // always return empty iterator if iterable is null
+        if (_source == null) {
+            return EmptyIterator.instance;
+        }
+
+        // or return iterator
         return new Iterator();
     }
 

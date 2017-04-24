@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 
-public class FromTest extends PipelineTest {
+public class ConcatTest extends PipelineTest {
 
     // region null source
 
@@ -20,9 +20,11 @@ public class FromTest extends PipelineTest {
 
         // copy original values
         final String[] colors = null;
+        final String[] moreColors = null;
 
         // use pipeline
         String[] array = Pipeline.from(colors)
+                .concat(moreColors)
                 .toArray(String.class);
 
         // assert
@@ -35,9 +37,11 @@ public class FromTest extends PipelineTest {
 
         // create collection
         List<String> colorsList = null;
+        List<String> moreColorsList = null;
 
         // use pipeline
         String[] array = Pipeline.from(colorsList)
+                .concat(moreColorsList)
                 .toArray(String.class);
 
         // assert
@@ -55,14 +59,17 @@ public class FromTest extends PipelineTest {
 
         // copy original values
         final String[] colors = {};
+        final String[] moreColors = {};
 
         // use pipeline
         String[] array = Pipeline.from(colors)
+                .concat(moreColors)
                 .toArray(String.class);
 
         // assert
         assertNotNull(array);
         assertNotSame(colors, array);
+        assertNotSame(moreColors, array);
         assertEquals(0, array.length);
     }
 
@@ -72,9 +79,11 @@ public class FromTest extends PipelineTest {
         // create collection
         final String[] colors = {};
         List<String> colorsList = Arrays.asList(colors);
+        List<String> moreColorsList = Arrays.asList(colors);
 
         // use pipeline
         String[] array = Pipeline.from(colorsList)
+                .concat(moreColorsList)
                 .toArray(String.class);
 
         // assert
@@ -91,22 +100,24 @@ public class FromTest extends PipelineTest {
     @Test
     public void singletonSource_shouldCopySource_whenArray() {
 
-        // copy original values
+        // create arrays
         final String[] colors = {
                 "red"
         };
-        final String[] originalColors = Arrays.copyOf(colors, colors.length);
+        final String[] moreColors = {
+                "blue"
+        };
 
         // use pipeline
         String[] array = Pipeline.from(colors)
+                .concat(moreColors)
                 .toArray(String.class);
 
         // assert
         assertNotNull(array);
-        assertNotSame(colors, array);
-        assertEquals(1, array.length);
-        assertArrayEquals(originalColors, colors);
-        assertArrayEquals(colors, array);
+        assertEquals(2, array.length);
+        assertEquals(colors[0], array[0]);
+        assertEquals(moreColors[0], array[1]);
     }
 
     @Test
@@ -116,17 +127,22 @@ public class FromTest extends PipelineTest {
         final String[] colors = {
                 "red"
         };
+        final String[] moreColors = {
+                "blue"
+        };
         List<String> colorsList = Arrays.asList(colors);
+        List<String> moreColorsList = Arrays.asList(moreColors);
 
         // use pipeline
         String[] array = Pipeline.from(colorsList)
+                .concat(moreColorsList)
                 .toArray(String.class);
 
         // assert
         assertNotNull(array);
-        assertNotSame(colors, array);
-        assertEquals(1, array.length);
-        assertArrayEquals(colors, array);
+        assertEquals(2, array.length);
+        assertEquals(colors[0], array[0]);
+        assertEquals(moreColors[0], array[1]);
     }
 
     // endregion
@@ -141,22 +157,30 @@ public class FromTest extends PipelineTest {
         final String[] colors = {
                 "red",
                 "blue",
-                "green",
+                "green"
+        };
+        final String[] moreColors = {
                 "yellow",
                 "orange",
                 "purple"
         };
-        final String[] originalColors = Arrays.copyOf(colors, colors.length);
 
         // use pipeline
         String[] array = Pipeline.from(colors)
+                .concat(moreColors)
                 .toArray(String.class);
 
         // assert
         assertNotNull(array);
-        assertNotSame(colors, array);
-        assertArrayEquals(originalColors, colors);
-        assertArrayEquals(colors, array);
+        assertEquals(colors.length + moreColors.length, array.length);
+
+        for (int i = 0; i < colors.length; ++i) {
+            assertEquals(colors[i], array[i]);
+        }
+
+        for (int i = 0; i < moreColors.length; ++i) {
+            assertEquals(moreColors[i], array[i + colors.length]);
+        }
     }
 
     @Test
@@ -166,21 +190,32 @@ public class FromTest extends PipelineTest {
         final String[] colors = {
                 "red",
                 "blue",
-                "green",
+                "green"
+        };
+        final String[] moreColors = {
                 "yellow",
                 "orange",
                 "purple"
         };
         List<String> colorsList = Arrays.asList(colors);
+        List<String> moreColorsList = Arrays.asList(moreColors);
 
         // use pipeline
         String[] array = Pipeline.from(colorsList)
+                .concat(moreColorsList)
                 .toArray(String.class);
 
         // assert
         assertNotNull(array);
-        assertNotSame(colors, array);
-        assertArrayEquals(colors, array);
+        assertEquals(colors.length + moreColors.length, array.length);
+
+        for (int i = 0; i < colors.length; ++i) {
+            assertEquals(colors[i], array[i]);
+        }
+
+        for (int i = 0; i < moreColors.length; ++i) {
+            assertEquals(moreColors[i], array[i + colors.length]);
+        }
     }
 
     // endregion

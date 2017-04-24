@@ -7,15 +7,15 @@ public class IterableSourceOperation<TElement> implements PipelineOperation<TEle
 
     // region instance methods
 
-    private final Iterable<TElement> _ipnut;
+    private final Iterable<TElement> _input;
 
     // endregion
 
 
     // region constructors
 
-    public IterableSourceOperation(Iterable<TElement> ipnut) {
-        _ipnut = ipnut;
+    public IterableSourceOperation(Iterable<TElement> input) {
+        _input = input;
     }
 
     // endregion
@@ -23,8 +23,16 @@ public class IterableSourceOperation<TElement> implements PipelineOperation<TEle
 
     // region Iterable<TElement> interface
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Iterator iterator() {
+    public java.util.Iterator<TElement> iterator() {
+
+        // always return empty iterator if iterable is null
+        if (_input == null) {
+            return EmptyIterator.instance;
+        }
+
+        // or return iterator
         return new Iterator();
     }
 
@@ -35,7 +43,7 @@ public class IterableSourceOperation<TElement> implements PipelineOperation<TEle
 
     private class Iterator implements java.util.Iterator<TElement> {
 
-        private final java.util.Iterator<TElement> _iterator = _ipnut.iterator();
+        private final java.util.Iterator<TElement> _iterator = _input.iterator();
 
         @Override
         public boolean hasNext() {
