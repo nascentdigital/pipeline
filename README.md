@@ -8,6 +8,7 @@ String[] petNames = Pipeline.from(pets)
     .toArray();
 ```
 
+
 ## Installation
 ```groovy
 dependencies {
