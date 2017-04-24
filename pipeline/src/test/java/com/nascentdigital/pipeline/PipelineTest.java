@@ -4,6 +4,9 @@ package com.nascentdigital.pipeline;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PipelineTest {
 
     @Rule
@@ -29,6 +32,28 @@ public class PipelineTest {
         public Pet(String name, int age) {
             this.name = name;
             this.age = age;
+        }
+    }
+
+    public class PetOwner {
+        public final String name;
+        public final Pet[] pets;
+
+        public PetOwner(String name, Pet[] pets) {
+            this.name = name;
+            this.pets = pets;
+        }
+    }
+
+    public class PetShop {
+        public final String name;
+        public final List<Pet> pets;
+
+        public PetShop(String name, Pet[] pets) {
+            this.name = name;
+            this.pets = pets == null
+                    ? null
+                    : Arrays.asList(pets);
         }
     }
 

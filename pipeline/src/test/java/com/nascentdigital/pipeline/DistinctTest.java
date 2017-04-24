@@ -3,6 +3,7 @@ package com.nascentdigital.pipeline;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -13,65 +14,19 @@ public class DistinctTest extends PipelineTest {
     // region empty source
 
     @Test
-    public void emptySource_shouldThrow_first() {
-
-        // create empty array
-        final Integer[] source = new Integer[0];
-
-        // expect exception
-        exception.expect(NoElementFoundException.class);
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .first();
-
-        // assert
-        assertNotNull(value);
-    }
-
-    @Test
-    public void emptySource_shouldThrow_firstWithPredicate() {
-
-        // create empty array
-        final Integer[] source = new Integer[0];
-
-        // expect exception
-        exception.expect(NoElementFoundException.class);
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .first(n -> true);
-
-        // assert
-        assertNotNull(value);
-    }
-
-    @Test
-    public void emptySource_shouldReturnNull_firstDefault() {
+    public void emptySource_shouldBeEmpty() {
 
         // create empty array
         final Integer[] source = new Integer[0];
 
         // use pipeline
-        Integer value = Pipeline.from(source)
-                .firstOrDefault();
+        Integer[] array = Pipeline.from(source)
+                .distinct()
+                .toArray(Integer.class);
 
         // assert
-        assertNull(value);
-    }
-
-    @Test
-    public void emptySource_shouldReturnNull_firstDefaultWithPredicate() {
-
-        // create empty array
-        final Integer[] source = new Integer[0];
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .firstOrDefault(n -> true);
-
-        // assert
-        assertNull(value);
+        assertNotNull(array);
+        assertEquals(0, array.length);
     }
 
     // endregion
@@ -80,7 +35,7 @@ public class DistinctTest extends PipelineTest {
     // region singleton source
 
     @Test
-    public void singletonSource_shouldReturnOne_first() {
+    public void singletonSource_shouldReturnOne() {
 
         // create singleton array
         final Integer[] source = new Integer[] {
@@ -88,65 +43,13 @@ public class DistinctTest extends PipelineTest {
         };
 
         // use pipeline
-        Integer value = Pipeline.from(source)
-                .first();
+        Integer[] array = Pipeline.from(source)
+                .distinct()
+                .toArray(Integer.class);
 
         // assert
-        assertNotNull(value);
-        assertEquals(8, value.intValue());
-    }
-
-    @Test
-    public void singletonSource_shouldReturnOne_firstOrDefault() {
-
-        // create singleton array
-        final Integer[] source = new Integer[] {
-                8
-        };
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .firstOrDefault();
-
-        // assert
-        assertNotNull(value);
-        assertEquals(8, value.intValue());
-    }
-
-    @Test
-    public void singletonSource_shouldReturnOne_firstWithPredicateMatch() {
-
-        // create singleton array
-        final Integer[] source = new Integer[] {
-                8
-        };
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .first(n -> n < 10);
-
-        // assert
-        assertNotNull(value);
-        assertEquals(8, value.intValue());
-    }
-
-    @Test
-    public void singletonSource_shouldThrow_firstWithPredicateNoMatch() {
-
-        // create singleton array
-        final Integer[] source = new Integer[] {
-                8
-        };
-
-        // expect exception
-        exception.expect(NoElementFoundException.class);
-
-        // use pipeline
-        Integer value = Pipeline.from(source)
-                .first(n -> n < 8);
-
-        // assert
-        assertNotNull(value);
+        assertNotNull(array);
+        assertEquals(1, array.length);
     }
 
     // endregion
@@ -155,117 +58,89 @@ public class DistinctTest extends PipelineTest {
     // region many source
 
     @Test
-    public void manySource_shouldReturnFirst_first() {
+    public void manySource_shouldReturnAll_whenAllUnique() {
 
         // create array
-        final Integer[] source = new Integer[] {
-                8,
-                9,
-                10,
-                11,
-                12
+        final String[] source = new String[] {
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
         };
 
         // use pipeline
-        Integer value = Pipeline.from(source)
-                .skip(2)
-                .first();
+        String[] array = Pipeline.from(source)
+                .distinct()
+                .toArray(String.class);
 
         // assert
-        assertNotNull(value);
-        assertEquals(10, value.intValue());
+        assertNotNull(array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
     }
 
     @Test
-    public void manySource_shouldReturnFirst_firstOrDefault() {
+    public void manySource_shouldReturnSome_whenSomeDuplicates() {
 
         // create array
-        final Integer[] source = new Integer[] {
-                8,
-                9,
-                10,
-                11,
-                12
+        final String[] shapes = new String[] {
+                "point",
+                "circle",
+                "square",
+                "triangle"
+        };
+        final String[] actions = new String[] {
+                "shake",
+                "circle",
+                "jump",
+                "point",
+                "pull"
+        };
+        final String[] intersection = new String[] {
+                "point",
+                "circle",
+                "square",
+                "triangle",
+                "shake",
+                "jump",
+                "pull"
         };
 
         // use pipeline
-        Integer value = Pipeline.from(source)
-                .skip(1)
-                .firstOrDefault();
+        String[] array = Pipeline.from(shapes)
+                .concat(actions)
+                .distinct()
+                .toArray(String.class);
 
         // assert
-        assertNotNull(value);
-        assertEquals(9, value.intValue());
+        assertNotNull(array);
+        assertEquals(7, array.length);
+        assertArrayEquals(intersection, array);
     }
 
     @Test
-    public void manySource_shouldReturnFirst_firstWithPredicateMatch() {
+    public void manySource_shouldReturnOne_whenAllDuplicates() {
 
         // create array
         final Integer[] source = new Integer[] {
                 8,
-                9,
-                10,
-                11,
-                12
-        };
-
-        // use pipeline
-        final int skipped = 1;
-        Integer value = Pipeline.from(source)
-                .skip(skipped)
-                .first(n -> n < 20);
-
-        // assert
-        assertNotNull(value);
-        assertEquals(source[skipped], value);
-    }
-
-    @Test
-    public void manySource_shouldReturnFirst_firstOrDefaultWithPredicateMatch() {
-
-        // create array
-        final Integer[] source = new Integer[] {
                 8,
-                9,
-                10,
-                11,
-                12
-        };
-
-        // use pipeline
-        final int skipped = 3;
-        Integer value = Pipeline.from(source)
-                .skip(skipped)
-                .firstOrDefault(n -> n < 20);
-
-        // assert
-        assertNotNull(value);
-        assertEquals(source[skipped], value);
-    }
-
-    @Test
-    public void manySource_shouldThrow_firstWithPredicateNoMatch() {
-
-        // create array
-        final Integer[] source = new Integer[] {
                 8,
-                9,
-                10,
-                11,
-                12
+                8
         };
 
-        // expect exception
-        exception.expect(NoElementFoundException.class);
-
         // use pipeline
-        Integer value = Pipeline.from(source)
-                .skip(3)
-                .first(n -> n < 8);
+        Integer[] array = Pipeline.from(source)
+                .distinct()
+                .toArray(Integer.class);
 
         // assert
-        assertNotNull(value);
+        assertNotNull(array);
+        assertEquals(1, array.length);
+        assertEquals(8, array[0].intValue());
     }
 
     // endregion

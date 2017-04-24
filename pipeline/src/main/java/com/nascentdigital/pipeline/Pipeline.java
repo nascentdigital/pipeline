@@ -3,6 +3,7 @@ package com.nascentdigital.pipeline;
 
 import com.nascentdigital.pipeline.operations.ArraySourceOperation;
 import com.nascentdigital.pipeline.operations.ConcatOperation;
+import com.nascentdigital.pipeline.operations.DistinctOperation;
 import com.nascentdigital.pipeline.operations.FilterOperation;
 import com.nascentdigital.pipeline.operations.FlatProjectionOperation;
 import com.nascentdigital.pipeline.operations.GroupByOperation;
@@ -129,22 +130,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * values.
      */
     public Pipeline<TElement> distinct() {
-
-        // create list for new source (maintains sort order)
-        List<TElement> elements = new ArrayList<>();
-
-        // iterate elements, adding to list if not already in set
-        Set<TElement> distinctElements = new HashSet<>();
-        for (TElement element : this) {
-
-            // add element to set if it is new
-            if (distinctElements.add(element)) {
-                elements.add(element);
-            }
-        }
-
-        // create new pipeline using the distinct elements
-        return new Pipeline<>(new IterableSourceOperation<>(elements));
+        return new Pipeline<>(new DistinctOperation<>(this));
     }
 
     // endregion

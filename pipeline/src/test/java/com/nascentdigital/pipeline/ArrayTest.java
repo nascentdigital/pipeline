@@ -17,29 +17,6 @@ import static org.junit.Assert.assertTrue;
 public class ArrayTest extends PipelineTest {
 
     @Test
-    public void concat_shouldAddArrayWithManyValues() {
-
-        // copy original values
-        String[] originalColors = Arrays.copyOf(colors, colors.length);
-        assertNotSame(colors, originalColors);
-        String[] originalShapes = Arrays.copyOf(shapes, shapes.length);
-        assertNotSame(shapes, originalShapes);
-
-        // use pipeline
-        String[] array = Pipeline.from(colors)
-                .concat(shapes)
-                .toArray(String.class);
-
-        // assert
-        assertNotNull(array);
-        assertArrayEquals(originalColors, colors);
-        assertArrayEquals(originalShapes, shapes);
-        assertEquals(colors.length + shapes.length, array.length);
-        assertArrayEquals(colors, Arrays.copyOf(array, colors.length));
-        assertArrayEquals(shapes, Arrays.copyOfRange(array, colors.length, array.length));
-    }
-
-    @Test
     public void map_shouldConvertValuesToDifferentTypes() {
 
         // use pipeline
