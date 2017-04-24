@@ -1,0 +1,39 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.nascentdigital'
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                groupId 'com.nascentdigital'
+                artifactId 'pipeline'
+
+                name 'Pipeline'
+                description 'A fast and flexible collection manipulation framework for Android / Java.'
+                url 'https://github.com/nascentdigital/pipeline.git'
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'https://github.com/nascentdigital/pipeline/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'sdedios'
+                        name 'Simeon de Dios'
+                        email 'simeon.dedios@gmail.com'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/nascentdigital/pipeline.git'
+                    developerConnection 'https://github.com/nascentdigital/pipeline.git'
+                    url 'https://github.com/nascentdigital/pipeline'
+
+                }
+            }
+        }
+    }
+}
