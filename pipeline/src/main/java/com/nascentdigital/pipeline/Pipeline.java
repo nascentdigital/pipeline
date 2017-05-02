@@ -1,6 +1,8 @@
 package com.nascentdigital.pipeline;
 
 
+import com.nascentdigital.pipeline.annotations.Group;
+import com.nascentdigital.pipeline.annotations.GroupType;
 import com.nascentdigital.pipeline.operations.ArraySourceOperation;
 import com.nascentdigital.pipeline.operations.ConcatOperation;
 import com.nascentdigital.pipeline.operations.DistinctOperation;
@@ -121,6 +123,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate A function to test each element for a condition.
      */
+
+    @Group(type = GroupType.Filtering)
     public Pipeline<TElement> where(Predicate<TElement> predicate) {
         return new Pipeline<>(new FilterOperation<>(this, predicate));
     }
