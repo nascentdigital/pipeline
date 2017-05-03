@@ -54,6 +54,11 @@ public class IterableSourceOperation<TElement> implements PipelineOperation<TEle
         public TElement next() {
             return _iterator.next();
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not implemented.");
+        }
     }
 
     // endregion

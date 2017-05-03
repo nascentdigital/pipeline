@@ -87,6 +87,11 @@ public class FilterOperation<TElement> implements PipelineOperation<TElement> {
             // return item
             return next;
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not implemented.");
+        }
     }
 
     // endregion

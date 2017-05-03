@@ -64,6 +64,11 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
 
         @Override
         public TElement next() { return _input.next(); }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not implemented.");
+        }
     }
 
     // endregion

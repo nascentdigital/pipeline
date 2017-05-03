@@ -35,5 +35,9 @@ class EmptyIterator implements Iterator {
         return null;
     }
 
+    @Override
+    public void remove() {
+    }
+
     // endregion
 }

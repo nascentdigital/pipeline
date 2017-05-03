@@ -4,6 +4,7 @@ package com.nascentdigital.pipeline;
 import com.nascentdigital.pipeline.annotations.Group;
 import com.nascentdigital.pipeline.annotations.GroupType;
 import com.nascentdigital.pipeline.operations.ArraySourceOperation;
+import com.nascentdigital.pipeline.operations.CastOperation;
 import com.nascentdigital.pipeline.operations.ConcatOperation;
 import com.nascentdigital.pipeline.operations.DistinctOperation;
 import com.nascentdigital.pipeline.operations.FilterOperation;
@@ -365,6 +366,22 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     // region conversion operations
+
+    /**
+     * Casts the elements of a sequence to the specified type.
+     *
+     * This method is helpful when working with a sequence of objects that are known to be of a
+     * common type, but that are currently not specific enough for manipulation.
+     *
+     * If an element cannot be cast to type <i>TDerived</i>, this method will throw an exception.
+     *
+     * @param targetClass The type to cast the elements of the <i>source</i> pipeline to.
+     * @param <TDerived> The concrete type of the elements.
+     * @throws ClassCastException
+     */
+    public <TDerived> Pipeline<TDerived> cast(Class<TDerived> targetClass) throws ClassCastException {
+        return new Pipeline<>(new CastOperation<>(this, targetClass));
+    }
 
     /**
      * Converts the sequence into an array.

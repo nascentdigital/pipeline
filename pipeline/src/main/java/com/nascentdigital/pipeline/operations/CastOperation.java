@@ -1,24 +1,24 @@
 package com.nascentdigital.pipeline.operations;
 
 import com.nascentdigital.pipeline.PipelineOperation;
-import com.nascentdigital.pipeline.Selector;
+import com.nascentdigital.pipeline.Predicate;
 
 
-public class ProjectionOperation<TInput, TOutput> implements PipelineOperation<TOutput> {
+public class CastOperation<TInput, TOutput> implements PipelineOperation<TOutput> {
 
     // region instance variables
 
     private final Iterable<TInput> _source;
-    private final Selector<TInput, TOutput> _selector;
+    private final Class<TOutput> _targetClass;
 
     // endregion
 
 
     // region constructors
 
-    public ProjectionOperation(Iterable<TInput> source, Selector<TInput, TOutput> selector) {
+    public CastOperation(Iterable<TInput> source, Class<TOutput> targetClass) {
         _source = source;
-        _selector = selector;
+        _targetClass = targetClass;
     }
 
     // endregion
@@ -39,15 +39,29 @@ public class ProjectionOperation<TInput, TOutput> implements PipelineOperation<T
     private class Iterator implements java.util.Iterator<TOutput> {
 
         private final java.util.Iterator<TInput> _input = _source.iterator();
+        private Boolean _hasNext;
 
         @Override
         public boolean hasNext() {
             return _input.hasNext();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public TOutput next() {
-            return _selector.select(_input.next());
+
+            // throw if type mismatches
+            TInput element = _input.next();
+            if (element != null
+                    && !_targetClass.isInstance(element)) {
+                throw new ClassCastException("Element cannot be casted to \""
+                        + _targetClass.getSimpleName()
+                        + "\": "
+                        + element.getClass().getSimpleName());
+            }
+
+            // return element
+            return (TOutput)element;
         }
 
         @Override

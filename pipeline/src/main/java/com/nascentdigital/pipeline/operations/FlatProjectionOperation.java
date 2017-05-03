@@ -71,6 +71,11 @@ public class FlatProjectionOperation<TInput, TOutput> implements PipelineOperati
         public TOutput next() {
             return _output.next();
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not implemented.");
+        }
     }
 
     // endregion

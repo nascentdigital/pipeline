@@ -54,6 +54,11 @@ public class ArraySourceOperation<TElement> implements PipelineOperation<TElemen
         public TElement next() {
             return _source[_offset++];
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not implemented.");
+        }
     }
 
     // endregion
