@@ -1,6 +1,5 @@
 package com.nascentdigital.pipeline.operations;
 
-import com.nascentdigital.pipeline.Pipeline;
 import com.nascentdigital.pipeline.PipelineOperation;
 import com.nascentdigital.pipeline.Selector;
 

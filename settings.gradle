@@ -1,1 +1,1 @@
-include ':app', ':pipeline'
+include ':app', ':pipeline', ':pipeline-tests'

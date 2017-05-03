@@ -1,7 +1,6 @@
 package com.nascentdigital.pipeline.operations;
 
 import com.nascentdigital.pipeline.PipelineOperation;
-import com.nascentdigital.pipeline.Predicate;
 
 
 public class TakeOperation<TElement> implements PipelineOperation<TElement> {

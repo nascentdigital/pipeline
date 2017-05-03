@@ -17,14 +17,10 @@ import com.nascentdigital.pipeline.operations.TakeOperation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Provides a flexible and fast way of manipulating streams of data.
