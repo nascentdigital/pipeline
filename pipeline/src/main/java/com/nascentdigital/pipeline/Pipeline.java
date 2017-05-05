@@ -291,14 +291,16 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public TElement first() throws NoElementFoundException {
 
-        // get first element, throwing if there isn't one
-        TElement element = firstOrDefault();
-        if (element == null) {
-            throw new NoElementFoundException("Pipeline is empty.");
+        // create iterator
+        Iterator<TElement> iterator = this.iterator();
+
+        // return first element if one is available
+        if (iterator.hasNext()) {
+            return iterator.next();
         }
 
-        // return element
-        return element;
+        // or throw if nothing was found
+        throw new NoElementFoundException("Pipeline is empty.");
     }
 
     /**
@@ -313,14 +315,17 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public TElement first(Predicate<TElement> predicate) throws NoElementFoundException {
 
-        // get first element, throwing if there isn't one
-        TElement element = firstOrDefault(predicate);
-        if (element == null) {
-            throw new NoElementFoundException("Specified predicate failed to match any element.");
+        // iterate through pipeline sequence to find first match
+        for (TElement element : this) {
+
+            // return first element passing predicate test
+            if (predicate.predicate(element)) {
+                return element;
+            }
         }
 
-        // return element
-        return element;
+        // or throw if there is not match
+        throw new NoElementFoundException("No element matching predicate.");
     }
 
     /**
@@ -329,16 +334,15 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public TElement firstOrDefault() {
 
-        // create iterator
-        Iterator<TElement> iterator = this.iterator();
-
-        // return first element if one is available
-        if (iterator.hasNext()) {
-            return iterator.next();
+        // try to get first element
+        try {
+            return first();
         }
 
-        // or return default if there is no element
-        return null;
+        // return default if not element was found
+        catch (NoElementFoundException e) {
+            return null;
+        }
     }
 
     /**
@@ -349,17 +353,15 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public TElement firstOrDefault(Predicate<TElement> predicate) {
 
-        // iterate through pipeline sequence to find first match
-        for (TElement element : this) {
-
-            // return first element passing predicate test
-            if (predicate.predicate(element)) {
-                return element;
-            }
+        // try to get first element matching predicate
+        try {
+            return first(predicate);
         }
 
-        // or return default if there is no match
-        return null;
+        // return default if not element was found
+        catch (NoElementFoundException e) {
+            return null;
+        }
     }
 
     // endregion
