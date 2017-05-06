@@ -1,13 +1,6 @@
 package com.nascentdigital.pipeline;
 
-
-//import com.sun.tools.corba.se.idl.InterfaceGen;
-
 import org.junit.Test;
-
-import com.nascentdigital.pipeline.NoElementFoundException;
-
-import java.io.Console;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -36,7 +29,7 @@ public class FirstTest extends PipelineTest {
         assertNull(result);
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void first_with_predicate_nullSource_shouldReturnNull() {
 
         // define source
@@ -78,7 +71,7 @@ public class FirstTest extends PipelineTest {
         assertNull(result);
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void firstOrDefault_with_predicate_nullSource_shouldReturnNull() {
 
         // define source
@@ -127,7 +120,7 @@ public class FirstTest extends PipelineTest {
         assertNull(result);
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void first_with_predicate_emptySource_shouldReturnNull() {
 
         // define source
@@ -150,7 +143,7 @@ public class FirstTest extends PipelineTest {
                 });
 
         // should not reach
-        assertEquals(result, null);
+        assertNull(result);
     }
 
     @Test
@@ -168,7 +161,7 @@ public class FirstTest extends PipelineTest {
     }
 
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void firstOrDefault_with_predicate_emptySource_shouldReturnNull() {
 
         // define source
@@ -209,7 +202,7 @@ public class FirstTest extends PipelineTest {
         assertEquals(result, Integer.valueOf(Integer.MAX_VALUE));
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void first_with_predicate_singleSource_shouldReturnNull() {
 
         // define source
@@ -248,7 +241,7 @@ public class FirstTest extends PipelineTest {
         assertEquals(result, Integer.valueOf(Integer.MIN_VALUE));
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void firstOrDefault_with_predicate_singleSource_shouldReturnNull() {
 
         // define source
@@ -273,7 +266,6 @@ public class FirstTest extends PipelineTest {
     }
 
 
-
     // endregion
 
     // region many source
@@ -292,7 +284,7 @@ public class FirstTest extends PipelineTest {
         assertEquals(result, Integer.valueOf(0));
     }
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void first_with_predicate_manySource_shouldReturnNull() {
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3, 4 / 2,
@@ -331,7 +323,7 @@ public class FirstTest extends PipelineTest {
     }
 
 
-    @Test //#AskSim: Is method name may be too long?
+    @Test //#AskSim: Is method name too long?
     public void firstOrDefault_with_predicate_manySource_shouldReturnNull() {
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
