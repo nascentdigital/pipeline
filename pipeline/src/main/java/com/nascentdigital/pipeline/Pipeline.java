@@ -52,7 +52,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Creates a new {@link Pipeline} using the specified array as the initial sequence source.
      *
-     * @param source An array to be used as a source.
+     * @param source     An array to be used as a source.
      * @param <TElement> The type of the elements in the array.
      */
     @SuppressWarnings("unchecked")
@@ -64,7 +64,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the
      * initial sequence source.
      *
-     * @param source An iterable instance whose iterators will be used as a sequence source.
+     * @param source     An iterable instance whose iterators will be used as a sequence source.
      * @param <TElement> The type of elements emitted from the iterator.
      */
     @SuppressWarnings("unchecked")
@@ -142,7 +142,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Projects each element of a sequence into a new form.
      *
-     * @param selector A selector function to apply to each element.
+     * @param selector     A selector function to apply to each element.
      * @param <TProjected> The new type of the projected elements.
      */
     public <TProjected> Pipeline<TProjected> map(Selector<TElement, TProjected> selector) {
@@ -153,7 +153,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Projects each element of a sequence to an {@link Iterable} sub-sequence and flattens the
      * resulting sequences into one sequence.
      *
-     * @param selector A transform function to extract the sub-sequences that will be flattened.
+     * @param selector     A transform function to extract the sub-sequences that will be flattened.
      * @param <TProjected> The type of the elements of the sequence returned by <i>selector</i>.
      */
     public <TProjected> Pipeline<TProjected> flatMap(Selector<TElement,
@@ -169,7 +169,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Bypasses a specified number of elements in a sequence and then returns the remaining
      * elements.
-     *
+     * <p>
      * If count is less than or equal to zero, all elements of source are yielded.
      *
      * @param count The number of elements to skip before returning the remaining elements.
@@ -180,7 +180,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     /**
      * Returns a specified number of contiguous elements from the start of a sequence.
-     *
+     * <p>
      * If count is less than or equal to zero, source is not enumerated and an empty
      * {@link Pipeline} is returned.
      *
@@ -223,7 +223,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Groups the elements of a sequence according to a specified key selector function.
      *
      * @param selector A function to extract the key for each element.
-     * @param <TKey> The type of the key returned by the function represented in <i>keySelector</i>.
+     * @param <TKey>   The type of the key returned by the function represented in <i>keySelector</i>.
      */
     public <TKey> Pipeline<Grouping<TKey, TElement>> groupBy(Selector<TElement, TKey> selector) {
         return new Pipeline<>(new GroupByOperation<>(this, selector));
@@ -233,6 +233,38 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     // region quantification
+
+    /**
+     * Determines whether a sequence contains an element.
+     *
+     * @param tElement A TElement Object to search for in the sequence.
+     */
+    public boolean contains(TElement tElement) {
+
+        Iterator<TElement> iterator = this.iterator();
+
+        // if not empty source
+        if (iterator.hasNext()) {
+
+            // iterate through all elements, return true as soon as tElement is found
+            for (TElement element : this) {
+
+                // account for null-containing sequences
+                if (element == null) {
+                    if (tElement == null)
+                        return true;
+                    continue;
+                }
+
+                if (element.equals(tElement)) {
+                    return true;
+                }
+            }
+        }
+
+        // fail after we process entire sequence without finding tElement
+        return false;
+    }
 
     /**
      * Determines whether all the elements of a sequence satisfy a condition.
@@ -279,6 +311,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return false;
     }
 
+
     // endregion
 
 
@@ -309,9 +342,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate A function to test each element for a condition.
      * @return The first element in the sequence that passes the test in <i>predicate</i>.
-     *
-     * @throws NoElementFoundException  No element satisfies the condition in <i>predicate</i>,
-     *                                  or the pipeline sequence is empty.
+     * @throws NoElementFoundException No element satisfies the condition in <i>predicate</i>,
+     *                                 or the pipeline sequence is empty.
      */
     public TElement first(Predicate<TElement> predicate) throws NoElementFoundException {
 
@@ -371,14 +403,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     /**
      * Casts the elements of a sequence to the specified type.
-     *
+     * <p>
      * This method is helpful when working with a sequence of objects that are known to be of a
      * common type, but that are currently not specific enough for manipulation.
-     *
+     * <p>
      * If an element cannot be cast to type <i>TDerived</i>, this method will throw an exception.
      *
      * @param targetClass The type to cast the elements of the <i>source</i> pipeline to.
-     * @param <TDerived> The concrete type of the elements.
+     * @param <TDerived>  The concrete type of the elements.
      * @throws ClassCastException
      */
     public <TDerived> Pipeline<TDerived> cast(Class<TDerived> targetClass) throws ClassCastException {
@@ -419,9 +451,9 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a {@link Map} from the pipeline according to a specified key selector function.
      *
      * @param keySelector A function to extract a key from each element.
-     * @param <TKey> The type of the key returned by <i>keySelector</i>.
+     * @param <TKey>      The type of the key returned by <i>keySelector</i>.
      * @throws DuplicateKeyException Thrown when the <i>keySelector</i> produces duplicate keys for
-     *      two elements.
+     *                               two elements.
      */
     public <TKey> Map<TKey, TElement> toMap(Selector<TElement, TKey> keySelector)
             throws DuplicateKeyException {
@@ -452,12 +484,12 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a {@link Map} from the pipeline according to a specified key selector and value
      * selector functions.
      *
-     * @param keySelector A function to extract a key from each element.
+     * @param keySelector   A function to extract a key from each element.
      * @param valueSelector A transform function to produce a result map value from each element.
-     * @param <TKey> The type of the key returned by <i>keySelector</i>.
-     * @param <TValue> The type of the value returned by <i>valueSelector</i>.
+     * @param <TKey>        The type of the key returned by <i>keySelector</i>.
+     * @param <TValue>      The type of the value returned by <i>valueSelector</i>.
      * @throws DuplicateKeyException Thrown when the <i>keySelector</i> produces duplicate keys for
-     *      two elements.
+     *                               two elements.
      */
     public <TKey, TValue> Map<TKey, TValue> toMap(Selector<TElement, TKey> keySelector,
                                                   Selector<TElement, TValue> valueSelector)
