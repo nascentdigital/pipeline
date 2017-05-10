@@ -178,6 +178,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new SkipOperation<>(this, count));
     }
 
+/*coming soon
+
+    public Pipeline<TElement> skip(Predicate<TElement> predicate) {
+        return new Pipeline<>(new SkipOperation<>(this, count));
+    }
+*/
+
+
     /**
      * Returns a specified number of contiguous elements from the start of a sequence.
      * <p>
