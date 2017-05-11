@@ -1,6 +1,7 @@
 package com.nascentdigital.pipeline.operations;
 
 import com.nascentdigital.pipeline.PipelineOperation;
+import com.nascentdigital.pipeline.Predicate;
 
 
 public class SkipOperation<TElement> implements PipelineOperation<TElement> {
@@ -8,7 +9,8 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     // region instance variables
 
     private final Iterable<TElement> _source;
-    private final int _count;
+    private Predicate<TElement> _predicate;
+    private int _count;
 
     // endregion
 
@@ -18,6 +20,11 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     public SkipOperation(Iterable<TElement> source, int count) {
         _source = source;
         _count = count;
+    }
+
+    public SkipOperation(Iterable<TElement> source, Predicate<TElement> predicate) {
+        _source = source;
+        _predicate = predicate;
     }
 
     // endregion

@@ -18,7 +18,10 @@ import com.nascentdigital.pipeline.operations.TakeOperation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +173,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Bypasses a specified number of elements in a sequence and then returns the remaining
      * elements.
      * <p>
+     * <p>
      * If count is less than or equal to zero, all elements of source are yielded.
      *
      * @param count The number of elements to skip before returning the remaining elements.
@@ -178,12 +182,27 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new SkipOperation<>(this, count));
     }
 
-/*coming soon
 
-    public Pipeline<TElement> skip(Predicate<TElement> predicate) {
-        return new Pipeline<>(new SkipOperation<>(this, count));
+    /**
+     * Bypasses all elements in a sequence for which the predicate is TRUE,
+     * and then returns the remaining elements
+     *
+     * @param predicate The predicate that determines which elements to skip over in the sequence
+     */
+    //// TODO: 2017-05-11 add a try-catch block to catch predicate = null;
+    public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
+
+        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+
+        for (TElement element : this) {
+            if (!predicate.predicate(element)) {
+                resultArray.add(element);
+            }
+
+        }
+        return Pipeline.from(resultArray);
+
     }
-*/
 
 
     /**
@@ -197,6 +216,29 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     public Pipeline<TElement> take(int count) {
         return new Pipeline<>(new TakeOperation<>(this, count));
     }
+
+
+    /**
+     * Bypasses all elements in a sequence for which the predicate is FALSE,
+     * and then returns the remaining elements
+     *
+     * @param predicate The predicate that determines which elements to skip over in the sequence
+     */
+    //// TODO: 2017-05-11 add a try-catch block to catch predicate = null;
+    public Pipeline<TElement> takeWhile(Predicate<TElement> predicate) {
+
+        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+
+        for (TElement element : this) {
+            if (predicate.predicate(element)) {
+                resultArray.add(element);
+            }
+
+        }
+        return Pipeline.from(resultArray);
+
+    }
+
 
     // endregion
 
@@ -321,7 +363,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     // endregion
-
 
     // region element operators
 
@@ -530,6 +571,27 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
+    //TODO: check with Sim if this region is named appropriately
+    // region repetition
+    /**
+     * Creates a sequence by repeating the value
+     *
+     * @param element The element that gets repeated
+     * @param count The number of time the element is repeated
+     */
+    public Pipeline<TElement> repeat(TElement element, int count)
+    {
+        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+        int i = 0;
+        while( i < count)
+        {
+            resultArray.add(element);
+        }
+
+        return Pipeline.from(resultArray);
+    }
+
+    //endregion
 
     // region Iterable<TElement> interface
 
@@ -539,4 +601,94 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     // endregion
+
+    // region set operations
+    /**
+     * Puts a union of the current sequence and another sequence into the pipeline.
+     *
+     * @param addition The sequence to take a union of with  the first sequence.
+     */
+    public Pipeline<TElement> union(Iterable<TElement> addition) {
+
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        }else
+        {
+            HashSet<TElement> resultSet = new HashSet<TElement>();
+            Iterator<TElement> additional = addition.iterator();
+            // add source to set
+            for(TElement element : this)
+            {
+                resultSet.add(element);
+            }
+            // add additional sequence to set
+            while(additional.hasNext())
+            {
+                resultSet.add(additional.next());
+            }
+
+            return Pipeline.from(resultSet);
+        }
+
+        }
+
+    /**
+     * Puts a union of the current sequence and another sequence into the pipeline.
+     *
+     * @param addition The sequence to take a union of with  the first sequence.
+     */
+    public Pipeline<TElement> intersect(Iterable<TElement> addition) {
+
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        }else
+        {
+            HashSet<TElement> thisSet = new HashSet<TElement>();
+            HashSet<TElement> additionSet = new HashSet<TElement>();
+            Iterator<TElement> additional = addition.iterator();
+
+            // add source to set
+            for(TElement element : this)
+            {
+                thisSet.add(element);
+            }
+            // add additional sequence to set
+            while(additional.hasNext())
+            {
+                additionSet.add(additional.next());
+            }
+            thisSet.retainAll(additionSet);
+            return Pipeline.from(thisSet);
+        }
+
+    }
+
+
+    /**
+     * Puts a union of the current sequence and another sequence into the pipeline.
+     *
+     *
+     */
+    public Pipeline<TElement> reverse() {
+        ArrayList<TElement> resultArray = new ArrayList<>();
+        Iterator<TElement> iterator = this.iterator();
+
+        while(iterator.hasNext())
+        {
+            resultArray.add(iterator.next());
+        }
+
+        Collections.reverse(resultArray);
+        return Pipeline.from(resultArray);
+
+    }
+
+        // endregion
+
+
+
+
 }
+
