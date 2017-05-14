@@ -57,7 +57,7 @@ Ensure that you pull the local repository to a folder named `/<project dir>/nasc
 ## Roadmap
 Some of the upcoming features:
 #- `contains()`: Determine if a sequence contains a value.
-- `join(separator)`: Joins the values into a string using the specified separator and the default 
+#- `join(separator)`: Joins the values into a string using the specified separator and the default
     `toString()` implementation for string elements.
 - `distinct(v -> v.target)`: Additional distinction operator that takes a selector to specify 
     property to calculate distiction.

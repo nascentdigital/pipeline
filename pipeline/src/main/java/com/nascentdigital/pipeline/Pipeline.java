@@ -266,6 +266,29 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
+    /**
+     *  Joins the values into a string using the specified separator and the default
+     *  `toString()` implementation for string elements.
+     *
+     *  @param seperator A seperator to join the string representations of elements
+     *                   in the sequence by
+     */
+    public String join(String seperator) {
+
+        // start count at zero
+        String result = "";
+
+        // count all elements
+        Iterator<TElement> iterator = this.iterator();
+        while (iterator.hasNext()) {
+            result += iterator.next().toString();
+        }
+
+        // return count
+        return result;
+    }
+
+    // endregion
 
     // region grouping
 
@@ -573,18 +596,17 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     //TODO: check with Sim if this region is named appropriately
     // region repetition
+
     /**
      * Creates a sequence by repeating the value
      *
      * @param element The element that gets repeated
-     * @param count The number of time the element is repeated
+     * @param count   The number of time the element is repeated
      */
-    public Pipeline<TElement> repeat(TElement element, int count)
-    {
+    public Pipeline<TElement> repeat(TElement element, int count) {
         ArrayList<TElement> resultArray = new ArrayList<TElement>();
         int i = 0;
-        while( i < count)
-        {
+        while (i < count) {
             resultArray.add(element);
         }
 
@@ -603,6 +625,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     // endregion
 
     // region set operations
+
     /**
      * Puts a union of the current sequence and another sequence into the pipeline.
      *
@@ -613,25 +636,22 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         // return self if iterable is null
         if (addition == null) {
             return this;
-        }else
-        {
+        } else {
             HashSet<TElement> resultSet = new HashSet<TElement>();
             Iterator<TElement> additional = addition.iterator();
             // add source to set
-            for(TElement element : this)
-            {
+            for (TElement element : this) {
                 resultSet.add(element);
             }
             // add additional sequence to set
-            while(additional.hasNext())
-            {
+            while (additional.hasNext()) {
                 resultSet.add(additional.next());
             }
 
             return Pipeline.from(resultSet);
         }
 
-        }
+    }
 
     /**
      * Puts a union of the current sequence and another sequence into the pipeline.
@@ -643,20 +663,17 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         // return self if iterable is null
         if (addition == null) {
             return this;
-        }else
-        {
+        } else {
             HashSet<TElement> thisSet = new HashSet<TElement>();
             HashSet<TElement> additionSet = new HashSet<TElement>();
             Iterator<TElement> additional = addition.iterator();
 
             // add source to set
-            for(TElement element : this)
-            {
+            for (TElement element : this) {
                 thisSet.add(element);
             }
             // add additional sequence to set
-            while(additional.hasNext())
-            {
+            while (additional.hasNext()) {
                 additionSet.add(additional.next());
             }
             thisSet.retainAll(additionSet);
@@ -668,15 +685,12 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     /**
      * Puts a union of the current sequence and another sequence into the pipeline.
-     *
-     *
      */
     public Pipeline<TElement> reverse() {
         ArrayList<TElement> resultArray = new ArrayList<>();
         Iterator<TElement> iterator = this.iterator();
 
-        while(iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             resultArray.add(iterator.next());
         }
 
@@ -685,9 +699,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     }
 
-        // endregion
-
-
+    // endregion
 
 
 }
