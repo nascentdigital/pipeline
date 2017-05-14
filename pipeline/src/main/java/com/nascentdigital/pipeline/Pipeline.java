@@ -113,6 +113,27 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new ConcatOperation<>(this, Arrays.asList(addition)));
     }
 
+    /**
+     * Joins the values into a string using the specified separator and the default
+     * `toString()` implementation for string elements.
+     *
+     * @param separator A separator to join the string representations of elements
+     *                  in the sequence by
+     */
+    public String join(String separator) {
+
+        String result = "";
+
+        // iteratively join elements to result string
+        Iterator<TElement> iterator = this.iterator();
+        while (iterator.hasNext()) {
+            result += (separator + iterator.next().toString());
+        }
+
+        // return
+        return result;
+    }
+
     // endregion
 
 
@@ -184,14 +205,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     /**
-     * Bypasses all elements in a sequence for which the predicate is TRUE,
-     * and then returns the remaining elements
+     * Skips all elements in an array for which the predicate is false and
+     * returns all elements in a sequence, for which the predicate is FALSE
      *
-     * @param predicate The predicate that determines which elements to skip over in the sequence
+     * @param predicate A function to test each element for a condition.
      */
-    //// TODO: 2017-05-11 add a try-catch block to catch predicate = null;
     public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
 
+        //creating iterable data structure to hold valid elements
         ArrayList<TElement> resultArray = new ArrayList<TElement>();
 
         for (TElement element : this) {
@@ -201,7 +222,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
         }
         return Pipeline.from(resultArray);
-
     }
 
 
@@ -219,12 +239,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     /**
-     * Bypasses all elements in a sequence for which the predicate is FALSE,
-     * and then returns the remaining elements
+     * Returns all elements in a sequence, for which the predicate is TRUE
      *
-     * @param predicate The predicate that determines which elements to skip over in the sequence
+     * @param predicate A function to test each element for a condition.
      */
-    //// TODO: 2017-05-11 add a try-catch block to catch predicate = null;
     public Pipeline<TElement> takeWhile(Predicate<TElement> predicate) {
 
         ArrayList<TElement> resultArray = new ArrayList<TElement>();
@@ -238,7 +256,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return Pipeline.from(resultArray);
 
     }
-
 
     // endregion
 
@@ -266,29 +283,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
-    /**
-     *  Joins the values into a string using the specified separator and the default
-     *  `toString()` implementation for string elements.
-     *
-     *  @param seperator A seperator to join the string representations of elements
-     *                   in the sequence by
-     */
-    public String join(String seperator) {
-
-        // start count at zero
-        String result = "";
-
-        // count all elements
-        Iterator<TElement> iterator = this.iterator();
-        while (iterator.hasNext()) {
-            result += iterator.next().toString();
-        }
-
-        // return count
-        return result;
-    }
-
-    // endregion
 
     // region grouping
 
@@ -384,8 +378,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return false;
     }
 
-
     // endregion
+
 
     // region element operators
 
@@ -594,7 +588,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
-    //TODO: check with Sim if this region is named appropriately
     // region repetition
 
     /**
@@ -627,7 +620,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     // region set operations
 
     /**
-     * Puts a union of the current sequence and another sequence into the pipeline.
+     * Creates a union of the current sequence and another sequence in the pipeline.
      *
      * @param addition The sequence to take a union of with  the first sequence.
      */
@@ -654,9 +647,9 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     /**
-     * Puts a union of the current sequence and another sequence into the pipeline.
+     * Creates an intersection of the current sequence and another sequence in the pipeline.
      *
-     * @param addition The sequence to take a union of with  the first sequence.
+     * @param addition The sequence to intersect of with the original sequence.
      */
     public Pipeline<TElement> intersect(Iterable<TElement> addition) {
 
@@ -684,7 +677,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     /**
-     * Puts a union of the current sequence and another sequence into the pipeline.
+     * Reverses a sequence.
      */
     public Pipeline<TElement> reverse() {
         ArrayList<TElement> resultArray = new ArrayList<>();
