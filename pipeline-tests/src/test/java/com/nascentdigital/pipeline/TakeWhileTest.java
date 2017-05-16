@@ -4,14 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 
-public class SkipWhileTest extends PipelineTest {
+public class TakeWhileTest extends PipelineTest {
 
     // region null source
 
@@ -28,7 +25,7 @@ public class SkipWhileTest extends PipelineTest {
         assertEquals(source.length, 1);
 
         // use pipeline with predicate
-        Pipeline result = Pipeline.from(source).skipWhile(
+        Pipeline result = Pipeline.from(source).takeWhile(
                 n -> {
 
                     return n.equals("");
@@ -49,9 +46,9 @@ public class SkipWhileTest extends PipelineTest {
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .skipWhile(
+                .takeWhile(
                         n -> {
-                            return false;
+                            return true;
                         }
                 )
                 .toArray(Integer.class);
@@ -67,7 +64,7 @@ public class SkipWhileTest extends PipelineTest {
     // region singleton source
 
     @Test
-    public void singletonSource_shouldReturnOne_whenPredicateIsFalse() {
+    public void singletonSource_shouldReturnOne_whenPredicateIsTrue() {
 
         // create singleton array
         final String[] source = new String[]{
@@ -76,11 +73,11 @@ public class SkipWhileTest extends PipelineTest {
 
         // use pipeline
         String[] array = Pipeline.from(source)
-                .skipWhile(
+                .takeWhile(
                         n ->
                         {
 
-                            return !n.equals("test");
+                            return n.equals("test");
                         }
 
                 )
@@ -98,16 +95,16 @@ public class SkipWhileTest extends PipelineTest {
     // region many source
 
     @Test
-    public void manySource_shouldSkipOverNone_whenPredicateIsFALSE() {
+    public void manySource_shouldSkipOverNone_whenPredicateIsTRUE() {
 
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
         };
 
         // use pipeline with predicate
-        Integer[] array = Pipeline.from(source).skipWhile(
+        Integer[] array = Pipeline.from(source).takeWhile(
                 n -> {
-                    return false;
+                    return true;
 
                 })
                 .toArray(Integer.class);
@@ -126,17 +123,17 @@ public class SkipWhileTest extends PipelineTest {
 
 
     @Test
-    public void manySource_shouldSkipOverAll_whenPredicateTRUE() {
+    public void manySource_shouldSkipOverAll_whenPredicateFALSE() {
 
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
         };
 
         // use pipeline with predicate
-        Integer[] array = Pipeline.from(source).skipWhile(
+        Integer[] array = Pipeline.from(source).takeWhile(
                 n -> {
 
-                    return true;
+                    return false;
                 })
                 .toArray(Integer.class);
 
@@ -155,17 +152,17 @@ public class SkipWhileTest extends PipelineTest {
         };
 
         // use pipeline with predicate
-        Integer[] result = Pipeline.from(source).skipWhile(
+        Integer[] result = Pipeline.from(source).takeWhile(
                 n -> {
 
                     return n <= 0;
                 }).toArray(Integer.class);
 
         // assert
-        assertEquals(result[0], Integer.valueOf(Integer.MAX_VALUE));
+        assertEquals(result[0], Integer.valueOf(0));
         assertNotNull(result);
-        assertEquals(2, result.length);
-        assertArrayEquals(result, new Integer[]{Integer.MAX_VALUE, 3});
+        assertEquals(3, result.length);
+        assertArrayEquals(result, new Integer[]{0, Integer.MIN_VALUE, 0});
 
     }
 

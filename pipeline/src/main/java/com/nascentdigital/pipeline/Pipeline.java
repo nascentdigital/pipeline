@@ -126,6 +126,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
         // iteratively join elements to result string
         Iterator<TElement> iterator = this.iterator();
+        if(iterator.hasNext())
+            result += iterator.next().toString();
         while (iterator.hasNext()) {
             result += (separator + iterator.next().toString());
         }
@@ -213,7 +215,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
 
         //creating iterable data structure to hold valid elements
-        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+        ArrayList<TElement> resultArray = new ArrayList<>();
 
         for (TElement element : this) {
             if (!predicate.predicate(element)) {
@@ -245,7 +247,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     public Pipeline<TElement> takeWhile(Predicate<TElement> predicate) {
 
-        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+        ArrayList<TElement> resultArray = new ArrayList<>();
 
         for (TElement element : this) {
             if (predicate.predicate(element)) {
@@ -630,7 +632,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         if (addition == null) {
             return this;
         } else {
-            HashSet<TElement> resultSet = new HashSet<TElement>();
+            HashSet<TElement> resultSet = new HashSet<>();
             Iterator<TElement> additional = addition.iterator();
             // add source to set
             for (TElement element : this) {
@@ -657,8 +659,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         if (addition == null) {
             return this;
         } else {
-            HashSet<TElement> thisSet = new HashSet<TElement>();
-            HashSet<TElement> additionSet = new HashSet<TElement>();
+            HashSet<TElement> thisSet = new HashSet<>();
+            HashSet<TElement> additionSet = new HashSet<>();
             Iterator<TElement> additional = addition.iterator();
 
             // add source to set
