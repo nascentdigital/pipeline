@@ -603,6 +603,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         int i = 0;
         while (i < count) {
             resultArray.add(element);
+            i++;
         }
 
         return Pipeline.from(resultArray);
