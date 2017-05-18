@@ -195,24 +195,589 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // region aggregation
 
+
+    // region reduce
+
     /**
-     * Returns the number of elements in a sequence.
+     * Combines the sequence into a singular {@link TOutput} value.
+     *
+     * @param aggregator A function that combines individual sequence elements into the previous
+     *                   aggregator value.
+     * @param initial    The initial value passed into the aggregator, which is the final result if
+     *                   there are no elements in the sequence.
+     * @param <TOutput>  The type of the value passed in/out of the aggregator, also representing
+     *                   the final result of the <c>reduce()</c> method.
+     */
+    public <TOutput> TOutput reduce(Aggregator<TElement, TOutput> aggregator, TOutput initial) {
+
+        // start aggregate as null
+        TOutput aggregate = initial;
+
+        // process all elements
+        for (TElement element : this) {
+            aggregate = aggregator.aggregate(aggregate, element);
+        }
+
+        // return aggregate
+        return aggregate;
+    }
+
+    // endregion
+
+    // region count
+
+    /**
+     * Returns the number of elements in a sequence, including <c>null</c> values.
      */
     public int count() {
 
-        // start count at zero
+        // count sequence items, including null
         int count = 0;
-
-        // count all elements
-        Iterator<TElement> iterator = this.iterator();
-        while (iterator.hasNext()) {
+        for (TElement element : this) {
             ++count;
-            iterator.next();
         }
 
         // return count
         return count;
     }
+
+    /**
+     * Returns the number of elements in a sequence that match the specified predicate.
+     *
+     * @param predicate  A predicate deciding what gets matched.
+     */
+    public int count(Predicate<TElement> predicate) {
+
+        // evaluate all items matching a predicate
+        int count = 0;
+        for (TElement element : this) {
+            if (predicate.evaluate(element)) {
+                ++count;
+            }
+        }
+
+        // return count
+        return count;
+    }
+
+    // endregion
+
+    // region sum
+
+    /**
+     * Computes the sum of a sequence of {@link Byte} values.
+     *
+     * @param selector A selector that targets the bytes being evaluated.
+     */
+    public byte sumBytes(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        byte total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.byteValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    /**
+     * Computes the sum of a sequence of {@link Short} values.
+     *
+     * @param selector A selector that targets the shorts being evaluated.
+     */
+    public short sumShorts(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        short total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.shortValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    /**
+     * Computes the sum of a sequence of {@link Integer} values.
+     *
+     * @param selector A selector that targets the integers being evaluated.
+     */
+    public int sumInts(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        int total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.intValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    /**
+     * Computes the sum of a sequence of {@link Long} values.
+     *
+     * @param selector A selector that targets the longs being evaluated.
+     */
+    public long sumLongs(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        long total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.longValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    /**
+     * Computes the sum of a sequence of {@link Float} values.
+     *
+     * @param selector A selector that targets the floats being evaluated.
+     */
+    public float sumFloats(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        float total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.floatValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    /**
+     * Computes the sum of a sequence of {@link Integer} values.
+     *
+     * @param selector A selector that targets the doubles being evaluated.
+     */
+    public double sumDoubles(Selector<TElement, Number> selector) {
+
+        // iterate through all values, adding as we go
+        double total = 0;
+        for (TElement element : this) {
+
+            // get next value
+            Number value = selector.select(element);
+
+            // add value if it isn't null
+            if (value != null) {
+                total += value.doubleValue();
+            }
+        }
+
+        // return sum
+        return total;
+    }
+
+    // endregion
+
+    // region min
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Byte minByte(Selector<TElement, Byte> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Byte minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Byte value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Short minShort(Selector<TElement, Short> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Short minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Short value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Integer minInteger(Selector<TElement, Integer> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Integer minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Integer value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Long minLong(Selector<TElement, Long> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Long minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Long value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Float minFloat(Selector<TElement, Float> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Float minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Float value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    /**
+     * Returns the minimum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Double minDouble(Selector<TElement, Double> selector) {
+
+        // iterate through all values, looking for the smallest value
+        Double minimum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Double value = selector.select(element);
+
+            // use value if null
+            if (minimum == null) {
+                minimum = value;
+            }
+
+            // or update minimum (if applicable)
+            else if (value != null
+                    && minimum.compareTo(value) < 0) {
+                minimum = value;
+            }
+        }
+
+        // return smallest value, or null if there are no matches
+        return minimum;
+    }
+
+    // endregion
+
+    // region max
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Byte maxByte(Selector<TElement, Byte> selector) {
+
+        // iterate through all values, looking for the largest value
+        Byte maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Byte value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Short maxShort(Selector<TElement, Short> selector) {
+
+        // iterate through all values, looking for the largest value
+        Short maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Short value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Integer maxInteger(Selector<TElement, Integer> selector) {
+
+        // iterate through all values, looking for the largest value
+        Integer maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Integer value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Long maxLong(Selector<TElement, Long> selector) {
+
+        // iterate through all values, looking for the largest value
+        Long maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Long value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Float maxFloat(Selector<TElement, Float> selector) {
+
+        // iterate through all values, looking for the largest value
+        Float maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Float value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    /**
+     * Returns the maximum value in a sequence of values.
+     *
+     * @param selector Returns a numeric value for each element.
+     */
+    public Double maxDouble(Selector<TElement, Double> selector) {
+
+        // iterate through all values, looking for the largest value
+        Double maximum = null;
+        for (TElement element : this) {
+
+            // get next value
+            Double value = selector.select(element);
+
+            // use value if null
+            if (maximum == null) {
+                maximum = value;
+            }
+
+            // or update maximum (if applicable)
+            else if (value != null
+                    && maximum.compareTo(value) < 0) {
+                maximum = value;
+            }
+        }
+
+        // return largest value, or null if there are no matches
+        return maximum;
+    }
+
+    // endregion
+
 
     // endregion
 
@@ -243,7 +808,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
         // iterate through all elements, fail as soon as predicate test fails
         for (TElement element : this) {
-            if (!predicate.predicate(element)) {
+            if (!predicate.evaluate(element)) {
                 return false;
             }
         }
@@ -270,7 +835,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
         // iterate through all elements, succeed as soon as predicate test passes
         for (TElement element : this) {
-            if (predicate.predicate(element)) {
+            if (predicate.evaluate(element)) {
                 return true;
             }
         }
@@ -353,7 +918,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         for (TElement element : this) {
 
             // return first element passing predicate test
-            if (predicate.predicate(element)) {
+            if (predicate.evaluate(element)) {
                 return element;
             }
         }

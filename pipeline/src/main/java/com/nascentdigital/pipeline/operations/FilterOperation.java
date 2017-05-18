@@ -58,7 +58,7 @@ public class FilterOperation<TElement> implements PipelineOperation<TElement> {
                     TElement element = _input.next();
 
                     // use element if it passes filter
-                    if (_filter.predicate(element)) {
+                    if (_filter.evaluate(element)) {
 
                         // set state
                         _hasNext = true;
