@@ -1,0 +1,271 @@
+@font-face{
+	font-family: "Avenir";
+	src:url('../css/Avenir.ttc'),
+	url('Avenir.ttc');
+}
+
+body{
+	font-family: Avenir,'san-serif';
+	margin: 0px 0px 0px 0px; 
+	background-color: #f0f0f0; 
+}
+
+p{
+	line-height: 180%;
+}
+
+ul{
+	text-align: center;
+}
+
+a{
+	text-decoration: none;
+}
+
+h2,h3{
+	font-weight: 400;
+}
+
+.container{
+	display: inline-block;
+	width: 100vw;
+	padding-bottom: 40px;
+}
+
+
+.light_container{
+	background-color: white; 
+}
+
+#hero {
+	text-align: center;
+	position: relative;
+	width: 100vw;
+	height: inherit;
+	background-color: white;
+	min-height: 500px;
+	background-position: center;
+}
+
+.hero_content{
+	padding-top: 10%;
+	top: 0;
+	bottom: 0;
+}
+
+.hero_title{
+	color: #007ea7;
+	letter-spacing: 0.5rem;
+	font-family: Comfortaa;
+	font-size: 230%;
+	margin-top: 0;
+	margin-bottom: 1.5rem;
+}
+
+.horizontal_nav{ 
+	display: inline-block;
+}
+
+.code_style{
+	overflow: auto;
+	color: #3c515b;
+	font-size: 1.3rem;
+	padding: 1rem 1rem 1rem 2rem;
+	background-color:  #F5F7F7;
+}
+
+.scroll{
+	margin-top: 3%;
+	padding-bottom: 3%;
+	display: block;
+}
+
+pre.prettyprint{
+	overflow: auto;
+	font-size: 1.1rem;
+	border: none !important;
+}
+
+.hero_description{
+	line-height: 180%;
+	font-size: 105%;
+	width: 60%;
+	color: #3c515b;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+.general_button{
+	box-sizing: border-box;
+	display: inline-block;
+	size:70vh;
+	border: none;
+	font-size: 80%;
+	padding: 0.7rem 1.4rem 0.7rem 1.4rem;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	margin-top: 1rem;
+	border-radius: 5px;
+	background-color: #007ea7;
+}
+
+.general_button a{
+	font-size: 120%;
+	letter-spacing: 0.1rem;
+	color: white;
+}
+
+.scroll_button{
+	background-color: transparent; 
+	border-color: transparent;
+}
+
+.scroll_button img{
+	height: 30px; 
+	width: 30px; 
+}
+
+.usage_install_container{
+	margin-top: 1rem;
+}
+
+.usage_content{
+	margin-top: 2rem;
+}
+
+
+/* css for the features section */
+.content_title{
+	color: #007ea7;
+	padding-top: 30px;
+	text-align: center;
+}
+
+.feature_subtitle{
+	text-align: center;
+}
+
+.feature_icons{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+.icon{
+
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.content_text{
+	padding-left: 2rem;
+	padding-right: 2rem;
+}
+
+/* company logo css */
+#company_logos{
+	height: 200px;
+}
+
+/*background color*/
+.dark-container{
+	background-color: 007ea7;
+	color: white;
+}
+
+.usage_headings{
+	margin-top: 3rem;
+}
+
+.col{
+	float: left;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.footer li{
+	margin-right: 2rem;
+	margin-left: 2rem;
+}
+
+.footer ul{
+	padding-left: 0;
+}
+
+.nascent_logo{
+	margin-left: 1rem;
+}
+
+/** styling specifically for desktop view **/
+@media only screen and (min-width: 720px) {
+	.browser-text-alignment{
+		text-align: right;
+	}	
+	.usage_content{
+		padding-right: 13rem;
+	}
+	
+	.hero_logo{
+		height: 200px;
+	}
+
+	.general_button{
+		margin-right: 1.2rem;
+		margin-left: 1.2rem;
+	}
+
+	.hero_description{
+		margin-bottom: 1.5rem;
+	}
+
+	.nascent_logo{
+		height: 20px;
+	}
+
+	/** grid css **/
+	.col-one-third {
+		float: left;
+		display: block;
+		margin-right: 2.3576515979%;
+		width: 31.7615656014%;
+	}
+	.col-one-third:last-child{
+		margin-right: 0;
+	}
+	.col-two-thirds{
+		float: left;
+    	display: block;
+   		margin-right: 2.3576515979%;
+    	width: 65.8807828007%; 
+    }
+    .col-two-thirds:last-child {
+     	margin-right: 0;
+	}
+}
+
+/** styling specifically for mobile **/
+@media only screen and (max-width: 719px) {
+	.browser-text-alignment{
+		text-align: center;
+	}
+
+	.button_container{
+		margin-right: 3rem;
+		margin-left: 3rem;
+	}
+
+	.footer li{
+		font-size: 0.9rem;
+	}
+
+	.hero_logo{
+		height: 150px;
+	}
+
+	.nascent_logo{
+		height: 15px;
+	}
+
+}
