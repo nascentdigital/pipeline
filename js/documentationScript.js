@@ -19,7 +19,7 @@ $(document).ready(function(){
 		return newStr;
 	}
 
-	$.getJSON("../js/docgen.json",function(data){
+	$.getJSON("js/docgen.json",function(data){
 		addEventListener('load', function(event) { PR.prettyPrint(); }, false);
 		// this function iterates through each key value pair
 		$.each(data, function(k,v){
