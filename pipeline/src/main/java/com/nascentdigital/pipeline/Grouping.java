@@ -23,7 +23,6 @@ public class Grouping<TKey, TElement> implements Iterable<TElement> {
 
     // endregion
 
-
     // region Iterable<TElement> interface
 
     @Override
