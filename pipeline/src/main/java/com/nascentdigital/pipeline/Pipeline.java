@@ -433,7 +433,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) > 0) {
                 minimum = value;
             }
         }
@@ -463,7 +463,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) > 0) {
                 minimum = value;
             }
         }
@@ -493,7 +493,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) > 0) {
                 minimum = value;
             }
         }
@@ -523,7 +523,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) > 0) {
                 minimum = value;
             }
         }
@@ -553,7 +553,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) > 0) {
                 minimum = value;
             }
         }
@@ -583,7 +583,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
             // or update minimum (if applicable)
             else if (value != null
-                    && minimum.compareTo(value) < 0) {
+                    && minimum.compareTo(value) >  0) {
                 minimum = value;
             }
         }
