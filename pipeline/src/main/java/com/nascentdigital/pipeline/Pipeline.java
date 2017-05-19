@@ -18,7 +18,10 @@ import com.nascentdigital.pipeline.operations.TakeOperation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +55,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Creates a new {@link Pipeline} using the specified array as the initial sequence source.
      *
-     * @param source An array to be used as a source.
+     * @param source     An array to be used as a source.
      * @param <TElement> The type of the elements in the array.
      */
+    @Group(type = GroupType.Creation)
     @SuppressWarnings("unchecked")
     public static <TElement> Pipeline<TElement> from(TElement[] source) {
         return new Pipeline<>(new ArraySourceOperation<>(source));
@@ -64,9 +68,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the
      * initial sequence source.
      *
-     * @param source An iterable instance whose iterators will be used as a sequence source.
+     * @param source     An iterable instance whose iterators will be used as a sequence source.
      * @param <TElement> The type of elements emitted from the iterator.
      */
+    @Group(type = GroupType.Creation)
     @SuppressWarnings("unchecked")
     public static <TElement> Pipeline<TElement> from(Iterable<TElement> source) {
         return new Pipeline<>(new IterableSourceOperation<>(source));
@@ -82,6 +87,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param addition The sequence to concatenate to the first sequence.
      */
+    @Group(type = GroupType.Concatenation)
     public Pipeline<TElement> concat(Iterable<TElement> addition) {
 
         // return self if iterable is null
@@ -98,6 +104,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param addition The sequence to concatenate to the first sequence.
      */
+    @Group(type = GroupType.Concatenation)
     public Pipeline<TElement> concat(TElement[] addition) {
 
         // return self if array is null
@@ -110,6 +117,31 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new ConcatOperation<>(this, Arrays.asList(addition)));
     }
 
+
+    /**
+     * Joins the values into a string using the specified separator and the default
+     * `toString()` implementation for string elements.
+     *
+     * @param separator A separator to join the string representations of elements
+     *                  in the sequence by
+     */
+    @Group(type = GroupType.Concatenation)
+    public String join(String separator) {
+
+        String result = "";
+
+        // iteratively join elements to result string
+        Iterator<TElement> iterator = this.iterator();
+        if(iterator.hasNext())
+            result += iterator.next().toString();
+        while (iterator.hasNext()) {
+            result += (separator + iterator.next().toString());
+        }
+
+        // return
+        return result;
+    }
+
     // endregion
 
 
@@ -120,7 +152,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate A function to test each element for a condition.
      */
-
     @Group(type = GroupType.Filtering)
     public Pipeline<TElement> where(Predicate<TElement> predicate) {
         return new Pipeline<>(new FilterOperation<>(this, predicate));
@@ -130,6 +161,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Returns distinct elements from a sequence by using the default equality comparer to compare
      * values.
      */
+    @Group(type = GroupType.Filtering)
     public Pipeline<TElement> distinct() {
         return new Pipeline<>(new DistinctOperation<>(this));
     }
@@ -142,9 +174,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Projects each element of a sequence into a new form.
      *
-     * @param selector A selector function to apply to each element.
+     * @param selector     A selector function to apply to each element.
      * @param <TProjected> The new type of the projected elements.
      */
+    @Group(type = GroupType.Projection)
     public <TProjected> Pipeline<TProjected> map(Selector<TElement, TProjected> selector) {
         return new Pipeline<>(new ProjectionOperation<>(this, selector));
     }
@@ -153,9 +186,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Projects each element of a sequence to an {@link Iterable} sub-sequence and flattens the
      * resulting sequences into one sequence.
      *
-     * @param selector A transform function to extract the sub-sequences that will be flattened.
+     * @param selector     A transform function to extract the sub-sequences that will be flattened.
      * @param <TProjected> The type of the elements of the sequence returned by <i>selector</i>.
      */
+    @Group(type = GroupType.Projection)
     public <TProjected> Pipeline<TProjected> flatMap(Selector<TElement,
             Iterable<TProjected>> selector) {
         return new Pipeline<>(new FlatProjectionOperation<>(this, selector));
@@ -169,25 +203,72 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Bypasses a specified number of elements in a sequence and then returns the remaining
      * elements.
-     *
+     * <p>
+     * <p>
      * If count is less than or equal to zero, all elements of source are yielded.
      *
      * @param count The number of elements to skip before returning the remaining elements.
      */
+    @Group(type = GroupType.PartitionOperators)
     public Pipeline<TElement> skip(int count) {
         return new Pipeline<>(new SkipOperation<>(this, count));
     }
 
+
+    /**
+     * Skips all elements in an array for which the predicate is false and
+     * returns all elements in a sequence, for which the predicate is FALSE
+     *
+     * @param predicate A function to test each element for a condition.
+     */
+    @Group (type = GroupType.PartitionOperators)
+    public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
+
+        //creating iterable data structure to hold valid elements
+        ArrayList<TElement> resultArray = new ArrayList<>();
+
+        for (TElement element : this) {
+            if (!predicate.predicate(element)) {
+                resultArray.add(element);
+            }
+
+        }
+        return Pipeline.from(resultArray);
+    }
+
+
     /**
      * Returns a specified number of contiguous elements from the start of a sequence.
-     *
+     * <p>
      * If count is less than or equal to zero, source is not enumerated and an empty
      * {@link Pipeline} is returned.
      *
      * @param count The maximum number of elements to return.
      */
+    @Group(type = GroupType.PartitionOperators)
     public Pipeline<TElement> take(int count) {
         return new Pipeline<>(new TakeOperation<>(this, count));
+    }
+
+
+    /**
+     * Returns all elements in a sequence, for which the predicate is TRUE
+     *
+     * @param predicate A function to test each element for a condition.
+     */
+    @Group(type = GroupType.PartitionOperators)
+    public Pipeline<TElement> takeWhile(Predicate<TElement> predicate) {
+
+        ArrayList<TElement> resultArray = new ArrayList<>();
+
+        for (TElement element : this) {
+            if (predicate.predicate(element)) {
+                resultArray.add(element);
+            }
+
+        }
+        return Pipeline.from(resultArray);
+
     }
 
     // endregion
@@ -208,27 +289,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * @param <TOutput>  The type of the value passed in/out of the aggregator, also representing
      *                   the final result of the <c>reduce()</c> method.
      */
-    public <TOutput> TOutput reduce(Aggregator<TElement, TOutput> aggregator, TOutput initial) {
-
-        // start aggregate as null
-        TOutput aggregate = initial;
-
-        // process all elements
-        for (TElement element : this) {
-            aggregate = aggregator.aggregate(aggregate, element);
-        }
-
-        // return aggregate
-        return aggregate;
-    }
-
-    // endregion
-
-    // region count
-
-    /**
-     * Returns the number of elements in a sequence, including <c>null</c> values.
-     */
+    @Group(type = GroupType.Aggregation)
     public int count() {
 
         // count sequence items, including null
@@ -788,8 +849,9 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Groups the elements of a sequence according to a specified key selector function.
      *
      * @param selector A function to extract the key for each element.
-     * @param <TKey> The type of the key returned by the function represented in <i>keySelector</i>.
+     * @param <TKey>   The type of the key returned by the function represented in <i>keySelector</i>.
      */
+    @Group(type = GroupType.Grouping)
     public <TKey> Pipeline<Grouping<TKey, TElement>> groupBy(Selector<TElement, TKey> selector) {
         return new Pipeline<>(new GroupByOperation<>(this, selector));
     }
@@ -800,10 +862,44 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     // region quantification
 
     /**
+     * Determines whether a sequence contains an element.
+     *
+     * @param tElement A TElement Object to search for in the sequence.
+     */
+    @Group(type = GroupType.Quantification)
+    public boolean contains(TElement tElement) {
+
+        Iterator<TElement> iterator = this.iterator();
+
+        // if not empty source
+        if (iterator.hasNext()) {
+
+            // iterate through all elements, return true as soon as tElement is found
+            for (TElement element : this) {
+
+                // account for null-containing sequences
+                if (element == null) {
+                    if (tElement == null)
+                        return true;
+                    continue;
+                }
+
+                if (element.equals(tElement)) {
+                    return true;
+                }
+            }
+        }
+
+        // fail after we process entire sequence without finding tElement
+        return false;
+    }
+
+    /**
      * Determines whether all the elements of a sequence satisfy a condition.
      *
      * @param predicate A function to test each element for a condition.
      */
+    @Group(type = GroupType.Quantification)
     public boolean all(Predicate<TElement> predicate) {
 
         // iterate through all elements, fail as soon as predicate test fails
@@ -820,6 +916,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Determines whether a sequence contains any elements.
      */
+    @Group(type = GroupType.Quantification)
     public boolean any() {
 
         // simply test if there is a single item in the iterator
@@ -831,6 +928,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate A function to test each element for a condition.
      */
+    @Group(type = GroupType.Quantification)
     public boolean any(Predicate<TElement> predicate) {
 
         // iterate through all elements, succeed as soon as predicate test passes
@@ -854,45 +952,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @throws NoElementFoundException The pipeline sequence is empty.
      */
+    @Group(type = GroupType.ElementOperators)
     public TElement first() throws NoElementFoundException {
-
-        // get first element, throwing if there isn't one
-        TElement element = firstOrDefault();
-        if (element == null) {
-            throw new NoElementFoundException("Pipeline is empty.");
-        }
-
-        // return element
-        return element;
-    }
-
-    /**
-     * Returns the first element of a sequence that satisfies a specified condition, or throws a
-     * {@link NoElementFoundException} if no matching element is found.
-     *
-     * @param predicate A function to test each element for a condition.
-     * @return The first element in the sequence that passes the test in <i>predicate</i>.
-     *
-     * @throws NoElementFoundException  No element satisfies the condition in <i>predicate</i>,
-     *                                  or the pipeline sequence is empty.
-     */
-    public TElement first(Predicate<TElement> predicate) throws NoElementFoundException {
-
-        // get first element, throwing if there isn't one
-        TElement element = firstOrDefault(predicate);
-        if (element == null) {
-            throw new NoElementFoundException("Specified predicate failed to match any element.");
-        }
-
-        // return element
-        return element;
-    }
-
-    /**
-     * Returns the first element of a sequence, or a default value if the sequence contains no
-     * elements.
-     */
-    public TElement firstOrDefault() {
 
         // create iterator
         Iterator<TElement> iterator = this.iterator();
@@ -902,8 +963,51 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
             return iterator.next();
         }
 
-        // or return default if there is no element
-        return null;
+        // or throw if nothing was found
+        throw new NoElementFoundException("Pipeline is empty.");
+    }
+
+    /**
+     * Returns the first element of a sequence that satisfies a specified condition, or throws a
+     * {@link NoElementFoundException} if no matching element is found.
+     *
+     * @param predicate A function to test each element for a condition.
+     * @return The first element in the sequence that passes the test in <i>predicate</i>.
+     * @throws NoElementFoundException No element satisfies the condition in <i>predicate</i>,
+     *                                 or the pipeline sequence is empty.
+     */
+    @Group(type = GroupType.ElementOperators)
+    public TElement first(Predicate<TElement> predicate) throws NoElementFoundException {
+
+        // iterate through pipeline sequence to find first match
+        for (TElement element : this) {
+
+            // return first element passing predicate test
+            if (predicate.predicate(element)) {
+                return element;
+            }
+        }
+
+        // or throw if there is not match
+        throw new NoElementFoundException("No element matching predicate.");
+    }
+
+    /**
+     * Returns the first element of a sequence, or a default value if the sequence contains no
+     * elements.
+     */
+    @Group(type = GroupType.ElementOperators)
+    public TElement firstOrDefault() {
+
+        // try to get first element
+        try {
+            return first();
+        }
+
+        // return default if not element was found
+        catch (NoElementFoundException e) {
+            return null;
+        }
     }
 
     /**
@@ -912,19 +1016,18 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate A function to test each element for a condition.
      */
+    @Group(type = GroupType.ElementOperators)
     public TElement firstOrDefault(Predicate<TElement> predicate) {
 
-        // iterate through pipeline sequence to find first match
-        for (TElement element : this) {
-
-            // return first element passing predicate test
-            if (predicate.evaluate(element)) {
-                return element;
-            }
+        // try to get first element matching predicate
+        try {
+            return first(predicate);
         }
 
-        // or return default if there is no match
-        return null;
+        // return default if not element was found
+        catch (NoElementFoundException e) {
+            return null;
+        }
     }
 
     // endregion
@@ -934,16 +1037,17 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     /**
      * Casts the elements of a sequence to the specified type.
-     *
+     * <p>
      * This method is helpful when working with a sequence of objects that are known to be of a
      * common type, but that are currently not specific enough for manipulation.
-     *
+     * <p>
      * If an element cannot be cast to type <i>TDerived</i>, this method will throw an exception.
      *
      * @param targetClass The type to cast the elements of the <i>source</i> pipeline to.
-     * @param <TDerived> The concrete type of the elements.
+     * @param <TDerived>  The concrete type of the elements.
      * @throws ClassCastException
      */
+    @Group(type = GroupType.ConversionOperations)
     public <TDerived> Pipeline<TDerived> cast(Class<TDerived> targetClass) throws ClassCastException {
         return new Pipeline<>(new CastOperation<>(this, targetClass));
     }
@@ -951,6 +1055,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Converts the sequence into an array.
      */
+    @Group(type = GroupType.ConversionOperations)
     public TElement[] toArray(Class<TElement> elementType) {
 
         // extract sequence from pipeline
@@ -966,6 +1071,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Converts the sequence into an {@link List}.
      */
+    @Group(type = GroupType.ConversionOperations)
     public List<TElement> toList() {
 
         // extract sequence from pipeline
@@ -982,10 +1088,11 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a {@link Map} from the pipeline according to a specified key selector function.
      *
      * @param keySelector A function to extract a key from each element.
-     * @param <TKey> The type of the key returned by <i>keySelector</i>.
+     * @param <TKey>      The type of the key returned by <i>keySelector</i>.
      * @throws DuplicateKeyException Thrown when the <i>keySelector</i> produces duplicate keys for
-     *      two elements.
+     *                               two elements.
      */
+    @Group(type = GroupType.ConversionOperations)
     public <TKey> Map<TKey, TElement> toMap(Selector<TElement, TKey> keySelector)
             throws DuplicateKeyException {
 
@@ -1015,13 +1122,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * Creates a {@link Map} from the pipeline according to a specified key selector and value
      * selector functions.
      *
-     * @param keySelector A function to extract a key from each element.
+     * @param keySelector   A function to extract a key from each element.
      * @param valueSelector A transform function to produce a result map value from each element.
-     * @param <TKey> The type of the key returned by <i>keySelector</i>.
-     * @param <TValue> The type of the value returned by <i>valueSelector</i>.
+     * @param <TKey>        The type of the key returned by <i>keySelector</i>.
+     * @param <TValue>      The type of the value returned by <i>valueSelector</i>.
      * @throws DuplicateKeyException Thrown when the <i>keySelector</i> produces duplicate keys for
-     *      two elements.
+     *                               two elements.
      */
+    @Group(type = GroupType.ConversionOperations)
     public <TKey, TValue> Map<TKey, TValue> toMap(Selector<TElement, TKey> keySelector,
                                                   Selector<TElement, TValue> valueSelector)
             throws DuplicateKeyException {
@@ -1053,13 +1161,118 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
+    // region repetition
+
+    /**
+     * Creates a sequence by repeating the value
+     *
+     * @param element The element that gets repeated
+     * @param count   The number of time the element is repeated
+     */
+    @Group (type = GroupType.Repetition)
+    public Pipeline<TElement> repeat(TElement element, int count) {
+        ArrayList<TElement> resultArray = new ArrayList<TElement>();
+        int i = 0;
+        while (i < count) {
+            resultArray.add(element);
+            i++;
+        }
+
+        return Pipeline.from(resultArray);
+    }
+
+    //endregion
 
     // region Iterable<TElement> interface
 
     @Override
+    @Group (type = GroupType.InterfaceIterator)
     public Iterator<TElement> iterator() {
         return _operation.iterator();
     }
 
     // endregion
+
+    // region set operations
+
+    /**
+     * Creates a union of the current sequence and another sequence in the pipeline.
+     *
+     * @param addition The sequence to take a union of with  the first sequence.
+     */
+    @Group (type = GroupType.SetOperations)
+    public Pipeline<TElement> union(Iterable<TElement> addition) {
+
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        } else {
+            HashSet<TElement> resultSet = new HashSet<>();
+            Iterator<TElement> additional = addition.iterator();
+            // add source to set
+            for (TElement element : this) {
+                resultSet.add(element);
+            }
+            // add additional sequence to set
+            while (additional.hasNext()) {
+                resultSet.add(additional.next());
+            }
+
+            return Pipeline.from(resultSet);
+        }
+
+    }
+
+    /**
+     * Creates an intersection of the current sequence and another sequence in the pipeline.
+     *
+     * @param addition The sequence to intersect of with the original sequence.
+     */
+    @Group (type = GroupType.SetOperations)
+    public Pipeline<TElement> intersect(Iterable<TElement> addition) {
+
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        } else {
+            HashSet<TElement> thisSet = new HashSet<>();
+            HashSet<TElement> additionSet = new HashSet<>();
+            Iterator<TElement> additional = addition.iterator();
+
+            // add source to set
+            for (TElement element : this) {
+                thisSet.add(element);
+            }
+            // add additional sequence to set
+            while (additional.hasNext()) {
+                additionSet.add(additional.next());
+            }
+            thisSet.retainAll(additionSet);
+            return Pipeline.from(thisSet);
+        }
+
+    }
+
+
+    /**
+     * Reverses a sequence.
+     */
+    @Group (type = GroupType.SetOperations)
+    public Pipeline<TElement> reverse() {
+        ArrayList<TElement> resultArray = new ArrayList<>();
+        Iterator<TElement> iterator = this.iterator();
+
+        while (iterator.hasNext()) {
+            resultArray.add(iterator.next());
+        }
+
+        Collections.reverse(resultArray);
+        return Pipeline.from(resultArray);
+
+    }
+
+    // endregion
+
+
 }
+

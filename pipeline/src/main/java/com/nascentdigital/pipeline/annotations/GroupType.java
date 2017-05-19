@@ -10,6 +10,15 @@ public enum GroupType {
     Creation,
     Concatenation,
     Projection,
-    Filtering
+    Filtering,
+    PartitionOperators,
+    Aggregation,
+    Grouping,
+    Quantification,
+    ElementOperators,
+    ConversionOperations,
+    Repetition,
+    SetOperations,
+    InterfaceIterator
 
 }

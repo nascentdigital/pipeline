@@ -1,1 +1,5 @@
-include ':app', ':pipeline', ':pipeline-tests'
+//<<<<<<< Updated upstream
+include ':app', ':pipeline', ':pipeline-tests', ':docgen'
+//=======
+//include ':app', ':pipeline', ':docgen'
+//>>>>>>> Stashed changes
