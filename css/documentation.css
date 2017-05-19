@@ -74,11 +74,19 @@ p{
 	.vertical_menu li{
 		text-align: left;
 		cursor: pointer;
-		color: black;
 		margin-top: 2rem; 
 		display: block;
 	}
 
+	.vertical_menu a{
+		color: black;
+	}
+
+	.sub_menu{
+		font-size: 90%;
+		padding-left: 1rem;
+		display: none;
+	}
 	.wordmark{
 		font-family: Comfortaa;
 		letter-spacing:0.5rem;
@@ -127,14 +135,27 @@ p{
 
 	.mobile_menu_list li{
 		margin-top: 2rem;
-		text-align: center;
+		text-align: left;
+		padding-left: 2.5rem;
 		display: block;
 	}
+	.mobile_menu_list a{
+		color: white;
+	}
 	.mobile_menu{
+
 		display: none;
+	}
+	.mobile_menu_img{
+		background-image: url('../images/navbar.png');
+		position: fixed;	
+		width: inherit;
+		height: inherit;
+		opacity: 0.4
 	}
 
 	.expanded{
+		
 		background-color: #4c5c68;
 		overflow: auto;
 		height: 100%;

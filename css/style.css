@@ -48,7 +48,6 @@ h2,h3{
 }
 
 .hero_content{
-	background-image: url('../images/hero.png');
 	background-position: center;
 	
 	background-repeat: no-repeat;
@@ -207,6 +206,10 @@ pre.prettyprint{
 
 /** styling specifically for desktop view **/
 @media only screen and (min-width: 720px) {
+	.hero_content{
+		background-image: url('../images/hero.png');
+	}
+
 	.browser-text-alignment{
 		text-align: right;
 	}	
@@ -254,6 +257,9 @@ pre.prettyprint{
 
 /** styling specifically for mobile **/
 @media only screen and (max-width: 719px) {
+	.hero_content{
+		background-image: url('../images/mobile_hero.png');
+	}
 	.browser-text-alignment{
 		text-align: center;
 	}
