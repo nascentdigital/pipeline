@@ -1,6 +1,6 @@
 @font-face{
 	font-family: "Avenir";
-	src:url('css/Avenir.ttc'),
+	src:url('Avenir.ttc'),
 	url('Avenir.ttc');
 }
 
@@ -42,12 +42,18 @@ h2,h3{
 	position: relative;
 	width: 100vw;
 	height: inherit;
-	background-color: white;
+	
 	min-height: 500px;
-	background-position: center;
+	
 }
 
 .hero_content{
+	background-image: url('../images/hero.png');
+	background-position: center;
+	
+	background-repeat: no-repeat;
+	background-size: cover;
+	width: auto;
 	padding-top: 10%;
 	top: 0;
 	bottom: 0;
@@ -154,7 +160,8 @@ pre.prettyprint{
 	margin-bottom: 20px;
 }
 .icon{
-
+	height: 125px;
+	width: 125px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

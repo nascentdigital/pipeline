@@ -94,6 +94,7 @@ $(document).ready(function(){
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'slow');
 			$('.mobile_menu').toggleClass('expanded');
+			$('.mobile_menu').css('display','none');
 		});
 
 		$(window).scroll(function(){
@@ -123,20 +124,21 @@ $(document).ready(function(){
 				$('#'+prev_id).css('font-size','100%');
 			}
 
-
-			
 		});
 
 	});
 
 	$('.hamburger_button').click(function(){
-		$('.mobile_menu').toggleClass('expanded');
+		$('.mobile_menu').slideToggle('slow', function(){
+			$('.mobile_menu').toggleClass('expanded');
+		});
 	});
 			
 
 	$('.inner').click(function(){
 		if($('.mobile_menu').hasClass('expanded')){
 			$('.mobile_menu').removeClass('expanded');
+			$('.mobile_menu').css('display','none');
 		}
 	});
 

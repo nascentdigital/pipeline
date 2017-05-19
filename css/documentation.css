@@ -22,6 +22,7 @@ p{
 }
 
 .documentation_navbar{
+	z-index: 2;
     box-shadow: 0px 8px 6px -6px #999;
 	position: fixed;
 	padding-top: 1.25rem;
@@ -34,10 +35,11 @@ p{
 }
 
 .light_color{
-	background-color: #4c5c68;
+	background-color: #f0f0f0;
 }
 
 .inner{
+	background-color: white; 
 	margin-bottom: 5%;
 }
 
@@ -49,7 +51,7 @@ p{
 .sample_code{
 	overflow: auto;
 	width: inherit;
-	background-color: #dee5e5;
+	background-color: #F5F7F7;
 	padding: 1rem 1rem 1rem 1rem;
 }
 
@@ -72,7 +74,7 @@ p{
 	.vertical_menu li{
 		text-align: left;
 		cursor: pointer;
-		color: white;
+		color: black;
 		margin-top: 2rem; 
 		display: block;
 	}
@@ -119,13 +121,13 @@ p{
 	}
 	
 	.mobile_menu_list{
-		padding-left: 1.6rem;
+		padding-left: 0;
 		margin-bottom: 6rem;
 	}
 
 	.mobile_menu_list li{
-		margin-top: 3rem;
-		text-align: left;
+		margin-top: 2rem;
+		text-align: center;
 		display: block;
 	}
 	.mobile_menu{
@@ -133,13 +135,14 @@ p{
 	}
 
 	.expanded{
+		background-color: #4c5c68;
 		overflow: auto;
 		height: 100%;
 		display: block;
 		position: fixed;
 		color: white;
 		top: 62px;
-		width: 65%;
+		width: 100%;
 		right: 0px;
 	}
 	
