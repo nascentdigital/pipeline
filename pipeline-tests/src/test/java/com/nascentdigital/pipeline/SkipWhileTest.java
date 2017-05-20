@@ -4,11 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 
 public class SkipWhileTest extends PipelineTest {
@@ -19,25 +17,21 @@ public class SkipWhileTest extends PipelineTest {
     public void NullSource_shouldThrow() {
 
         // define source
-        String[] source = new String[]{null};
+        Integer[] source = new Integer[]{null};
 
-        // predict exception
-        exception.expect(NullPointerException.class);
-
-        // assert
-        assertEquals(source.length, 1);
-
+        // expect exception
+        exception.expect(NoElementFoundException.class);
         // use pipeline with predicate
         Pipeline result = Pipeline.from(source).skipWhile(
-                n -> {
-
-                    return n.equals("");
-                }
+                n -> n == null
         );
+
+        assertNull(result.first());
 
     }
 
     // endregion
+
 
     // region empty source
 

@@ -56,6 +56,7 @@ public class ConcatOperation<TElement> implements PipelineOperation<TElement> {
             // begin concatenating if base input is empty
             if (!hasNext) {
                 _concatenating = true;
+
                 hasNext = _addition.hasNext();
             }
 
