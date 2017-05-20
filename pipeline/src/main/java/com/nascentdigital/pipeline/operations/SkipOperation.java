@@ -1,7 +1,6 @@
 package com.nascentdigital.pipeline.operations;
 
 import com.nascentdigital.pipeline.PipelineOperation;
-import com.nascentdigital.pipeline.Predicate;
 
 
 public class SkipOperation<TElement> implements PipelineOperation<TElement> {
@@ -9,8 +8,7 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     // region instance variables
 
     private final Iterable<TElement> _source;
-    private Predicate<TElement> _predicate;
-    private int _count;
+    private final int _count;
 
     // endregion
 
@@ -20,11 +18,6 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     public SkipOperation(Iterable<TElement> source, int count) {
         _source = source;
         _count = count;
-    }
-
-    public SkipOperation(Iterable<TElement> source, Predicate<TElement> predicate) {
-        _source = source;
-        _predicate = predicate;
     }
 
     // endregion
@@ -45,34 +38,23 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     private class Iterator implements java.util.Iterator<TElement> {
 
         private final java.util.Iterator<TElement> _input = _source.iterator();
-        private boolean _skipped;
 
+
+        Iterator() {
+            int offset = 0;
+            while (offset++ < _count
+                    && _input.hasNext()) {
+                _input.next();
+            }
+        }
 
         @Override
         public boolean hasNext() {
-
-            // skip on first invocation
-            if (!_skipped) {
-
-                // flush out first "count" items from iterator, or stop if input is empty
-                int offset = 0;
-                while (offset++ < _count
-                        && _input.hasNext()) {
-                    _input.next();
-                }
-
-                // mark skipped
-                _skipped = true;
-            }
-
-            // use underlying input
             return _input.hasNext();
         }
 
         @Override
-        public TElement next() {
-            return _input.next();
-        }
+        public TElement next() { return _input.next(); }
 
         @Override
         public void remove() {

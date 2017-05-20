@@ -2,6 +2,8 @@ package com.nascentdigital.pipeline;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -296,6 +298,49 @@ public class SkipTest extends PipelineTest {
         // assert
         assertNotNull(array);
         assertEquals(0, array.length);
+    }
+
+    // endregion
+
+
+    // region reused source
+
+    @Test
+    public void reusedSource_shouldReturnDifferent_whenChanged() {
+
+        // create array
+        final Integer[] source = new Integer[] {
+                8,
+                9,
+                10,
+                11,
+                12
+        };
+
+        // create pipeline
+        Pipeline<Integer> pipeline = Pipeline.from(source)
+                .skip(-3);
+
+        // use pipeline
+        Integer[] array = pipeline.toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
+
+        // modify source
+        source[source.length - 1] = -100;
+
+        // reuse pipeline
+        array = pipeline.toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
     }
 
     // endregion

@@ -13,12 +13,12 @@ import com.nascentdigital.pipeline.operations.GroupByOperation;
 import com.nascentdigital.pipeline.operations.IterableSourceOperation;
 import com.nascentdigital.pipeline.operations.ProjectionOperation;
 import com.nascentdigital.pipeline.operations.SkipOperation;
+import com.nascentdigital.pipeline.operations.SkipWhileOperation;
 import com.nascentdigital.pipeline.operations.TakeOperation;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,20 +126,43 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *                  in the sequence by
      */
     @Group(type = GroupType.Concatenation)
-    public String join(String separator) {
+    public String join(CharSequence separator) {
 
-        String result = "";
+        // create buffer for new string
+        StringBuilder builder = new StringBuilder();
 
-        // iteratively join elements to result string
-        Iterator<TElement> iterator = this.iterator();
-        if(iterator.hasNext())
-            result += iterator.next().toString();
-        while (iterator.hasNext()) {
-            result += (separator + iterator.next().toString());
+        // add first element
+        Iterator<TElement> iterator = iterator();
+        if (iterator.hasNext()) {
+
+            // normalize string
+            TElement element = iterator.next();
+            String string = element == null
+                    ? ""
+                    : element.toString();
+
+            // and append it
+            builder.append(string);
         }
 
-        // return
-        return result;
+        // add remaining elements
+        while (iterator.hasNext()) {
+
+            // add separator
+            builder.append(separator);
+
+            // normalize string
+            TElement element = iterator.next();
+            String string = element == null
+                    ? ""
+                    : element.toString();
+
+            // and append it
+            builder.append(string);
+        }
+
+        // return final string
+        return builder.toString();
     }
 
     // endregion
@@ -203,8 +226,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     /**
      * Bypasses a specified number of elements in a sequence and then returns the remaining
      * elements.
-     * <p>
-     * <p>
+     *
      * If count is less than or equal to zero, all elements of source are yielded.
      *
      * @param count The number of elements to skip before returning the remaining elements.
@@ -216,24 +238,14 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
 
     /**
-     * Skips all elements in an array for which the predicate is false and
-     * returns all elements in a sequence, for which the predicate is FALSE
+     * Bypasses elements in a sequence as long as a specified condition is <c>true</c> and then
+     * returns the remaining elements.
      *
      * @param predicate A function to test each element for a condition.
      */
     @Group (type = GroupType.PartitionOperators)
     public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
-
-        //creating iterable data structure to hold valid elements
-        ArrayList<TElement> resultArray = new ArrayList<>();
-
-        for (TElement element : this) {
-            if (!predicate.predicate(element)) {
-                resultArray.add(element);
-            }
-
-        }
-        return Pipeline.from(resultArray);
+        return new Pipeline<>(new SkipWhileOperation<>(this, predicate));
     }
 
 
@@ -262,7 +274,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         ArrayList<TElement> resultArray = new ArrayList<>();
 
         for (TElement element : this) {
-            if (predicate.predicate(element)) {
+            if (predicate.evaluate(element)) {
                 resultArray.add(element);
             }
 
@@ -289,6 +301,20 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * @param <TOutput>  The type of the value passed in/out of the aggregator, also representing
      *                   the final result of the <c>reduce()</c> method.
      */
+    public <TOutput> TOutput reduce(Aggregator<TElement, TOutput> aggregator, TOutput initial) {
+
+        // start aggregate as null
+        TOutput aggregate = initial;
+
+        // process all elements
+        for (TElement element : this) {
+            aggregate = aggregator.aggregate(aggregate, element);
+        }
+
+        // return aggregate
+        return aggregate;
+    }
+
     @Group(type = GroupType.Aggregation)
     public int count() {
 
@@ -983,7 +1009,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         for (TElement element : this) {
 
             // return first element passing predicate test
-            if (predicate.predicate(element)) {
+            if (predicate.evaluate(element)) {
                 return element;
             }
         }
