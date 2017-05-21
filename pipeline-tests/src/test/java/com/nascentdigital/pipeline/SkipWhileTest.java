@@ -19,15 +19,20 @@ public class SkipWhileTest extends PipelineTest {
         // define source
         Integer[] source = new Integer[]{null};
 
-        // expect exception
-        exception.expect(NoElementFoundException.class);
         // use pipeline with predicate
-        Pipeline result = Pipeline.from(source).skipWhile(
-                n -> n == null
-        );
+        Integer[] result = Pipeline.from(source)
+                .skipWhile(
+                        n ->
+                        {
+                            return n == null;
+                        }
+                )
+                .toArray(Integer.class);
 
-        assertNull(result.first());
-
+        // assert
+        assertEquals(source.length, 1);
+        assertEquals(result.length, 0);
+        assertNotNull(result);
     }
 
     // endregion
@@ -58,6 +63,7 @@ public class SkipWhileTest extends PipelineTest {
 
     // endregion
 
+
     // region singleton source
 
     @Test
@@ -65,7 +71,7 @@ public class SkipWhileTest extends PipelineTest {
 
         // create singleton array
         final String[] source = new String[]{
-                "test"
+                "original"
         };
 
         // use pipeline
@@ -74,20 +80,23 @@ public class SkipWhileTest extends PipelineTest {
                         n ->
                         {
 
-                            return !n.equals("test");
+                            return n.equals("any_Element_Not_In_Array");
                         }
 
                 )
                 .toArray(String.class);
 
+        // change source elements
+        source[0] = "changed";
+
         // assert
-        assertNotNull(array);
         assertEquals(1, array.length);
-        assertEquals("test", array[0]);
-        assertNotSame(source, array);
+        assertEquals("original", array[0]);
+        assertEquals("changed", source[0]);
     }
 
     // endregion
+
 
     // region many source
 
@@ -107,7 +116,6 @@ public class SkipWhileTest extends PipelineTest {
                 .toArray(Integer.class);
 
         // assert
-        assertNotNull(array);
         assertEquals(5, array.length);
         for (int i = 0; i < array.length; i++) {
             assertEquals(source[i], array[i]);
@@ -153,13 +161,32 @@ public class SkipWhileTest extends PipelineTest {
                 n -> {
 
                     return n <= 0;
-                }).toArray(Integer.class);
+                })
+                .toArray(Integer.class);
 
         // assert
-        assertEquals(result[0], Integer.valueOf(Integer.MAX_VALUE));
         assertNotNull(result);
-        assertEquals(2, result.length);
-        assertArrayEquals(result, new Integer[]{Integer.MAX_VALUE, 3});
+        assertEquals(Integer.valueOf(Integer.MAX_VALUE), result[0]);
+        assertEquals(4, result.length);
+        assertArrayEquals(result, new Integer[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3});
+
+        // changing source element
+        source[1] = 37;
+        source[2] = Integer.MAX_VALUE;
+
+        // reusing pipeline with predicate
+        result = Pipeline.from(source).skipWhile(
+                n -> {
+
+                    return n <= 0;
+                })
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(result);
+        assertEquals(Integer.valueOf(37), result[0]);
+        assertEquals(4, result.length);
+        assertArrayEquals(result, new Integer[]{37, Integer.MAX_VALUE, 0, 3});
 
     }
 
