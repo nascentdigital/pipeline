@@ -13,33 +13,58 @@ public class TakeWhileTest extends PipelineTest {
     // region null source
 
     @Test
-    public void NullSource_shouldThrow() {
+    public void NullSource_shouldReturnEmptyArray() {
 
         // define source
-        String[] source = new String[]{null};
-
-        // predict exception
-        exception.expect(NullPointerException.class);
-
-        // assert
-        assertEquals(source.length, 1);
+        String[] source = null;
 
         // use pipeline with predicate
-        Pipeline result = Pipeline.from(source).takeWhile(
-                n -> {
+        String[] result = Pipeline.from(source)
+                .takeWhile(
+                        n -> {
 
-                    return n.equals("");
-                }
-        );
+                            return n.equals("");
+                        }
+                )
+                .toArray(String.class);
 
+        // assert
+        assertNotNull(result);
+        assertEquals(0, result.length);
     }
 
     // endregion
 
+
+    // region null-containing source
+
+    @Test
+    public void NullContainingSource_shouldThrow() {
+
+        // define source
+        String[] source = new String[]{null};
+
+        // expect exception
+        exception.expect(NullPointerException.class);
+
+        // use pipeline with predicate
+        String[] result = Pipeline.from(source)
+                .takeWhile(
+                        n -> {
+
+                            return n.equals("");
+                        }
+                )
+                .toArray(String.class);
+    }
+
+    // endregion
+
+
     // region empty source
 
     @Test
-    public void emptySource_shouldReturnNone() {
+    public void emptySource_shouldReturnEmpty() {
 
         // create empty array
         final Integer[] source = new Integer[0];
@@ -61,6 +86,7 @@ public class TakeWhileTest extends PipelineTest {
 
     // endregion
 
+
     // region singleton source
 
     @Test
@@ -74,12 +100,10 @@ public class TakeWhileTest extends PipelineTest {
         // use pipeline
         String[] array = Pipeline.from(source)
                 .takeWhile(
-                        n ->
-                        {
+                        n -> {
 
                             return n.equals("test");
                         }
-
                 )
                 .toArray(String.class);
 
@@ -90,12 +114,37 @@ public class TakeWhileTest extends PipelineTest {
         assertNotSame(source, array);
     }
 
+    @Test
+    public void singletonSource_shouldReturnEmtpy_whenPredicateIsFalse() {
+
+        // create singleton array
+        final String[] source = new String[]{
+                "test"
+        };
+
+        // use pipeline
+        String[] result = Pipeline.from(source)
+                .takeWhile(
+                        n -> {
+
+                            return n.equals("not test");
+                        }
+                )
+                .toArray(String.class);
+
+        // assert
+        assertNotNull(result);
+        assertEquals(0, result.length);
+        assertArrayEquals(new String[]{}, result);
+    }
+
     // endregion
+
 
     // region many source
 
     @Test
-    public void manySource_shouldSkipOverNone_whenPredicateIsTRUE() {
+    public void manySource_shouldTakeAll_whenPredicateIsTRUE() {
 
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
@@ -121,9 +170,8 @@ public class TakeWhileTest extends PipelineTest {
 
     }
 
-
     @Test
-    public void manySource_shouldSkipOverAll_whenPredicateFALSE() {
+    public void manySource_shouldTakeNone_whenPredicateFALSE() {
 
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
@@ -145,25 +193,24 @@ public class TakeWhileTest extends PipelineTest {
 
     //Todo: give method better name
     @Test
-    public void manySource_shouldReturnSome_forNormalPredicate() {
+    public void manySource_shouldReturnSome_forNonEdgeCasePredicate() {
 
         // define source
         Integer[] source = new Integer[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE, 0, 3
         };
 
         // use pipeline with predicate
-        Integer[] result = Pipeline.from(source).takeWhile(
+        Integer[] array = Pipeline.from(source).takeWhile(
                 n -> {
 
-                    return n <= 0;
-                }).toArray(Integer.class);
+                    return n == 0;
+                })
+                .toArray(Integer.class);
 
         // assert
-        assertEquals(result[0], Integer.valueOf(0));
-        assertNotNull(result);
-        assertEquals(3, result.length);
-        assertArrayEquals(result, new Integer[]{0, Integer.MIN_VALUE, 0});
-
+        assertNotNull(array);
+        assertEquals(1, array.length);
+        assertArrayEquals(array, new Integer[]{0});
     }
 
     // endregion

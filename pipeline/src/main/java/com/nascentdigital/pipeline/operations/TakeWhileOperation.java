@@ -4,7 +4,7 @@ import com.nascentdigital.pipeline.PipelineOperation;
 import com.nascentdigital.pipeline.Predicate;
 
 
-public class SkipWhileOperation<TElement> implements PipelineOperation<TElement> {
+public class TakeWhileOperation<TElement> implements PipelineOperation<TElement> {
 
     // region instance variables
 
@@ -16,7 +16,7 @@ public class SkipWhileOperation<TElement> implements PipelineOperation<TElement>
 
     // region constructors
 
-    public SkipWhileOperation(Iterable<TElement> source, Predicate<TElement> predicate) {
+    public TakeWhileOperation(Iterable<TElement> source, Predicate<TElement> predicate) {
         _source = source;
         _predicate = predicate;
     }
@@ -39,56 +39,34 @@ public class SkipWhileOperation<TElement> implements PipelineOperation<TElement>
     private class Iterator implements java.util.Iterator<TElement> {
 
         private final java.util.Iterator<TElement> _input = _source.iterator();
-        private TElement _firstElement;
-        private boolean _first;
+        private TElement _nextElement;
 
-        Iterator() {
-            while (_input.hasNext()) {
+        @Override
+        public boolean hasNext() {
+
+            if (_input.hasNext()) {
 
                 // get the element
                 TElement element = _input.next();
 
-                // stop if predicate fails
+                // mark as done if predicate fails
                 if (!_predicate.evaluate(element)) {
-
-                    // capture first
-                    _firstElement = element;
-                    _first = true;
-
-                    // stop processing
-                    break;
+                    return false;
+                }else {
+                    _nextElement = element;
+                    return true;
                 }
+            }else
+            {
+                return false;
             }
-        }
-
-        @Override
-        public boolean hasNext() {
-            return _first
-                    || _input.hasNext();
         }
 
         @Override
         public TElement next() {
-
-            // return first, if any
-            final TElement element;
-            if (_first) {
-
-                // capture first
-                element = _firstElement;
-
-                // clear first
-                _firstElement = null;
-                _first = false;
-            }
-
-            // return next
-            else {
-                element = _input.next();
-            }
-
-            // return element
-            return  element;
+            TElement element = _nextElement;
+            _nextElement = null;
+            return element;
         }
 
         @Override

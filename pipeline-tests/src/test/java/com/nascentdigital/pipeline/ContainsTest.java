@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
@@ -12,6 +13,23 @@ public class ContainsTest extends PipelineTest {
     // region null source
     @Test
     public void contains_nullSource_shouldReturnFalse() {
+
+        // define source
+        Integer[] source = null;
+
+        // use pipeline
+        Boolean result = Pipeline.from(source).contains(null);
+
+        // assert
+        assertNotNull(result);
+        assertEquals(result, false);
+    }
+
+    //endregion
+
+    // region null source
+    @Test
+    public void contains_nullContainingSource_shouldReturnFalse() {
 
         // define source
         Integer[] source = new Integer[]{

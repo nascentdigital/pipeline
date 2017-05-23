@@ -2,7 +2,7 @@ package com.nascentdigital.pipeline;
 
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -306,7 +306,7 @@ public class SkipTest extends PipelineTest {
     // region reused source
 
     @Test
-    public void reusedSource_shouldWork() {
+    public void reusedSource_shouldReturnDifferent_whenChanged() {
 
         // create array
         final Integer[] source = new Integer[] {
@@ -317,29 +317,30 @@ public class SkipTest extends PipelineTest {
                 12
         };
 
-        // use pipeline (and cache it)
-        Pipeline<Integer> pipeline = Pipeline.from(source);
-        int skipSize = 2;
-        Integer[] array = pipeline.skip(skipSize)
-                .toArray(Integer.class);
+        // create pipeline
+        Pipeline<Integer> pipeline = Pipeline.from(source)
+                .skip(-3);
+
+        // use pipeline
+        Integer[] array = pipeline.toArray(Integer.class);
 
         // assert
         assertNotNull(array);
-        assertEquals(source.length - skipSize, array.length);
-        assertArrayEquals(Arrays.copyOfRange(source, skipSize, source.length), array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
 
-        // change source
-        source[source.length - 1] = 13;
+        // modify source
+        source[source.length - 1] = -100;
 
-        // use pipeline agains
-        skipSize = 3;
-        array = pipeline.skip(skipSize)
-                .toArray(Integer.class);
+        // reuse pipeline
+        array = pipeline.toArray(Integer.class);
 
         // assert
         assertNotNull(array);
-        assertEquals(source.length - skipSize, array.length);
-        assertArrayEquals(Arrays.copyOfRange(source, skipSize, source.length), array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
     }
 
     // endregion

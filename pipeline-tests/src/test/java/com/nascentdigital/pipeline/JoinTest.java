@@ -38,12 +38,12 @@ public class JoinTest extends PipelineTest {
         List<String> colorsList = new ArrayList<>();
         colorsList.add(null);
 
-        // predict exception
-        exception.expect(NullPointerException.class);
-
         // use pipeline
         String result = Pipeline.from(colorsList)
                 .join(".");
+
+        // assert
+        assertEquals("", result);
 
     }
 
@@ -121,7 +121,7 @@ public class JoinTest extends PipelineTest {
     }
 
     @Test
-    public void manySourceContainingNull_shouldThrow() {
+    public void manySourceContainingNull_shouldNotThrow() {
 
         // copy original values
         final String[] colors = {
@@ -131,12 +131,12 @@ public class JoinTest extends PipelineTest {
                 "green"
         };
 
-        // predict exception
-        exception.expect(NullPointerException.class);
-
         // use pipeline
         String result = Pipeline.from(colors)
                 .join("~");
+
+        // assert
+        assertEquals("red~blue~~green", result);
 
     }
 

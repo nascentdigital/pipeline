@@ -1,7 +1,6 @@
 package com.nascentdigital.pipeline.operations;
 
 import com.nascentdigital.pipeline.PipelineOperation;
-import com.nascentdigital.pipeline.Predicate;
 
 
 public class SkipOperation<TElement> implements PipelineOperation<TElement> {
@@ -39,34 +38,23 @@ public class SkipOperation<TElement> implements PipelineOperation<TElement> {
     private class Iterator implements java.util.Iterator<TElement> {
 
         private final java.util.Iterator<TElement> _input = _source.iterator();
-        private boolean _skipped;
 
+
+        Iterator() {
+            int offset = 0;
+            while (offset++ < _count
+                    && _input.hasNext()) {
+                _input.next();
+            }
+        }
 
         @Override
         public boolean hasNext() {
-
-            // skip on first invocation
-            if (!_skipped) {
-
-                // mark skipped
-                _skipped = true;
-
-                // flush out first "count" items from iterator, or stop if input is empty
-                int offset = 0;
-                while (offset++ < _count
-                        && _input.hasNext()) {
-                    _input.next();
-                }
-            }
-
-            // use underlying input
             return _input.hasNext();
         }
 
         @Override
-        public TElement next() {
-            return _input.next();
-        }
+        public TElement next() { return _input.next(); }
 
         @Override
         public void remove() {
