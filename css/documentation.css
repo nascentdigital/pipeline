@@ -5,6 +5,7 @@ p{
 	line-height: 180%;
 }
 
+
 .hamburger_button{
 	color: white;
 }
@@ -74,8 +75,18 @@ p{
 	.vertical_menu li{
 		text-align: left;
 		cursor: pointer;
-		margin-top: 2rem; 
+		margin-top: 1.5rem; 
 		display: block;
+	}
+
+	.submenu{
+		font-size: 70%;
+		font-weight: 500;
+		padding-left: 1.2rem;
+		display: none;
+	}
+	.submenu li{
+		margin-top: 0.8rem;
 	}
 
 	.vertical_menu a{

@@ -28,18 +28,19 @@ $(document).ready(function(){
 
 			$(".inner").append('<div id="' +idName+'"</div>');
 			var inner_data = '<h1 class = "dark_text_color ' + k + '_content "> ' + k + '</h1>';
-			var side_menu = '<li  id = ' + k + '>' + k + '</li>'
+			var side_menu = '<li  class = "groupings" id = ' + k + '>' + k + '</li>'
 			$(groupSection).append(inner_data);
 			$(groupSection).append("<hr>");
 			$(".vertical_menu_list").append(side_menu);
 			$(".mobile_menu_list").append(side_menu);
+			$('#'+k).append('<ul class = "submenu" id="'+ k + '_sub"></ul>');
 
+			//adding information for each method
 			$.each(v,function(key,value){
 				var name_data = "<h2><b>" + value.MethodName + "</b></h2>";
 				$(groupSection).append(name_data);
-
+				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' + value.MethodName + '</li>');
 				var paramDescription = [];
-
 				if(typeof value.Comment != 'undefined'){
 					var comment = value.Comment.replace(new RegExp('\\*','g'),'');
 					var arr = comment.split("@param");
@@ -48,7 +49,6 @@ $(document).ready(function(){
 							var comment_data = "<p>" + HTMLEncode(arr[c]) + "</p>";
 							$(groupSection).append(comment_data);
 					}
-					
 				}
 
 				$(groupSection).append("<h3>Parameters: </h3>");
@@ -73,11 +73,21 @@ $(document).ready(function(){
 				PR.prettyPrint();
 				$(groupSection).append(sample_code);
 			});
+
+			
 		});
 
-		$(".vertical_menu li").click(function(){
+		$(".submenu li").click(function(){
 			var id = this.id;
+			console.log(id);
+			$('html,body').animate({
+				scrollTop: $('#' + id + '_content').offset().top -88
+			},'fast');
+			
+		});
 
+		$(".vertical_menu_list li").click(function(){
+			var id = this.id;
 			$('html,body').animate({
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'fast');
@@ -95,6 +105,7 @@ $(document).ready(function(){
 			},'slow');
 			$('.mobile_menu').toggleClass('expanded');
 			$('.mobile_menu').css('display','none');
+
 		});
 
 		$(window).scroll(function(){
@@ -107,9 +118,11 @@ $(document).ready(function(){
 				if( scrollOffset >=  elementOffset - margin_top &&  scrollOffset <= elementOffset+$('#'+this.id).height()-margin_top){
 					$('#'+menu_id).css('font-weight','800');
 					$('#'+menu_id).css('font-size','120%');
+					$('#'+menu_id + ' .submenu').css('display','block');
 				}else{
 					$('#'+menu_id).css('font-weight','400');
 					$('#'+menu_id).css('font-size','100%');
+					$('#'+menu_id + ' .submenu').css('display','none');
 				}
 			});
 
