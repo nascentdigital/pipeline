@@ -28,18 +28,19 @@ $(document).ready(function(){
 
 			$(".inner").append('<div id="' +idName+'"</div>');
 			var inner_data = '<h1 class = "dark_text_color ' + k + '_content "> ' + k + '</h1>';
-			var side_menu = '<li  class = "groupings" id = ' + k + '>' + k + '</li>'
+			var side_menu = '<li id = ' + k + '>' + k + '</li>'
 			$(groupSection).append(inner_data);
 			$(groupSection).append("<hr>");
 			$(".vertical_menu_list").append(side_menu);
 			$(".mobile_menu_list").append(side_menu);
 			$('#'+k).append('<ul class = "submenu" id="'+ k + '_sub"></ul>');
-
+			$('.mobile_menu_list #'+k).append('<ul class = "mobile_submenu" id="'+ k + '_sub"></ul>');
 			//adding information for each method
 			$.each(v,function(key,value){
-				var name_data = "<h2><b>" + value.MethodName + "</b></h2>";
+				var name_data = '<h2 id="' + HTMLEncode(value.MethodKey)+'_content">' + value.MethodName + "</h2>";
 				$(groupSection).append(name_data);
-				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' + value.MethodName + '</li>');
+				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
+				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
 				var paramDescription = [];
 				if(typeof value.Comment != 'undefined'){
 					var comment = value.Comment.replace(new RegExp('\\*','g'),'');
@@ -79,34 +80,43 @@ $(document).ready(function(){
 
 		$(".submenu li").click(function(){
 			var id = this.id;
-			console.log(id);
 			$('html,body').animate({
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'fast');
 			
 		});
 
-		$(".vertical_menu_list li").click(function(){
+		$(".vertical_menu_list li").click(function(e){
+			if(e.target !== this){
+				return;
+			}
 			var id = this.id;
 			$('html,body').animate({
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'fast');
 			
 		});
-
-
 
 		//menu animations on the mobile view
 		$(".mobile_menu li").click(function(){
 			var id = this.id;
-			$('.inner').css('position','static');
-			$('html,body').animate({
-				scrollTop: $('#' + id + '_content').offset().top -88
-			},'slow');
-			$('.mobile_menu').toggleClass('expanded');
-			$('.mobile_menu').css('display','none');
-
+			$('.mobile_submenu').css('display','none');
+			$('#' + id +' .mobile_submenu').css('display','block');
 		});
+
+		$(".mobile_submenu li").click(function(e){
+			var id = this.id;
+				if(e.target !== this){
+					return;
+				}
+				console.log('#' + id + '_content');
+				$('.inner').css('position','static');
+				$('html,body').animate({
+					scrollTop: $('#' + id + '_content').offset().top -88
+				},'slow');
+				$('.mobile_menu').toggleClass('expanded');
+				$('.mobile_menu').css('display','none');
+			});
 
 		$(window).scroll(function(){
 			var margin_top = 100;
@@ -144,16 +154,8 @@ $(document).ready(function(){
 	$('.hamburger_button').click(function(){
 		$('.mobile_menu').slideToggle('slow', function(){
 			$('.mobile_menu').toggleClass('expanded');
+			$('.mobile_submenu').css('display','none');
 		});
 	});
-			
-
-	$('.inner').click(function(){
-		if($('.mobile_menu').hasClass('expanded')){
-			$('.mobile_menu').removeClass('expanded');
-			$('.mobile_menu').css('display','none');
-		}
-	});
-
 
 });
