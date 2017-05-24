@@ -6,19 +6,30 @@ package com.nascentdigital.pipeline.annotations;
 
 public enum GroupType {
 
-    Undefined,
-    Creation,
-    Concatenation,
-    Projection,
-    Filtering,
-    PartitionOperators,
-    Aggregation,
-    Grouping,
-    Quantification,
-    ElementOperators,
-    ConversionOperations,
-    Repetition,
-    SetOperations,
-    InterfaceIterator
+    Undefined("Undefined"),
+    Creation("Creation"),
+    Concatenation("Concatenation"),
+    Projection("Projection"),
+    Filtering("Filtering"),
+    PartitionOperators("Partition Operators"),
+    Aggregation("Aggregation"),
+    Grouping("Grouping"),
+    Quantification("Quantification"),
+    ElementOperators("Element Operators"),
+    ConversionOperations("Converstion Operations"),
+    Repetition("Repetition"),
+    Reduce("Reduce"),
+    Sum("Sum"),
+    Min("Min"),
+    Max("Max"),
+    SetOperations("Set Operations"),
+    InterfaceIterator("Interface Iterator");
+
+    public final String name;
+
+    private GroupType(String name){
+        this.name = name;
+    }
+
 
 }

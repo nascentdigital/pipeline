@@ -15,6 +15,7 @@ import com.nascentdigital.pipeline.operations.ProjectionOperation;
 import com.nascentdigital.pipeline.operations.SkipOperation;
 import com.nascentdigital.pipeline.operations.SkipWhileOperation;
 import com.nascentdigital.pipeline.operations.TakeOperation;
+import com.nascentdigital.pipeline.operations.TakeWhileOperation;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import java.util.Map;
  * @param <TElement> The type of elements that stream from the pipeline.
  */
 public final class Pipeline<TElement> implements Iterable<TElement> {
-
 
     // region instance variables
 
@@ -236,7 +236,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new SkipOperation<>(this, count));
     }
 
-
     /**
      * Bypasses elements in a sequence as long as a specified condition is <c>true</c> and then
      * returns the remaining elements.
@@ -247,7 +246,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     public Pipeline<TElement> skipWhile(Predicate<TElement> predicate) {
         return new Pipeline<>(new SkipWhileOperation<>(this, predicate));
     }
-
 
     /**
      * Returns a specified number of contiguous elements from the start of a sequence.
@@ -262,7 +260,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new TakeOperation<>(this, count));
     }
 
-
     /**
      * Returns all elements in a sequence, for which the predicate is TRUE
      *
@@ -270,24 +267,13 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      */
     @Group(type = GroupType.PartitionOperators)
     public Pipeline<TElement> takeWhile(Predicate<TElement> predicate) {
-
-        ArrayList<TElement> resultArray = new ArrayList<>();
-
-        for (TElement element : this) {
-            if (predicate.evaluate(element)) {
-                resultArray.add(element);
-            }
-
-        }
-        return Pipeline.from(resultArray);
-
+        return new Pipeline<>(new TakeWhileOperation<>(this, predicate));
     }
 
     // endregion
 
 
     // region aggregation
-
 
     // region reduce
 
@@ -301,6 +287,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      * @param <TOutput>  The type of the value passed in/out of the aggregator, also representing
      *                   the final result of the <c>reduce()</c> method.
      */
+    @Group(type = GroupType.Reduce)
     public <TOutput> TOutput reduce(Aggregator<TElement, TOutput> aggregator, TOutput initial) {
 
         // start aggregate as null
@@ -314,6 +301,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         // return aggregate
         return aggregate;
     }
+
+    // endregion
+
+    // region count
 
     @Group(type = GroupType.Aggregation)
     public int count() {
@@ -333,6 +324,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param predicate  A predicate deciding what gets matched.
      */
+    @Group(type = GroupType.Aggregation)
     public int count(Predicate<TElement> predicate) {
 
         // evaluate all items matching a predicate
@@ -356,6 +348,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the bytes being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public byte sumBytes(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -380,6 +373,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the shorts being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public short sumShorts(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -404,6 +398,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the integers being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public int sumInts(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -428,6 +423,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the longs being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public long sumLongs(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -452,6 +448,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the floats being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public float sumFloats(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -476,6 +473,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector A selector that targets the doubles being evaluated.
      */
+    @Group (type = GroupType.Sum)
     public double sumDoubles(Selector<TElement, Number> selector) {
 
         // iterate through all values, adding as we go
@@ -504,6 +502,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Byte minByte(Selector<TElement, Byte> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -534,6 +533,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Short minShort(Selector<TElement, Short> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -564,6 +564,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Integer minInteger(Selector<TElement, Integer> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -594,6 +595,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Long minLong(Selector<TElement, Long> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -624,6 +626,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Float minFloat(Selector<TElement, Float> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -654,6 +657,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Min)
     public Double minDouble(Selector<TElement, Double> selector) {
 
         // iterate through all values, looking for the smallest value
@@ -688,6 +692,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Byte maxByte(Selector<TElement, Byte> selector) {
 
         // iterate through all values, looking for the largest value
@@ -718,6 +723,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Short maxShort(Selector<TElement, Short> selector) {
 
         // iterate through all values, looking for the largest value
@@ -748,6 +754,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Integer maxInteger(Selector<TElement, Integer> selector) {
 
         // iterate through all values, looking for the largest value
@@ -778,6 +785,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Long maxLong(Selector<TElement, Long> selector) {
 
         // iterate through all values, looking for the largest value
@@ -808,6 +816,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Float maxFloat(Selector<TElement, Float> selector) {
 
         // iterate through all values, looking for the largest value
@@ -838,6 +847,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
      *
      * @param selector Returns a numeric value for each element.
      */
+    @Group (type = GroupType.Max)
     public Double maxDouble(Selector<TElement, Double> selector) {
 
         // iterate through all values, looking for the largest value
@@ -864,7 +874,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     // endregion
-
 
     // endregion
 
@@ -1187,6 +1196,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
+
     // region repetition
 
     /**
@@ -1209,6 +1219,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     //endregion
 
+
     // region Iterable<TElement> interface
 
     @Override
@@ -1218,6 +1229,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     // endregion
+
 
     // region set operations
 
@@ -1298,7 +1310,5 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     // endregion
-
-
 }
 

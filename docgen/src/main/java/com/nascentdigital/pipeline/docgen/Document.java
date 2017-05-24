@@ -18,5 +18,7 @@ import java.util.Map;
 public class Document {
     public List<DocumentGroup> groups =  new ArrayList<DocumentGroup>();
 
-
+    public static void main (String[] args){
+        //Integer[] arr =
+    }
 }

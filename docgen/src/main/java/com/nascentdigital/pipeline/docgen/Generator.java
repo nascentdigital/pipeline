@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.nascentdigital.pipeline.Grouping;
 import com.nascentdigital.pipeline.Pipeline;
 import com.nascentdigital.pipeline.annotations.Group;
+import com.nascentdigital.pipeline.annotations.GroupType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ public class Generator {
                 str +="\n";
             }
         }catch(Throwable ex){
+            System.err.println("File with file path: " + filePath + " is missing.");
         }
         return str;
     }
@@ -100,7 +102,7 @@ public class Generator {
         for (Grouping<Group, Method> methodGroup : methodGroups) {
 
             JSONArray methodArray = new JSONArray();
-            String annoType = methodGroup.iterator().next().getAnnotation(Group.class).type().toString();
+            GroupType annoType = methodGroup.iterator().next().getAnnotation(Group.class).type();
 
             // add all methods to the group
             JSONObject methodObj;
@@ -119,9 +121,20 @@ public class Generator {
                     // get the actual method declaration related to the method
                     MethodDeclaration methodMeta = methodMetadataMap.get(methodKey);
 
+                    String key= Pipeline.from(methodKey.split(",| |<|>|\\[\\]|:")).join("");
+                   // methodObj.put("Key",methodKey);
+                    methodObj.put("MethodKey", key);
                     methodObj.put("MethodName", methodMeta.getName());
 
                     methodObj.put("ReturnType", methodMeta.getType());
+
+                    String name = method.getName() + "(" + Pipeline.from(method.getParameterTypes())
+                            .map(p->{
+                                String str = p.getTypeName().replace("java.lang.","")
+                                        .replace("com.nascentdigital.pipeline.","");
+                                return str;
+                            }).join(",") +")";
+                    methodObj.put("Key",name);
 
                     String comment = "";
 
@@ -146,17 +159,17 @@ public class Generator {
                         paramArray.put(paramObj);
                     }
 
-                    String sample = readSample(annoType+"/"+methodKey+".md");
+                    String sample = readSample(annoType.toString()+"/"+methodKey+".md");
                     methodObj.put("Example",sample);
                     methodObj.put("Parameters",(Object)paramArray);
                     methodArray.put(methodObj);
-                    obj.put(annoType, methodArray);
+                    obj.put(annoType.name, methodArray);
                 }
                 catch (Throwable ex){}
             }
         }
 
-       System.out.println(obj.toString(2));
+     System.out.println(obj.toString(2));
 
     }
 }
