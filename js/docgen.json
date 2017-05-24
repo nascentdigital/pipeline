@@ -1,13 +1,14 @@
 {
+  "Interface Iterator": [{
+    "Comment": "",
+    "Parameters": [],
+    "Example": "List<Integer> lst = Arrays.asList(2,4,5,8);\nIterator iterator = Pipeline.from(lst).iterator();\nwhile (iterator.hasNext()){\n    System.out.print(iterator.next());\n}\n//output is 2458",
+    "MethodName": "iterator",
+    "ReturnType": "Iterator<TElement>",
+    "Key": "iterator()",
+    "MethodKey": "iterator"
+  }],
   "Filtering": [
-    {
-      "Comment": "Returns distinct elements from a sequence by using the default equality comparer to compare\nvalues.",
-      "Parameters": [],
-      "Example": "Integer [] arr = {1,2,5,1,3,2};\narr = Pipeline.from(arr)\n    .distinct()\n    .toArray(Integer.class);\n//arr is now {1,2,5,3}",
-      "MethodName": "distinct",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "distinct"
-    },
     {
       "Comment": "Filters a sequence of values based on a predicate.",
       "Parameters": [{
@@ -17,7 +18,43 @@
       "Example": "Integer [] arr = {1,2,3,4,5};\narr = Pipeline.from(arr)\n        .where(n->n%2!=0)\n        .toArray(Integer.class);\n//returns all the odd numbers in arr\n//arr is {1,3,5}",
       "MethodName": "where",
       "ReturnType": "Pipeline<TElement>",
+      "Key": "where(Predicate)",
       "MethodKey": "wherePredicateTElement"
+    },
+    {
+      "Comment": "Returns distinct elements from a sequence by using the default equality comparer to compare\nvalues.",
+      "Parameters": [],
+      "Example": "Integer [] arr = {1,2,5,1,3,2};\narr = Pipeline.from(arr)\n    .distinct()\n    .toArray(Integer.class);\n//arr is now {1,2,5,3}",
+      "MethodName": "distinct",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "distinct()",
+      "MethodKey": "distinct"
+    }
+  ],
+  "Creation": [
+    {
+      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the\n     * initial sequence source.\n     *\n     * @param source     An iterable instance whose iterators will be used as a sequence source.\n     * @param <TElement> The type of elements emitted from the iterator.\n     */\n",
+      "Parameters": [{
+        "Type": "Iterable<TElement>",
+        "Name": "source"
+      }],
+      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> result = Pipeline.from(lst1)\n                .toList();\n//result is {0,1,2,3,4}",
+      "MethodName": "from",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "from(Iterable)",
+      "MethodKey": "fromIterableTElement"
+    },
+    {
+      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified array as the initial sequence source.\n     *\n     * @param source     An array to be used as a source.\n     * @param <TElement> The type of the elements in the array.\n     */\n",
+      "Parameters": [{
+        "Type": "TElement[]",
+        "Name": "source"
+      }],
+      "Example": "Integer[] arr = { 0, 1, 2, 3, 4, 5 };\nInteger[] result = Pipeline.from(arr)\n           .toArray(Integer.class);\n//result is {0,1,2,3,4,5}",
+      "MethodName": "from",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "from(Object[])",
+      "MethodKey": "fromTElement"
     }
   ],
   "Quantification": [
@@ -30,6 +67,7 @@
       "Example": "Integer[] arr = {1,2,3};\nboolean result = Pipeline.from(arr)\n        .contains(new Integer(2));\n//result is true",
       "MethodName": "contains",
       "ReturnType": "boolean",
+      "Key": "contains(Object)",
       "MethodKey": "containsTElement"
     },
     {
@@ -41,15 +79,8 @@
       "Example": "Integer[] arr = {2,4,6,8};\nboolean result = Pipeline.from(arr)\n        .all(n->n%2==0);\n//result is true",
       "MethodName": "all",
       "ReturnType": "boolean",
+      "Key": "all(Predicate)",
       "MethodKey": "allPredicateTElement"
-    },
-    {
-      "Comment": "Determines whether a sequence contains any elements.",
-      "Parameters": [],
-      "Example": "Integer[] arr = {2};\nboolean result = Pipeline.from(arr)\n        .any();\n//result is true",
-      "MethodName": "any",
-      "ReturnType": "boolean",
-      "MethodKey": "any"
     },
     {
       "Comment": "Determines whether any element of a sequence satisfies a condition.",
@@ -60,125 +91,91 @@
       "Example": "Integer[] arr = {2,4,5,6};\nboolean result = Pipeline.from(arr)\n        .any(n->n%2!=0);\n//result is true",
       "MethodName": "any",
       "ReturnType": "boolean",
+      "Key": "any(Predicate)",
       "MethodKey": "anyPredicateTElement"
-    }
-  ],
-  "Creation": [
-    {
-      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified array as the initial sequence source.\n     *\n     * @param source     An array to be used as a source.\n     * @param <TElement> The type of the elements in the array.\n     */\n",
-      "Parameters": [{
-        "Type": "TElement[]",
-        "Name": "source"
-      }],
-      "Example": "Integer[] arr = { 0, 1, 2, 3, 4, 5 };\nInteger[] result = Pipeline.from(arr)\n           .toArray(Integer.class);\n//result is {0,1,2,3,4,5}",
-      "MethodName": "from",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "fromTElement"
     },
     {
-      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the\n     * initial sequence source.\n     *\n     * @param source     An iterable instance whose iterators will be used as a sequence source.\n     * @param <TElement> The type of elements emitted from the iterator.\n     */\n",
-      "Parameters": [{
-        "Type": "Iterable<TElement>",
-        "Name": "source"
-      }],
-      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> result = Pipeline.from(lst1)\n                .toList();\n//result is {0,1,2,3,4}",
-      "MethodName": "from",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "fromIterableTElement"
-    }
-  ],
-  "InterfaceIterator": [{
-    "Comment": "",
-    "Parameters": [],
-    "Example": "List<Integer> lst = Arrays.asList(2,4,5,8);\nIterator iterator = Pipeline.from(lst).iterator();\nwhile (iterator.hasNext()){\n    System.out.print(iterator.next());\n}\n//output is 2458",
-    "MethodName": "iterator",
-    "ReturnType": "Iterator<TElement>",
-    "MethodKey": "iterator"
-  }],
-  "ElementOperators": [
-    {
-      "Comment": "/**\n     * Returns the first element of a sequence that satisfies a specified condition, or throws a\n     * {@link NoElementFoundException} if no matching element is found.\n     *\n     * @param predicate A function to test each element for a condition.\n     * @return The first element in the sequence that passes the test in <i>predicate<\/i>.\n     * @throws NoElementFoundException No element satisfies the condition in <i>predicate<\/i>,\n     *                                 or the pipeline sequence is empty.\n     */\n",
-      "Parameters": [{
-        "Type": "Predicate<TElement>",
-        "Name": "predicate"
-      }],
-      "Example": "Integer[] arr = {2,4,5,6,7};\nInteger result = Pipeline.from(arr)\n        .first(n -> n%2 !=0);\n//result is 5",
-      "MethodName": "first",
-      "ReturnType": "TElement",
-      "MethodKey": "firstPredicateTElement"
-    },
-    {
-      "Comment": "Returns the first element of a sequence.",
+      "Comment": "Determines whether a sequence contains any elements.",
       "Parameters": [],
-      "Example": "Integer[] arr = {2,4,5,6};\nInteger result = Pipeline.from(arr)\n        .first();\n//result is 2",
-      "MethodName": "first",
-      "ReturnType": "TElement",
-      "MethodKey": "first"
-    },
-    {
-      "Comment": "Returns the first element of a sequence, or a default value if the sequence contains no\nelements.",
-      "Parameters": [],
-      "Example": "Integer[] arr1 = {2,4,5,6};\nInteger result1 = Pipeline.from(arr1)\n        .firstOrDefault();\n        \nInteger[] arr2 = {};\nInteger result2 = Pipeline.from(arr2)\n        .firstOrDefault();\n//result1 is 2 and result2 is null",
-      "MethodName": "firstOrDefault",
-      "ReturnType": "TElement",
-      "MethodKey": "firstOrDefault"
-    },
-    {
-      "Comment": "Returns the first element of a sequence that satisfies a specified condition or a default\nvalue if no such element is found.",
-      "Parameters": [{
-        "Type": "Predicate<TElement>",
-        "Name": "predicate"
-      }],
-      "Example": "Integer[] arr1 = {2,4,5,6};\nInteger result1 = Pipeline.from(arr1)\n        .firstOrDefault(n -> n%2!=0);\n\nInteger[] arr2 = {2,4,6,8};\nInteger result2 = Pipeline.from(arr2)\n        .firstOrDefault(n -> n%2!=0);\n//result1 is 5 and result2 is null        ",
-      "MethodName": "firstOrDefault",
-      "ReturnType": "TElement",
-      "MethodKey": "firstOrDefaultPredicateTElement"
+      "Example": "Integer[] arr = {2};\nboolean result = Pipeline.from(arr)\n        .any();\n//result is true",
+      "MethodName": "any",
+      "ReturnType": "boolean",
+      "Key": "any()",
+      "MethodKey": "any"
     }
   ],
-  "PartitionOperators": [
+  "Max": [
     {
-      "Comment": "Bypasses a specified number of elements in a sequence and then returns the remaining\nelements.\n<p>\n<p>\nIf count is less than or equal to zero, all elements of source are yielded.",
+      "Comment": "Returns the maximum value in a sequence of values.",
       "Parameters": [{
-        "Type": "int",
-        "Name": "count"
+        "Type": "Selector<TElement, Byte>",
+        "Name": "selector"
       }],
-      "Example": "Integer[] arr = {4,1,5,8,2};\nInteger[] result = Pipeline.from(arr)\n        .skip(3)\n        .toArray(Integer.class);\n//result is {8,2}",
-      "MethodName": "skip",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "skipint"
+      "Example": "null",
+      "MethodName": "maxByte",
+      "ReturnType": "Byte",
+      "Key": "maxByte(Selector)",
+      "MethodKey": "maxByteSelectorTElementByte"
     },
     {
-      "Comment": "/**\n     * Returns a specified number of contiguous elements from the start of a sequence.\n     * <p>\n     * If count is less than or equal to zero, source is not enumerated and an empty\n     * {@link Pipeline} is returned.\n     *\n     * @param count The maximum number of elements to return.\n     */\n",
+      "Comment": "Returns the maximum value in a sequence of values.",
       "Parameters": [{
-        "Type": "int",
-        "Name": "count"
+        "Type": "Selector<TElement, Short>",
+        "Name": "selector"
       }],
-      "Example": "Integer[] arr = {4,1,5,8,2};\nInteger[] result = Pipeline.from(arr)\n        .take(3)\n        .toArray(Integer.class);\n//result is {4,1,5}",
-      "MethodName": "take",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "takeint"
+      "Example": "null",
+      "MethodName": "maxShort",
+      "ReturnType": "Short",
+      "Key": "maxShort(Selector)",
+      "MethodKey": "maxShortSelectorTElementShort"
     },
     {
-      "Comment": "Skips all elements in an array for which the predicate is false and\nreturns all elements in a sequence, for which the predicate is FALSE",
+      "Comment": "Returns the maximum value in a sequence of values.",
       "Parameters": [{
-        "Type": "Predicate<TElement>",
-        "Name": "predicate"
+        "Type": "Selector<TElement, Integer>",
+        "Name": "selector"
       }],
-      "Example": "Integer[] arr = {1,2,3,4,5};\nInteger[] result = Pipeline.from(arr)\n        //skip all the even numbers \n        .skipWhile(n -> n%2==0)\n        .toArray(Integer.class);\n//returns all the skipped elements\n//result is {1,3,5}",
-      "MethodName": "skipWhile",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "skipWhilePredicateTElement"
+      "Example": "null",
+      "MethodName": "maxInteger",
+      "ReturnType": "Integer",
+      "Key": "maxInteger(Selector)",
+      "MethodKey": "maxIntegerSelectorTElementInteger"
     },
     {
-      "Comment": "Returns all elements in a sequence, for which the predicate is TRUE",
+      "Comment": "Returns the maximum value in a sequence of values.",
       "Parameters": [{
-        "Type": "Predicate<TElement>",
-        "Name": "predicate"
+        "Type": "Selector<TElement, Long>",
+        "Name": "selector"
       }],
-      "Example": "Integer[] arr = {1,2,3,4,5};\nInteger[] result = Pipeline.from(arr)\n        .takeWhile(n -> n%2==0)\n        .toArray(Integer.class);\n//result is {2,4}",
-      "MethodName": "takeWhile",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "takeWhilePredicateTElement"
+      "Example": "null",
+      "MethodName": "maxLong",
+      "ReturnType": "Long",
+      "Key": "maxLong(Selector)",
+      "MethodKey": "maxLongSelectorTElementLong"
+    },
+    {
+      "Comment": "Returns the maximum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Float>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "maxFloat",
+      "ReturnType": "Float",
+      "Key": "maxFloat(Selector)",
+      "MethodKey": "maxFloatSelectorTElementFloat"
+    },
+    {
+      "Comment": "Returns the maximum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Double>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "maxDouble",
+      "ReturnType": "Double",
+      "Key": "maxDouble(Selector)",
+      "MethodKey": "maxDoubleSelectorTElementDouble"
     }
   ],
   "Projection": [
@@ -191,6 +188,7 @@
       "Example": "Integer [] arr = {1,2,3,4,5};\narr = Pipeline.from(arr)\n        .map(n->n*2)\n        .toArray(Integer.class);\n//arr is {2,4,6,8,10}",
       "MethodName": "map",
       "ReturnType": "Pipeline<TProjected>",
+      "Key": "map(Selector)",
       "MethodKey": "mapSelectorTElementTProjected"
     },
     {
@@ -202,96 +200,11 @@
       "Example": "List<List<Integer>> lst = Arrays.asList(Arrays.asList(1,2,3),Arrays.asList(4,5,6));\nList<Integer> result = Pipeline.from(lst)\n        .flatMap(n->Pipeline.from(n.subList(0,2)))\n        .toList();\n//creates a new list from the first two elements of each sublist\n//result is {1,2,4,5}",
       "MethodName": "flatMap",
       "ReturnType": "Pipeline<TProjected>",
+      "Key": "flatMap(Selector)",
       "MethodKey": "flatMapSelectorTElementIterableTProjected"
     }
   ],
-  "SetOperations": [
-    {
-      "Comment": "Reverses a sequence.",
-      "Parameters": [],
-      "Example": "List<Integer> lst = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(lst)\n        .reverse()\n        .toArray(Integer.class);\n//result is {8,5,4,2}",
-      "MethodName": "reverse",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "reverse"
-    },
-    {
-      "Comment": "Creates a union of the current sequence and another sequence in the pipeline.",
-      "Parameters": [{
-        "Type": "Iterable<TElement>",
-        "Name": "addition"
-      }],
-      "Example": "Integer[] arr1 = {1,2,3,4,5};\nList<Integer> lst2 = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(arr1)\n        .union(lst2)\n        .toArray(Integer.class);\n//result is {1,2,3,4,5,8}",
-      "MethodName": "union",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "unionIterableTElement"
-    },
-    {
-      "Comment": "Creates an intersection of the current sequence and another sequence in the pipeline.",
-      "Parameters": [{
-        "Type": "Iterable<TElement>",
-        "Name": "addition"
-      }],
-      "Example": "Integer[] arr1 = {1,2,3,4,5};\nList<Integer> lst2 = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(arr1)\n        .intersect(lst2)\n        .toArray(Integer.class);\n//result is {2,4,5}",
-      "MethodName": "intersect",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "intersectIterableTElement"
-    }
-  ],
-  "Grouping": [{
-    "Comment": "Groups the elements of a sequence according to a specified key selector function.",
-    "Parameters": [{
-      "Type": "Selector<TElement, TKey>",
-      "Name": "selector"
-    }],
-    "Example": "public class People{\n    public final String name;\n    public final int age;\n    \n    public People(String name, int age){\n        this.name = name;\n        this.age = age;\n    }\n}\n\nPeople[] lst = new People[] {\n        new People(\"John\", 29),\n        new People(\"Amy\", 30),\n        new People(\"Rick\", 29),\n        new People(\"Anna\", 28)};\n\nPipeline<Grouping<Integer, People>> result = Pipeline.from(lst)\n        .groupBy(p -> p.age);\n//result is {{28,[People(\"Anna\",28)]}\n//           {29,[People(\"Rick\",29),People(\"John\",29)]}\n//           {30,[People(\"Amy\",30)]}}",
-    "MethodName": "groupBy",
-    "ReturnType": "Pipeline<Grouping<TKey, TElement>>",
-    "MethodKey": "groupBySelectorTElementTKey"
-  }],
-  "Aggregation": [{
-    "Comment": "Returns the number of elements in a sequence.",
-    "Parameters": [],
-    "Example": "Integer[] arr = {4,1,5,8,2};\nint result = Pipeline.from(arr)\n        .count();\n//result is 5",
-    "MethodName": "count",
-    "ReturnType": "int",
-    "MethodKey": "count"
-  }],
-  "Concatenation": [
-    {
-      "Comment": "Concatenates another sequence into the pipeline.",
-      "Parameters": [{
-        "Type": "TElement[]",
-        "Name": "addition"
-      }],
-      "Example": "Integer[] arr1 = {0,1,2,3,4,5};\nInteger[] arr2 = {6,7,8};\nInterger[] result = Pipeline.from(arr1)\n        .concat(arr2)\n        .toArray(Integer.class);\n//result is {0,1,2,3,4,5,6,7,8}",
-      "MethodName": "concat",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "concatTElement"
-    },
-    {
-      "Comment": "Concatenates another sequence into the pipeline.",
-      "Parameters": [{
-        "Type": "Iterable<TElement>",
-        "Name": "addition"
-      }],
-      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> lst2 = Arrays.asList(5,6,7,8);\nList<Integer> result = Pipeline.from(lst1)\n               .concat(lst2)\n               .toList();\n//result is {0,1,2,3,4,5,6,7,8}",
-      "MethodName": "concat",
-      "ReturnType": "Pipeline<TElement>",
-      "MethodKey": "concatIterableTElement"
-    },
-    {
-      "Comment": "Joins the values into a string using the specified separator and the default\n`toString()` implementation for string elements.",
-      "Parameters": [{
-        "Type": "String",
-        "Name": "separator"
-      }],
-      "Example": "String [] arr = {\"a\", \"b\", \"c\"};\nString result = Pipeline.from(arr).join(\" \");\n//result becomes \"a b c\"",
-      "MethodName": "join",
-      "ReturnType": "String",
-      "MethodKey": "joinString"
-    }
-  ],
-  "ConversionOperations": [
+  "Converstion Operations": [
     {
       "Comment": "Converts the sequence into an array.",
       "Parameters": [{
@@ -301,6 +214,7 @@
       "Example": "List<Integer> lst = Arrays.asList(1,2,3,4,5);\nInteger[] result = Pipeline.from(lst)\n        .toArray(Integer.class);\n//result is an array of Integers with value {1,2,3,4,5}",
       "MethodName": "toArray",
       "ReturnType": "TElement[]",
+      "Key": "toArray(Class)",
       "MethodKey": "toArrayClassTElement"
     },
     {
@@ -312,7 +226,20 @@
       "Example": "Integer[] arr = {2,4,5,6};\nNumber[] result = Pipeline.from(arr1)\n        .cast(Number.class).toArray(Number.class);\n//result is an array of Numbers with value{2,4,5,6}",
       "MethodName": "cast",
       "ReturnType": "Pipeline<TDerived>",
+      "Key": "cast(Class)",
       "MethodKey": "castClassTDerived"
+    },
+    {
+      "Comment": "/**\n     * Creates a {@link Map} from the pipeline according to a specified key selector function.\n     *\n     * @param keySelector A function to extract a key from each element.\n     * @param <TKey>      The type of the key returned by <i>keySelector<\/i>.\n     * @throws DuplicateKeyException Thrown when the <i>keySelector<\/i> produces duplicate keys for\n     *                               two elements.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, TKey>",
+        "Name": "keySelector"
+      }],
+      "Example": "public class People{\n    public final String name;\n    public final int age;\n    public People(String name, int age){\n        this.name = name;\n        this.age = age;\n    }\n}\n\nPeople[] arr =  new People[] {\n        new People(\"John\", 28),\n        new People(\"Amy\", 30),\n        new People(\"Rick\", 29),\n        new People(\"Jane\", 28)};\n\nMap<String, People> map = Pipeline.from(arr)\n        .toMap(m -> {\n            String key = m.name + m.age;\n            return key;\n            });\n//map is {Amy30 = People(\"Amy\",30),\n//       Jane28 = People(\"Jane\",28),\n//       John28 = People(\"John\",28),\n//       Rick29 = People(\"Rick\",29)};",
+      "MethodName": "toMap",
+      "ReturnType": "Map<TKey, TElement>",
+      "Key": "toMap(Selector)",
+      "MethodKey": "toMapSelectorTElementTKey"
     },
     {
       "Comment": "/**\n     * Creates a {@link Map} from the pipeline according to a specified key selector and value\n     * selector functions.\n     *\n     * @param keySelector   A function to extract a key from each element.\n     * @param valueSelector A transform function to produce a result map value from each element.\n     * @param <TKey>        The type of the key returned by <i>keySelector<\/i>.\n     * @param <TValue>      The type of the value returned by <i>valueSelector<\/i>.\n     * @throws DuplicateKeyException Thrown when the <i>keySelector<\/i> produces duplicate keys for\n     *                               two elements.\n     */\n",
@@ -329,18 +256,8 @@
       "Example": "public class People{\n    public final String name;\n    public final int age;\n    public People(String name, int age){\n        this.name = name;\n        this.age = age;\n    }\n}\n\nPeople[] arr =  new People[] {\n        new People(\"John\", 28),\n        new People(\"Amy\", 30),\n        new People(\"Rick\", 29),\n        new People(\"Jane\", 28)};\n\nMap<String, Integer> map = Pipeline.from(arr)\n        .toMap(m -> m.name, m -> (m.name + 10));\n//map is {John = 38, Rick = 39, Amy = 40, Jane = 38}",
       "MethodName": "toMap",
       "ReturnType": "Map<TKey, TValue>",
-      "MethodKey": "toMapSelectorTElementTKeySelectorTElementValue"
-    },
-    {
-      "Comment": "/**\n     * Creates a {@link Map} from the pipeline according to a specified key selector function.\n     *\n     * @param keySelector A function to extract a key from each element.\n     * @param <TKey>      The type of the key returned by <i>keySelector<\/i>.\n     * @throws DuplicateKeyException Thrown when the <i>keySelector<\/i> produces duplicate keys for\n     *                               two elements.\n     */\n",
-      "Parameters": [{
-        "Type": "Selector<TElement, TKey>",
-        "Name": "keySelector"
-      }],
-      "Example": "public class People{\n    public final String name;\n    public final int age;\n    public People(String name, int age){\n        this.name = name;\n        this.age = age;\n    }\n}\n\nPeople[] arr =  new People[] {\n        new People(\"John\", 28),\n        new People(\"Amy\", 30),\n        new People(\"Rick\", 29),\n        new People(\"Jane\", 28)};\n\nMap<String, People> map = Pipeline.from(arr)\n        .toMap(m -> {\n            String key = m.name + m.age;\n            return key;\n            });\n//map is {Amy30 = People(\"Amy\",30),\n//       Jane28 = People(\"Jane\",28),\n//       John28 = People(\"John\",28),\n//       Rick29 = People(\"Rick\",29)};",
-      "MethodName": "toMap",
-      "ReturnType": "Map<TKey, TElement>",
-      "MethodKey": "toMapSelectorTElementTKey"
+      "Key": "toMap(Selector,Selector)",
+      "MethodKey": "toMapSelectorTElementTKeySelectorTElementTValue"
     },
     {
       "Comment": "/**\n     * Converts the sequence into an {@link List}.\n     */\n",
@@ -348,7 +265,376 @@
       "Example": "Integer[] arr = {1,2,3,4,5};\nList<Integer> result = Pipeline.from(arr)\n        .toList();\n//result is a list of Integers with value{1,2,3,4,5}",
       "MethodName": "toList",
       "ReturnType": "List<TElement>",
+      "Key": "toList()",
       "MethodKey": "toList"
+    }
+  ],
+  "Sum": [
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Byte} values.\n     *\n     * @param selector A selector that targets the bytes being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumBytes",
+      "ReturnType": "byte",
+      "Key": "sumBytes(Selector)",
+      "MethodKey": "sumBytesSelectorTElementNumber"
+    },
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Long} values.\n     *\n     * @param selector A selector that targets the longs being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumLongs",
+      "ReturnType": "long",
+      "Key": "sumLongs(Selector)",
+      "MethodKey": "sumLongsSelectorTElementNumber"
+    },
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Integer} values.\n     *\n     * @param selector A selector that targets the integers being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumInts",
+      "ReturnType": "int",
+      "Key": "sumInts(Selector)",
+      "MethodKey": "sumIntsSelectorTElementNumber"
+    },
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Short} values.\n     *\n     * @param selector A selector that targets the shorts being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumShorts",
+      "ReturnType": "short",
+      "Key": "sumShorts(Selector)",
+      "MethodKey": "sumShortsSelectorTElementNumber"
+    },
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Float} values.\n     *\n     * @param selector A selector that targets the floats being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumFloats",
+      "ReturnType": "float",
+      "Key": "sumFloats(Selector)",
+      "MethodKey": "sumFloatsSelectorTElementNumber"
+    },
+    {
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Integer} values.\n     *\n     * @param selector A selector that targets the doubles being evaluated.\n     */\n",
+      "Parameters": [{
+        "Type": "Selector<TElement, Number>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "sumDoubles",
+      "ReturnType": "double",
+      "Key": "sumDoubles(Selector)",
+      "MethodKey": "sumDoublesSelectorTElementNumber"
+    }
+  ],
+  "Set Operations": [
+    {
+      "Comment": "Reverses a sequence.",
+      "Parameters": [],
+      "Example": "List<Integer> lst = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(lst)\n        .reverse()\n        .toArray(Integer.class);\n//result is {8,5,4,2}",
+      "MethodName": "reverse",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "reverse()",
+      "MethodKey": "reverse"
+    },
+    {
+      "Comment": "Creates a union of the current sequence and another sequence in the pipeline.",
+      "Parameters": [{
+        "Type": "Iterable<TElement>",
+        "Name": "addition"
+      }],
+      "Example": "Integer[] arr1 = {1,2,3,4,5};\nList<Integer> lst2 = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(arr1)\n        .union(lst2)\n        .toArray(Integer.class);\n//result is {1,2,3,4,5,8}",
+      "MethodName": "union",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "union(Iterable)",
+      "MethodKey": "unionIterableTElement"
+    },
+    {
+      "Comment": "Creates an intersection of the current sequence and another sequence in the pipeline.",
+      "Parameters": [{
+        "Type": "Iterable<TElement>",
+        "Name": "addition"
+      }],
+      "Example": "Integer[] arr1 = {1,2,3,4,5};\nList<Integer> lst2 = Arrays.asList(2,4,5,8);\nInteger[] result = Pipeline.from(arr1)\n        .intersect(lst2)\n        .toArray(Integer.class);\n//result is {2,4,5}",
+      "MethodName": "intersect",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "intersect(Iterable)",
+      "MethodKey": "intersectIterableTElement"
+    }
+  ],
+  "Grouping": [{
+    "Comment": "Groups the elements of a sequence according to a specified key selector function.",
+    "Parameters": [{
+      "Type": "Selector<TElement, TKey>",
+      "Name": "selector"
+    }],
+    "Example": "public class People{\n    public final String name;\n    public final int age;\n    \n    public People(String name, int age){\n        this.name = name;\n        this.age = age;\n    }\n}\n\nPeople[] lst = new People[] {\n        new People(\"John\", 29),\n        new People(\"Amy\", 30),\n        new People(\"Rick\", 29),\n        new People(\"Anna\", 28)};\n\nPipeline<Grouping<Integer, People>> result = Pipeline.from(lst)\n        .groupBy(p -> p.age);\n//result is {{28,[People(\"Anna\",28)]}\n//           {29,[People(\"Rick\",29),People(\"John\",29)]}\n//           {30,[People(\"Amy\",30)]}}",
+    "MethodName": "groupBy",
+    "ReturnType": "Pipeline<Grouping<TKey, TElement>>",
+    "Key": "groupBy(Selector)",
+    "MethodKey": "groupBySelectorTElementTKey"
+  }],
+  "Reduce": [{
+    "Comment": "/**\n     * Combines the sequence into a singular {@link TOutput} value.\n     *\n     * @param aggregator A function that combines individual sequence elements into the previous\n     *                   aggregator value.\n     * @param initial    The initial value passed into the aggregator, which is the final result if\n     *                   there are no elements in the sequence.\n     * @param <TOutput>  The type of the value passed in/out of the aggregator, also representing\n     *                   the final result of the <c>reduce()<\/c> method.\n     */\n",
+    "Parameters": [
+      {
+        "Type": "Aggregator<TElement, TOutput>",
+        "Name": "aggregator"
+      },
+      {
+        "Type": "TOutput",
+        "Name": "initial"
+      }
+    ],
+    "Example": "null",
+    "MethodName": "reduce",
+    "ReturnType": "TOutput",
+    "Key": "reduce(Aggregator,Object)",
+    "MethodKey": "reduceAggregatorTElementTOutputTOutput"
+  }],
+  "Aggregation": [
+    {
+      "Comment": "Returns the number of elements in a sequence that match the specified predicate.",
+      "Parameters": [{
+        "Type": "Predicate<TElement>",
+        "Name": "predicate"
+      }],
+      "Example": "null",
+      "MethodName": "count",
+      "ReturnType": "int",
+      "Key": "count(Predicate)",
+      "MethodKey": "countPredicateTElement"
+    },
+    {
+      "Comment": "",
+      "Parameters": [],
+      "Example": "Integer[] arr = {4,1,5,8,2};\nint result = Pipeline.from(arr)\n        .count();\n//result is 5",
+      "MethodName": "count",
+      "ReturnType": "int",
+      "Key": "count()",
+      "MethodKey": "count"
+    }
+  ],
+  "Concatenation": [
+    {
+      "Comment": "Concatenates another sequence into the pipeline.",
+      "Parameters": [{
+        "Type": "Iterable<TElement>",
+        "Name": "addition"
+      }],
+      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> lst2 = Arrays.asList(5,6,7,8);\nList<Integer> result = Pipeline.from(lst1)\n               .concat(lst2)\n               .toList();\n//result is {0,1,2,3,4,5,6,7,8}",
+      "MethodName": "concat",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "concat(Iterable)",
+      "MethodKey": "concatIterableTElement"
+    },
+    {
+      "Comment": "Concatenates another sequence into the pipeline.",
+      "Parameters": [{
+        "Type": "TElement[]",
+        "Name": "addition"
+      }],
+      "Example": "Integer[] arr1 = {0,1,2,3,4,5};\nInteger[] arr2 = {6,7,8};\nInterger[] result = Pipeline.from(arr1)\n        .concat(arr2)\n        .toArray(Integer.class);\n//result is {0,1,2,3,4,5,6,7,8}",
+      "MethodName": "concat",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "concat(Object[])",
+      "MethodKey": "concatTElement"
+    },
+    {
+      "Comment": "Joins the values into a string using the specified separator and the default\n`toString()` implementation for string elements.",
+      "Parameters": [{
+        "Type": "CharSequence",
+        "Name": "separator"
+      }],
+      "Example": "String [] arr = {\"a\", \"b\", \"c\"};\nString result = Pipeline.from(arr).join(\" \");\n//result becomes \"a b c\"",
+      "MethodName": "join",
+      "ReturnType": "String",
+      "Key": "join(CharSequence)",
+      "MethodKey": "joinCharSequence"
+    }
+  ],
+  "Min": [
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Byte>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minByte",
+      "ReturnType": "Byte",
+      "Key": "minByte(Selector)",
+      "MethodKey": "minByteSelectorTElementByte"
+    },
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Short>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minShort",
+      "ReturnType": "Short",
+      "Key": "minShort(Selector)",
+      "MethodKey": "minShortSelectorTElementShort"
+    },
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Integer>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minInteger",
+      "ReturnType": "Integer",
+      "Key": "minInteger(Selector)",
+      "MethodKey": "minIntegerSelectorTElementInteger"
+    },
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Long>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minLong",
+      "ReturnType": "Long",
+      "Key": "minLong(Selector)",
+      "MethodKey": "minLongSelectorTElementLong"
+    },
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Float>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minFloat",
+      "ReturnType": "Float",
+      "Key": "minFloat(Selector)",
+      "MethodKey": "minFloatSelectorTElementFloat"
+    },
+    {
+      "Comment": "Returns the minimum value in a sequence of values.",
+      "Parameters": [{
+        "Type": "Selector<TElement, Double>",
+        "Name": "selector"
+      }],
+      "Example": "null",
+      "MethodName": "minDouble",
+      "ReturnType": "Double",
+      "Key": "minDouble(Selector)",
+      "MethodKey": "minDoubleSelectorTElementDouble"
+    }
+  ],
+  "Partition Operators": [
+    {
+      "Comment": "Bypasses a specified number of elements in a sequence and then returns the remaining\nelements.\n\nIf count is less than or equal to zero, all elements of source are yielded.",
+      "Parameters": [{
+        "Type": "int",
+        "Name": "count"
+      }],
+      "Example": "Integer[] arr = {4,1,5,8,2};\nInteger[] result = Pipeline.from(arr)\n        .skip(3)\n        .toArray(Integer.class);\n//result is {8,2}",
+      "MethodName": "skip",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "skip(int)",
+      "MethodKey": "skipint"
+    },
+    {
+      "Comment": "/**\n     * Returns a specified number of contiguous elements from the start of a sequence.\n     * <p>\n     * If count is less than or equal to zero, source is not enumerated and an empty\n     * {@link Pipeline} is returned.\n     *\n     * @param count The maximum number of elements to return.\n     */\n",
+      "Parameters": [{
+        "Type": "int",
+        "Name": "count"
+      }],
+      "Example": "Integer[] arr = {4,1,5,8,2};\nInteger[] result = Pipeline.from(arr)\n        .take(3)\n        .toArray(Integer.class);\n//result is {4,1,5}",
+      "MethodName": "take",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "take(int)",
+      "MethodKey": "takeint"
+    },
+    {
+      "Comment": "Bypasses elements in a sequence as long as a specified condition is <c>true<\/c> and then\nreturns the remaining elements.",
+      "Parameters": [{
+        "Type": "Predicate<TElement>",
+        "Name": "predicate"
+      }],
+      "Example": "Integer[] arr = {1,2,3,4,5};\nInteger[] result = Pipeline.from(arr)\n        //skip all the even numbers \n        .skipWhile(n -> n%2==0)\n        .toArray(Integer.class);\n//returns all the skipped elements\n//result is {1,3,5}",
+      "MethodName": "skipWhile",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "skipWhile(Predicate)",
+      "MethodKey": "skipWhilePredicateTElement"
+    },
+    {
+      "Comment": "Returns all elements in a sequence, for which the predicate is TRUE",
+      "Parameters": [{
+        "Type": "Predicate<TElement>",
+        "Name": "predicate"
+      }],
+      "Example": "Integer[] arr = {1,2,3,4,5};\nInteger[] result = Pipeline.from(arr)\n        .takeWhile(n -> n%2==0)\n        .toArray(Integer.class);\n//result is {2,4}",
+      "MethodName": "takeWhile",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "takeWhile(Predicate)",
+      "MethodKey": "takeWhilePredicateTElement"
+    }
+  ],
+  "Element Operators": [
+    {
+      "Comment": "/**\n     * Returns the first element of a sequence that satisfies a specified condition, or throws a\n     * {@link NoElementFoundException} if no matching element is found.\n     *\n     * @param predicate A function to test each element for a condition.\n     * @return The first element in the sequence that passes the test in <i>predicate<\/i>.\n     * @throws NoElementFoundException No element satisfies the condition in <i>predicate<\/i>,\n     *                                 or the pipeline sequence is empty.\n     */\n",
+      "Parameters": [{
+        "Type": "Predicate<TElement>",
+        "Name": "predicate"
+      }],
+      "Example": "Integer[] arr = {2,4,5,6,7};\nInteger result = Pipeline.from(arr)\n        .first(n -> n%2 !=0);\n//result is 5",
+      "MethodName": "first",
+      "ReturnType": "TElement",
+      "Key": "first(Predicate)",
+      "MethodKey": "firstPredicateTElement"
+    },
+    {
+      "Comment": "Returns the first element of a sequence.",
+      "Parameters": [],
+      "Example": "Integer[] arr = {2,4,5,6};\nInteger result = Pipeline.from(arr)\n        .first();\n//result is 2",
+      "MethodName": "first",
+      "ReturnType": "TElement",
+      "Key": "first()",
+      "MethodKey": "first"
+    },
+    {
+      "Comment": "Returns the first element of a sequence that satisfies a specified condition or a default\nvalue if no such element is found.",
+      "Parameters": [{
+        "Type": "Predicate<TElement>",
+        "Name": "predicate"
+      }],
+      "Example": "Integer[] arr1 = {2,4,5,6};\nInteger result1 = Pipeline.from(arr1)\n        .firstOrDefault(n -> n%2!=0);\n\nInteger[] arr2 = {2,4,6,8};\nInteger result2 = Pipeline.from(arr2)\n        .firstOrDefault(n -> n%2!=0);\n//result1 is 5 and result2 is null        ",
+      "MethodName": "firstOrDefault",
+      "ReturnType": "TElement",
+      "Key": "firstOrDefault(Predicate)",
+      "MethodKey": "firstOrDefaultPredicateTElement"
+    },
+    {
+      "Comment": "Returns the first element of a sequence, or a default value if the sequence contains no\nelements.",
+      "Parameters": [],
+      "Example": "Integer[] arr1 = {2,4,5,6};\nInteger result1 = Pipeline.from(arr1)\n        .firstOrDefault();\n        \nInteger[] arr2 = {};\nInteger result2 = Pipeline.from(arr2)\n        .firstOrDefault();\n//result1 is 2 and result2 is null",
+      "MethodName": "firstOrDefault",
+      "ReturnType": "TElement",
+      "Key": "firstOrDefault()",
+      "MethodKey": "firstOrDefault"
     }
   ],
   "Repetition": [{
@@ -366,6 +652,7 @@
     "Example": "List<Integer> lst = Arrays.asList(1,2,3);\n        List<Integer> result = Pipeline.from(lst)\n                .repeat(new Integer(4),2)\n                .toList();\n//result is {4,4}",
     "MethodName": "repeat",
     "ReturnType": "Pipeline<TElement>",
+    "Key": "repeat(Object,int)",
     "MethodKey": "repeatTElementint"
   }]
 }

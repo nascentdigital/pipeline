@@ -23,12 +23,14 @@ $(document).ready(function(){
 		addEventListener('load', function(event) { PR.prettyPrint(); }, false);
 		// this function iterates through each key value pair
 		$.each(data, function(k,v){
+			var groupName = k;
+			k=k.replace(" ","");
 			var idName = k + '_content';
 			var groupSection = "#" + idName;
 
 			$(".inner").append('<div id="' +idName+'"</div>');
-			var inner_data = '<h1 class = "dark_text_color ' + k + '_content "> ' + k + '</h1>';
-			var side_menu = '<li id = ' + k + '>' + k + '</li>'
+			var inner_data = '<h1 class = "dark_text_color ' + k + '_content "> ' + groupName + '</h1>';
+			var side_menu = '<li id = ' + k + '>' + groupName + '</li>'
 			$(groupSection).append(inner_data);
 			$(groupSection).append("<hr>");
 			$(".vertical_menu_list").append(side_menu);
@@ -39,7 +41,7 @@ $(document).ready(function(){
 			$.each(v,function(key,value){
 				var name_data = '<h2 id="' + HTMLEncode(value.MethodKey)+'_content">' + value.MethodName + "</h2>";
 				$(groupSection).append(name_data);
-				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
+				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +HTMLEncode(value.Key) + '</li>');
 				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
 				var paramDescription = [];
 				if(typeof value.Comment != 'undefined'){
@@ -74,8 +76,6 @@ $(document).ready(function(){
 				PR.prettyPrint();
 				$(groupSection).append(sample_code);
 			});
-
-			
 		});
 
 		$(".submenu li").click(function(){
@@ -83,7 +83,6 @@ $(document).ready(function(){
 			$('html,body').animate({
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'fast');
-			
 		});
 
 		$(".vertical_menu_list li").click(function(e){
@@ -109,14 +108,13 @@ $(document).ready(function(){
 				if(e.target !== this){
 					return;
 				}
-				console.log('#' + id + '_content');
-				$('.inner').css('position','static');
-				$('html,body').animate({
-					scrollTop: $('#' + id + '_content').offset().top -88
-				},'slow');
-				$('.mobile_menu').toggleClass('expanded');
-				$('.mobile_menu').css('display','none');
-			});
+			$('.inner').css('position','static');
+			$('html,body').animate({
+				scrollTop: $('#' + id + '_content').offset().top -88
+			},'slow');
+			$('.mobile_menu').toggleClass('expanded');
+			$('.mobile_menu').css('display','none');
+		});
 
 		$(window).scroll(function(){
 			var margin_top = 100;
@@ -141,10 +139,11 @@ $(document).ready(function(){
 				var id = mapGroupClass($(".inner div:not(.sample_code)").last().attr('id'));
 				$('#'+id).css('font-weight','800');
 				$('#'+id).css('font-size','120%');
-
+				$('#'+id + ' .submenu').css('display','block');
 				var prev_id =  mapGroupClass($(".inner div:not(.sample_code)").last().prev().attr('id'));
 				$('#'+prev_id).css('font-weight','400');
 				$('#'+prev_id).css('font-size','100%');
+				$('#'+prev_id + ' .submenu').css('display','none');
 			}
 
 		});

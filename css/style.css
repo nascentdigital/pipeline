@@ -191,6 +191,11 @@ pre.prettyprint{
 	box-sizing: border-box;
 }
 
+.getting_started{
+	background-size: cover;
+	background-image: url('../images/footer.png');
+}
+
 .footer li{
 	margin-right: 2rem;
 	margin-left: 2rem;
