@@ -192,10 +192,13 @@ pre.prettyprint{
 }
 
 .getting_started{
+	padding-bottom: 0;
 	background-size: cover;
 	background-image: url('../images/footer.png');
 }
-
+.footer{
+	margin-top: 3rem;
+}
 .footer li{
 	margin-right: 2rem;
 	margin-left: 2rem;
@@ -219,7 +222,7 @@ pre.prettyprint{
 		text-align: right;
 	}	
 	.usage_content{
-		padding-right: 13rem;
+		padding-right: 20%;
 	}
 	
 	.hero_logo{

@@ -37,10 +37,14 @@ $(document).ready(function(){
 			$(".mobile_menu_list").append(side_menu);
 			$('#'+k).append('<ul class = "submenu" id="'+ k + '_sub"></ul>');
 			$('.mobile_menu_list #'+k).append('<ul class = "mobile_submenu" id="'+ k + '_sub"></ul>');
+
+
 			//adding information for each method
 			$.each(v,function(key,value){
-				var name_data = '<h2 id="' + HTMLEncode(value.MethodKey)+'_content">' + value.MethodName + "</h2>";
-				$(groupSection).append(name_data);
+				var method = HTMLEncode(value.MethodKey) + "_content";
+				$(groupSection).append('<div class="methods" id="' + method + '"">');
+				var name_data = '<h2>' + value.MethodName + "</h2>";
+				$('#'+method).append(name_data);
 				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +HTMLEncode(value.Key) + '</li>');
 				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
 				var paramDescription = [];
@@ -50,11 +54,11 @@ $(document).ready(function(){
 					
 					for (var c in arr){
 							var comment_data = "<p>" + HTMLEncode(arr[c]) + "</p>";
-							$(groupSection).append(comment_data);
+							$('#'+method).append(comment_data);
 					}
 				}
 
-				$(groupSection).append("<h3>Parameters: </h3>");
+				$('#'+method).append("<h3>Parameters: </h3>");
 				var count = 1;
 				$.each(value.Parameters,function(m,n){
 					var param_data = "No Parameters";
@@ -63,18 +67,19 @@ $(document).ready(function(){
 						param_data = "<p>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + "</p>";
 						
 					}
-					$(groupSection).append(param_data);
+					$('#'+method).append(param_data);
 				});
-				$(groupSection).append("<h3>Returns: </h3>")
+				$('#'+method).append("<h3>Returns: </h3>")
 				var returnType_data = "<p>" + HTMLEncode(value.ReturnType) + "</p>";
-				$(groupSection).append(returnType_data);
+				$('#'+method).append(returnType_data);
 	
-				$(groupSection).append("<h3>Example:</h3>");
+				$('#'+method).append("<h3>Example:</h3>");
 				var sample_code = '<div class = "sample_code"><pre class="prettyprint java">'
 				+ HTMLEncode(value.Example) + 
 				 '</pre></div>';
 				PR.prettyPrint();
-				$(groupSection).append(sample_code);
+				$('#'+method).append(sample_code);
+				$(groupSection).append('</div>');
 			});
 		});
 
