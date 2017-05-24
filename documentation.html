@@ -25,7 +25,7 @@
 	<div class="documentation_navbar dark_color">
 		<a class="wordmark" href="index.html">pipeline</a>
 		<div class="hamburger_menu">
-			<div class="hamburger_button">&#9776;</div>
+			<span class="hamburger_button" onclick="openNav()">&#9776;</span>
 		</div>
 		<a class="right_nav" href="https://github.com/nascentdigital/pipeline">GITHUB</a>
 	</div>
@@ -36,10 +36,10 @@
 	</div>
 	<div class="col col-two-thirds inner" >
 	</div>
-	<div class="mobile_menu">
-	<div class="mobile_menu_img">
+	<div id="mobile_menu">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<ul class="mobile_menu_list"></ul>
-		</div>
+	
 	</div>
 </body>
 </html>

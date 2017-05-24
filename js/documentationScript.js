@@ -97,7 +97,7 @@ $(document).ready(function(){
 		});
 
 		//menu animations on the mobile view
-		$(".mobile_menu li").click(function(){
+		$("#mobile_menu li").click(function(){
 			var id = this.id;
 			$('.mobile_submenu').css('display','none');
 			$('#' + id +' .mobile_submenu').css('display','block');
@@ -112,8 +112,7 @@ $(document).ready(function(){
 			$('html,body').animate({
 				scrollTop: $('#' + id + '_content').offset().top -88
 			},'slow');
-			$('.mobile_menu').toggleClass('expanded');
-			$('.mobile_menu').css('display','none');
+			$('#mobile_menu').css('width','0');
 		});
 
 		$(window).scroll(function(){
@@ -149,12 +148,13 @@ $(document).ready(function(){
 		});
 
 	});
-
-	$('.hamburger_button').click(function(){
-		$('.mobile_menu').slideToggle('slow', function(){
-			$('.mobile_menu').toggleClass('expanded');
-			$('.mobile_submenu').css('display','none');
-		});
-	});
-
 });
+
+function openNav(){
+	document.getElementById("mobile_menu").style.width="100vw";
+	$('.mobile_submenu').css('display','none');
+}
+function closeNav(){
+	document.getElementById("mobile_menu").style.width="0";
+	$('.mobile_submenu').css('display','none');
+}

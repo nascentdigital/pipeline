@@ -23,7 +23,7 @@ p{
 }
 
 .documentation_navbar{
-	z-index: 2;
+	z-index: 1;
     box-shadow: 0px 8px 6px -6px #999;
 	position: fixed;
 	padding-top: 1.25rem;
@@ -115,7 +115,7 @@ p{
 		display: none;
 	}
 
-	.mobile_menu{
+	#mobile_menu{
 		display: none;
 	}
 }
@@ -142,22 +142,35 @@ p{
 	.mobile_menu_list{
 		padding-left: 0;
 		margin-bottom: 6rem;
+		margin-top: 0;
 	}
 
 	.mobile_menu_list li{
-		margin-top: 2rem;
+		margin-bottom: 2rem;
 		text-align: left;
+		transition: 0.5s;
 		padding-left: 2.5rem;
 		display: block;
 	}
 	.mobile_menu_list a{
 		color: white;
 	}
-	.mobile_menu{
-		display: none;
+	#mobile_menu{
+		background-image: url('../images/navbar.png');
+		background-color: #4c5c68;
+		overflow: auto;
+		height: 100%;
+		transition: 0.5s;
+		display: block;
+		position: fixed;
+		color: white;
+		z-index: 1;
+		width: 0;
+		right: 0px;
 	}
 
 	.mobile_submenu{
+		transition: 0.3s;
 		display: none;
 	}
 	.mobile_submenu li{
@@ -165,24 +178,10 @@ p{
 		margin-top: 1rem;
 	}
 
-	.mobile_menu_img{
-		background-image: url('../images/navbar.png');
-		height: inherit;
-		width: inherit;
-		opacity: 0.5;
-	}
-
-	.expanded{
-		
-		background-color: #4c5c68;
-		overflow: auto;
-		height: 100%;
-		display: block;
-		position: fixed;
+	.closebtn{
 		color: white;
-		top: 62px;
-		width: 100%;
-		right: 0px;
+		font-size: 3rem;
+		margin-left: 85%;
 	}
 	
 }
