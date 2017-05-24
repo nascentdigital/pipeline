@@ -10,12 +10,14 @@ import com.nascentdigital.pipeline.operations.DistinctOperation;
 import com.nascentdigital.pipeline.operations.FilterOperation;
 import com.nascentdigital.pipeline.operations.FlatProjectionOperation;
 import com.nascentdigital.pipeline.operations.GroupByOperation;
+import com.nascentdigital.pipeline.operations.IntersectOperation;
 import com.nascentdigital.pipeline.operations.IterableSourceOperation;
 import com.nascentdigital.pipeline.operations.ProjectionOperation;
 import com.nascentdigital.pipeline.operations.SkipOperation;
 import com.nascentdigital.pipeline.operations.SkipWhileOperation;
 import com.nascentdigital.pipeline.operations.TakeOperation;
 import com.nascentdigital.pipeline.operations.TakeWhileOperation;
+import com.nascentdigital.pipeline.operations.UnionOperation;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -1179,6 +1181,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // endregion
 
+
     // region repetition
 
     /**
@@ -1201,6 +1204,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     //endregion
 
+
     // region Iterable<TElement> interface
 
     @Override
@@ -1210,6 +1214,7 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     // endregion
+
 
     // region set operations
 
@@ -1224,28 +1229,10 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         // return self if iterable is null
         if (addition == null) {
             return this;
-        } else {
-
-            // initialize result set
-            HashSet<TElement> resultSet = new HashSet<>();
-
-            // create iterators
-            Iterator<TElement> source = this.iterator();
-            Iterator<TElement> additional = addition.iterator();
-
-            // iteratively add source sequence's next element to set
-            while (source.hasNext()) {
-                resultSet.add(source.next());
-            }
-
-            // iteratively add additional sequence's next element to set
-            while (additional.hasNext()) {
-                resultSet.add(additional.next());
-            }
-
-            return Pipeline.from(resultSet);
         }
 
+        // or return new pipeline using iterable
+        return new Pipeline<>(new UnionOperation<>(this, addition));
     }
 
     /**
@@ -1256,7 +1243,15 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     @Group(type = GroupType.SetOperations)
     public Pipeline<TElement> intersect(Iterable<TElement> addition) {
 
-    /* Performance implementation centred around hashSet.contains constant search time */
+        // return self if iterable is null
+        if (addition == null) {
+            return this;
+        }
+
+        // or return new pipeline using iterable
+        return new Pipeline<>(new IntersectOperation<>(this, addition));
+
+    /* Performance implementation centred around hashSet.contains constant search time
 
         // return self if iterable is null
         if (addition == null) {
@@ -1314,33 +1309,33 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
                 TElement element = additional.next();
 
                 // add to result set if it also exists in source set
-                if (sourceSet.contains(element)) {
+                if (this.contains(element)) {
                     resultSet.add(element);
                 }
             }
             // return result which is an intersection of both sets
             return Pipeline.from(resultSet);
 */
-        }
-
-
-        /**
-         * Reverses a sequence.
-         */
-        @Group(type = GroupType.SetOperations)
-        public Pipeline<TElement> reverse() {
-            ArrayList<TElement> resultArray = new ArrayList<>();
-            Iterator<TElement> iterator = this.iterator();
-
-            while (iterator.hasNext()) {
-                resultArray.add(iterator.next());
-            }
-
-            Collections.reverse(resultArray);
-            return Pipeline.from(resultArray);
-        }
-
-        // endregion
-
-
     }
+
+
+    /**
+     * Reverses a sequence.
+     */
+    @Group(type = GroupType.SetOperations)
+    public Pipeline<TElement> reverse() {
+        ArrayList<TElement> resultArray = new ArrayList<>();
+        Iterator<TElement> iterator = this.iterator();
+
+        while (iterator.hasNext()) {
+            resultArray.add(iterator.next());
+        }
+
+        Collections.reverse(resultArray);
+        return Pipeline.from(resultArray);
+    }
+
+    // endregion
+
+
+}

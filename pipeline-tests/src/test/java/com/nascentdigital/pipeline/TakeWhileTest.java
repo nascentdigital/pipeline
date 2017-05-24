@@ -2,6 +2,8 @@ package com.nascentdigital.pipeline;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -191,7 +193,6 @@ public class TakeWhileTest extends PipelineTest {
         assertArrayEquals(array, new Integer[]{});
     }
 
-    //Todo: give method better name
     @Test
     public void manySource_shouldReturnSome_forNonEdgeCasePredicate() {
 
@@ -211,6 +212,51 @@ public class TakeWhileTest extends PipelineTest {
         assertNotNull(array);
         assertEquals(1, array.length);
         assertArrayEquals(array, new Integer[]{0});
+    }
+
+    @Test
+    public void reusedSource_shouldReturnDifferent_whenChanged() {
+
+        // create array
+        final Integer[] source = new Integer[]{
+                8,
+                9,
+                10,
+                11,
+                12
+        };
+
+        // use pipeline (and cache it)
+        Pipeline<Integer> pipeline = Pipeline.from(source);
+        Integer[] array = pipeline.takeWhile(
+                n -> {
+
+                    return n <= 10;
+                })
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(3, array.length);
+        assertArrayEquals(Arrays.copyOfRange(source, 0, 3), array);
+        assertArrayEquals(array, new Integer[]{8, 9, 10});
+
+        // change source
+        source[2] = 4;
+
+        // use pipeline again
+        array = pipeline.takeWhile(
+                n -> {
+
+                    return n <= 10;
+                })
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(3, array.length);
+        assertArrayEquals(Arrays.copyOfRange(source, 0, 3), array);
+        assertArrayEquals(array, new Integer[]{8, 9, 4});
     }
 
     // endregion
