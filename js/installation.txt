@@ -1,5 +1,5 @@
 <!-- HTML generated using hilite.me --><div style="overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">dependencies <span style="color: #333333">{</span>
   <span style="color: #888888">// latest one on maven central</span>
-  compile <span style="color: #FF0000;">&#39;</span>com<span style="color: #333333">.</span><span style="color: #0000CC">nascentdigital</span><span style="color: #333333">:</span><span style="color: #997700; font-weight: bold">pipeline:</span><span style="color: #6600EE; font-weight: bold">1.0</span><span style="color: #333333">.</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #FF0000;">&#39;</span>
+  compile <span style="color: #FF0000;">&#39;</span>com<span style="color: #333333">.</span><span style="color: #0000CC">nascentdigital</span><span style="color: #333333">:</span><span style="color: #997700; font-weight: bold">pipeline:</span><span style="color: #6600EE; font-weight: bold">1.3</span><span style="color: #333333">.</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #FF0000;">&#39;</span>
 <span style="color: #333333">}</span>
 </pre></div>

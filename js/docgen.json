@@ -10,6 +10,15 @@
   }],
   "Filtering": [
     {
+      "Comment": "Returns distinct elements from a sequence by using the default equality comparer to compare\nvalues.",
+      "Parameters": [],
+      "Example": "Integer [] arr = {1,2,5,1,3,2};\narr = Pipeline.from(arr)\n    .distinct()\n    .toArray(Integer.class);\n//arr is now {1,2,5,3}",
+      "MethodName": "distinct",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "distinct()",
+      "MethodKey": "distinct"
+    },
+    {
       "Comment": "Filters a sequence of values based on a predicate.",
       "Parameters": [{
         "Type": "Predicate<TElement>",
@@ -20,41 +29,6 @@
       "ReturnType": "Pipeline<TElement>",
       "Key": "where(Predicate)",
       "MethodKey": "wherePredicateTElement"
-    },
-    {
-      "Comment": "Returns distinct elements from a sequence by using the default equality comparer to compare\nvalues.",
-      "Parameters": [],
-      "Example": "Integer [] arr = {1,2,5,1,3,2};\narr = Pipeline.from(arr)\n    .distinct()\n    .toArray(Integer.class);\n//arr is now {1,2,5,3}",
-      "MethodName": "distinct",
-      "ReturnType": "Pipeline<TElement>",
-      "Key": "distinct()",
-      "MethodKey": "distinct"
-    }
-  ],
-  "Creation": [
-    {
-      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the\n     * initial sequence source.\n     *\n     * @param source     An iterable instance whose iterators will be used as a sequence source.\n     * @param <TElement> The type of elements emitted from the iterator.\n     */\n",
-      "Parameters": [{
-        "Type": "Iterable<TElement>",
-        "Name": "source"
-      }],
-      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> result = Pipeline.from(lst1)\n                .toList();\n//result is {0,1,2,3,4}",
-      "MethodName": "from",
-      "ReturnType": "Pipeline<TElement>",
-      "Key": "from(Iterable)",
-      "MethodKey": "fromIterableTElement"
-    },
-    {
-      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified array as the initial sequence source.\n     *\n     * @param source     An array to be used as a source.\n     * @param <TElement> The type of the elements in the array.\n     */\n",
-      "Parameters": [{
-        "Type": "TElement[]",
-        "Name": "source"
-      }],
-      "Example": "Integer[] arr = { 0, 1, 2, 3, 4, 5 };\nInteger[] result = Pipeline.from(arr)\n           .toArray(Integer.class);\n//result is {0,1,2,3,4,5}",
-      "MethodName": "from",
-      "ReturnType": "Pipeline<TElement>",
-      "Key": "from(Object[])",
-      "MethodKey": "fromTElement"
     }
   ],
   "Quantification": [
@@ -102,6 +76,32 @@
       "ReturnType": "boolean",
       "Key": "any()",
       "MethodKey": "any"
+    }
+  ],
+  "Creation": [
+    {
+      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified array as the initial sequence source.\n     *\n     * @param source     An array to be used as a source.\n     * @param <TElement> The type of the elements in the array.\n     */\n",
+      "Parameters": [{
+        "Type": "TElement[]",
+        "Name": "source"
+      }],
+      "Example": "Integer[] arr = { 0, 1, 2, 3, 4, 5 };\nInteger[] result = Pipeline.from(arr)\n           .toArray(Integer.class);\n//result is {0,1,2,3,4,5}",
+      "MethodName": "from",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "from(Object[])",
+      "MethodKey": "fromTElement"
+    },
+    {
+      "Comment": "/**\n     * Creates a new {@link Pipeline} using the specified {@link Iterable} as a provider of the\n     * initial sequence source.\n     *\n     * @param source     An iterable instance whose iterators will be used as a sequence source.\n     * @param <TElement> The type of elements emitted from the iterator.\n     */\n",
+      "Parameters": [{
+        "Type": "Iterable<TElement>",
+        "Name": "source"
+      }],
+      "Example": "List<Integer> lst1 = Arrays.asList(0,1,2,3,4);\nList<Integer> result = Pipeline.from(lst1)\n                .toList();\n//result is {0,1,2,3,4}",
+      "MethodName": "from",
+      "ReturnType": "Pipeline<TElement>",
+      "Key": "from(Iterable)",
+      "MethodKey": "fromIterableTElement"
     }
   ],
   "Max": [
@@ -283,16 +283,16 @@
       "MethodKey": "sumBytesSelectorTElementNumber"
     },
     {
-      "Comment": "/**\n     * Computes the sum of a sequence of {@link Long} values.\n     *\n     * @param selector A selector that targets the longs being evaluated.\n     */\n",
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Short} values.\n     *\n     * @param selector A selector that targets the shorts being evaluated.\n     */\n",
       "Parameters": [{
         "Type": "Selector<TElement, Number>",
         "Name": "selector"
       }],
       "Example": "null",
-      "MethodName": "sumLongs",
-      "ReturnType": "long",
-      "Key": "sumLongs(Selector)",
-      "MethodKey": "sumLongsSelectorTElementNumber"
+      "MethodName": "sumShorts",
+      "ReturnType": "short",
+      "Key": "sumShorts(Selector)",
+      "MethodKey": "sumShortsSelectorTElementNumber"
     },
     {
       "Comment": "/**\n     * Computes the sum of a sequence of {@link Integer} values.\n     *\n     * @param selector A selector that targets the integers being evaluated.\n     */\n",
@@ -307,16 +307,16 @@
       "MethodKey": "sumIntsSelectorTElementNumber"
     },
     {
-      "Comment": "/**\n     * Computes the sum of a sequence of {@link Short} values.\n     *\n     * @param selector A selector that targets the shorts being evaluated.\n     */\n",
+      "Comment": "/**\n     * Computes the sum of a sequence of {@link Long} values.\n     *\n     * @param selector A selector that targets the longs being evaluated.\n     */\n",
       "Parameters": [{
         "Type": "Selector<TElement, Number>",
         "Name": "selector"
       }],
       "Example": "null",
-      "MethodName": "sumShorts",
-      "ReturnType": "short",
-      "Key": "sumShorts(Selector)",
-      "MethodKey": "sumShortsSelectorTElementNumber"
+      "MethodName": "sumLongs",
+      "ReturnType": "long",
+      "Key": "sumLongs(Selector)",
+      "MethodKey": "sumLongsSelectorTElementNumber"
     },
     {
       "Comment": "/**\n     * Computes the sum of a sequence of {@link Float} values.\n     *\n     * @param selector A selector that targets the floats being evaluated.\n     */\n",
@@ -415,7 +415,7 @@
         "Type": "Predicate<TElement>",
         "Name": "predicate"
       }],
-      "Example": "null",
+      "Example": "Integer[] arr = {1,2,3,4,5,6};\nint result = Pipeline.from(arr)\n                     .count(n -> n%2 == 0);\n//result is 3",
       "MethodName": "count",
       "ReturnType": "int",
       "Key": "count(Predicate)",
@@ -593,6 +593,24 @@
       "MethodKey": "takeWhilePredicateTElement"
     }
   ],
+  "Repetition": [{
+    "Comment": "Creates a sequence by repeating the value",
+    "Parameters": [
+      {
+        "Type": "TElement",
+        "Name": "element"
+      },
+      {
+        "Type": "int",
+        "Name": "count"
+      }
+    ],
+    "Example": "List<Integer> lst = Arrays.asList(1,2,3);\n        List<Integer> result = Pipeline.from(lst)\n                .repeat(new Integer(4),2)\n                .toList();\n//result is {4,4}",
+    "MethodName": "repeat",
+    "ReturnType": "Pipeline<TElement>",
+    "Key": "repeat(Object,int)",
+    "MethodKey": "repeatTElementint"
+  }],
   "Element Operators": [
     {
       "Comment": "/**\n     * Returns the first element of a sequence that satisfies a specified condition, or throws a\n     * {@link NoElementFoundException} if no matching element is found.\n     *\n     * @param predicate A function to test each element for a condition.\n     * @return The first element in the sequence that passes the test in <i>predicate<\/i>.\n     * @throws NoElementFoundException No element satisfies the condition in <i>predicate<\/i>,\n     *                                 or the pipeline sequence is empty.\n     */\n",
@@ -636,23 +654,5 @@
       "Key": "firstOrDefault()",
       "MethodKey": "firstOrDefault"
     }
-  ],
-  "Repetition": [{
-    "Comment": "Creates a sequence by repeating the value",
-    "Parameters": [
-      {
-        "Type": "TElement",
-        "Name": "element"
-      },
-      {
-        "Type": "int",
-        "Name": "count"
-      }
-    ],
-    "Example": "List<Integer> lst = Arrays.asList(1,2,3);\n        List<Integer> result = Pipeline.from(lst)\n                .repeat(new Integer(4),2)\n                .toList();\n//result is {4,4}",
-    "MethodName": "repeat",
-    "ReturnType": "Pipeline<TElement>",
-    "Key": "repeat(Object,int)",
-    "MethodKey": "repeatTElementint"
-  }]
+  ]
 }

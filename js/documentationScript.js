@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+	// function to change all html entities into unicode
 	function HTMLEncode(str){
   		var i = str.length,
       		aRet = [];
