@@ -1,28 +1,26 @@
-<div style="overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Person</span><span style="color: #333333">{</span>
+<!-- HTML generated using hilite.me --><div style=" overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Person</span> <span style="color: #333333">{</span>
     String name<span style="color: #333333">;</span>
     <span style="color: #333399; font-weight: bold">int</span> age<span style="color: #333333">;</span>
 <span style="color: #333333">}</span>
 
-<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Family</span><span style="color: #333333">{</span>
+<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Family</span> <span style="color: #333333">{</span> 
     Person mom<span style="color: #333333">;</span>
     Person dad<span style="color: #333333">;</span>
     List<span style="color: #333333">&lt;</span>Person<span style="color: #333333">&gt;</span> children<span style="color: #333333">;</span>
 <span style="color: #333333">}</span>
 
-<span style="color: #888888">//create list of families</span>
-List<span style="color: #333333">&lt;</span>Family<span style="color: #333333">&gt;</span> families <span style="color: #333333">=</span> <span style="color: #333333">...;</span>
-
+<span style="color: #888888">// create list of families</span>
+List<span style="color: #333333">&lt;</span>Familiy<span style="color: #333333">&gt;</span> families <span style="color: #333333">=</span> <span style="color: #333333">...;</span>
 <span style="color: #888888">// get all single mom&#39;s</span>
 List<span style="color: #333333">&lt;</span>Person<span style="color: #333333">&gt;</span> singleMothers <span style="color: #333333">=</span> Pipeline<span style="color: #333333">.</span><span style="color: #0000CC">from</span><span style="color: #333333">(</span>families<span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">where</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">dad</span> <span style="color: #333333">==</span> <span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">map</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">mom</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">toList</span><span style="color: #333333">();</span>
-
 <span style="color: #888888">// get all unique teenager names</span>
-String<span style="color: #333333">[]</span> uniqueTeenNames <span style="color: #333333">=</span> Pipeline<span style="color: #333333">.</span><span style="color: #0000CC">from</span><span style="color: #333333">(</span>families<span style="color: #333333">)</span>
+List<span style="color: #333333">&lt;</span>String<span style="color: #333333">&gt;</span> uniqueTeenNames <span style="color: #333333">=</span> Pipeline<span style="color: #333333">.</span><span style="color: #0000CC">from</span><span style="color: #333333">(</span>families<span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">flatMap</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">children</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">where</span><span style="color: #333333">(</span>c <span style="color: #333333">-&gt;</span> c<span style="color: #333333">.</span><span style="color: #0000CC">age</span> <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">13</span> <span style="color: #333333">&amp;&amp;</span> c<span style="color: #333333">.</span><span style="color: #0000CC">age</span> <span style="color: #333333">&lt;=</span> <span style="color: #0000DD; font-weight: bold">19</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">map</span><span style="color: #333333">(</span>c <span style="color: #333333">-&gt;</span> c<span style="color: #333333">.</span><span style="color: #0000CC">name</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">distinct</span><span style="color: #333333">()</span>
-    <span style="color: #333333">.</span><span style="color: #0000CC">toArray</span><span style="color: #333333">(</span>String<span style="color: #333333">.</span><span style="color: #0000CC">class</span><span style="color: #333333">);</span>
+    <span style="color: #333333">.</span><span style="color: #0000CC">toList</span><span style="color: #333333">();</span>
 </pre></div>
