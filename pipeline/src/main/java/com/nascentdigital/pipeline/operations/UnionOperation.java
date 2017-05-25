@@ -43,42 +43,51 @@ public class UnionOperation<TElement> implements PipelineOperation<TElement> {
         private final java.util.Iterator<TElement> _addition =
                 UnionOperation.this._addition.iterator();
 
-        // return value for hasNext() call
-        private boolean hasNext;
-
-        // flag for if working on input vs additional sequence
-        private boolean _inputSeq = true;
-
         // saving what we've seen previously
         private HashSet<TElement> history = new HashSet<>();
 
         // hold next element
         private TElement _nextElement;
 
+        // answers: Does "union" have next element?
         @Override
         public boolean hasNext() {
 
-            // using input sequence
-            if (_inputSeq) {
-                // add input's next element to history and return true for hasNext()
-                if (returnNext(_input)) {
-                    return hasNext;
+            // start with _input sequence
+            // iterate till you find next unique element
+            while (_input.hasNext()) {
+                // store next element in variable
+                _nextElement = _input.next();
+
+                // check history to confirm you have not seen this element before
+                if (!history.contains(_nextElement)) {
+                    // add element to "seen" history set
+                    history.add(_nextElement);
+
+                    // return once we've seen a unique element to add to the union
+                    return true;
                 }
             }
 
-            // finished with input sequence, now using additional
-            _inputSeq = false;
+            // finished with input sequence, so no longer looking at input, but now using _addition
+            // return true for hasNext() if there is a unique element in the _addition sequence
+            // iterate till you find next unique element
+            while (_addition.hasNext()) {
+                // store next element in variable
+                _nextElement = _addition.next();
 
-            // reset hasNext
-            hasNext = false;
+                // check history to confirm you have not seen this element before
+                if (!history.contains(_nextElement)) {
+                    // add element to "seen" history set
+                    history.add(_nextElement);
 
-            // return true for hasNext() if there is any unique element left in the sequence
-            if (returnNext(_addition)) {
-                return hasNext;
+                    // return once we've seen a unique element to add to the union
+                    return true;
+                }
             }
 
-            // return (reaches here if no next unique element in additional)
-            return hasNext;
+            // if it reaches here, return false
+            return false;
         }
 
         @Override
@@ -93,6 +102,7 @@ public class UnionOperation<TElement> implements PipelineOperation<TElement> {
             throw new UnsupportedOperationException("Not implemented.");
         }
 
+        /*
         // region helper method
         private boolean returnNext(java.util.Iterator<TElement> sequenceSource) {
             while (sequenceSource.hasNext()) {
@@ -109,6 +119,8 @@ public class UnionOperation<TElement> implements PipelineOperation<TElement> {
         }
 
         // endregion
+
+        */
 
     }
 

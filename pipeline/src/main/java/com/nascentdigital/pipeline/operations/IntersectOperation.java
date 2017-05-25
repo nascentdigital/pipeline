@@ -43,8 +43,6 @@ public class IntersectOperation<TElement> implements PipelineOperation<TElement>
         private final java.util.Iterator<TElement> _addition =
                 IntersectOperation.this._addition.iterator();
 
-        // return value for hasNext() call
-        private boolean hasNext;
 
         // saving what we've seen previously
         private HashSet<TElement> history = new HashSet<>();
@@ -53,6 +51,7 @@ public class IntersectOperation<TElement> implements PipelineOperation<TElement>
         private TElement _nextElement;
 
         Iterator() {
+
             while (_input.hasNext()) {
 
                 history.add(_input.next());
@@ -62,16 +61,22 @@ public class IntersectOperation<TElement> implements PipelineOperation<TElement>
         @Override
         public boolean hasNext() {
 
-            // reset hasNext
-            hasNext = false;
+            // compare _addition sequence's element to elements seen in history
+            // return once if they intersect - or end if sequence and/or history is empty
+            while (_addition.hasNext() && !history.isEmpty()) {
+                _nextElement = _addition.next();
 
-            // return true for hasNext() if there is any unique element left in the sequence
-            if (returnNext(_addition)) {
-                return hasNext;
+                // if history already contains element, it intersects
+                if (history.contains(_nextElement)) {
+
+                    // remove element from history to avoid double counting
+                    history.remove(_nextElement);
+                    return true;
+                }
             }
 
-            // return (reaches here if no next unique element in additional)
-            return hasNext;
+            // return (reaches here if no next intersecting element in additional)
+            return false;
         }
 
         @Override
@@ -84,21 +89,6 @@ public class IntersectOperation<TElement> implements PipelineOperation<TElement>
         @Override
         public void remove() {
             throw new UnsupportedOperationException("Not implemented.");
-        }
-
-        // region helper method
-        private boolean returnNext(java.util.Iterator<TElement> sequenceSource) {
-            while (sequenceSource.hasNext() && !history.isEmpty()) {
-                _nextElement = sequenceSource.next();
-
-                if (history.contains(_nextElement)) {
-
-                    hasNext = true;
-                    history.remove(_nextElement);
-                    return true;
-                }
-            }
-            return false;
         }
 
         // endregion
