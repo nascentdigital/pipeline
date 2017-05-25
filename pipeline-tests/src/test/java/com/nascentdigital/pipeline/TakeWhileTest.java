@@ -12,6 +12,29 @@ public class TakeWhileTest extends PipelineTest {
 
     // region null source
 
+   @Test
+   public void FirstSourceNull_shouldReturnSomeIncludingNull(){
+
+       // create array
+       final Integer[] source = new Integer[] {
+               null,
+               9,
+               10,
+               11
+       };
+
+       // use pipeline
+       Integer[] array = Pipeline.from(source)
+               .takeWhile(i -> true)
+               .toArray(Integer.class);
+
+       // assert
+       assertNotNull(array);
+       assertEquals(source.length, array.length);
+       assertArrayEquals(source, array);
+       assertNotSame(source, array);
+   }
+
     // endregion
 
 
