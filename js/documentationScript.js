@@ -50,8 +50,13 @@ $(document).ready(function(){
 				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +HTMLEncode(value.Key) + '</li>');
 				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
 				var paramDescription = [];
+
+				// parse comments
 				if(typeof value.Comment != 'undefined'){
-					var comment = value.Comment.replace(new RegExp('\\*','g'),'');
+					var comment = value.Comment.replace(new RegExp('\\*','g'),'')
+						.replace(new RegExp(/\//,'g'),'')
+						.replace(new RegExp(/<p>||<\/p>/, 'g'), '')
+						.replace(new RegExp(/<i>||<\/i>/,'g'),'');
 					var arr = comment.split("@param");
 					
 					for (var c in arr){
