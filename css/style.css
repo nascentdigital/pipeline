@@ -75,7 +75,7 @@ h2,h3{
 	overflow: auto;
 	color: #3c515b;
 	font-size: 1.3rem;
-	padding: 1rem 1rem 1rem 2rem;
+	padding: 1rem 2rem 1rem 2rem;
 	background-color:  #F5F7F7;
 }
 
@@ -104,22 +104,16 @@ pre.prettyprint{
 .general_button{
 	box-sizing: border-box;
 	display: inline-block;
-	size:70vh;
 	border: none;
-	font-size: 80%;
+	font-size: 100%;
+	letter-spacing: 0.1rem;
 	padding: 0.7rem 1.4rem 0.7rem 1.4rem;
 	color: white;
 	text-align: center;
-	text-decoration: none;
 	margin-top: 1rem;
 	border-radius: 5px;
 	background-color: #007ea7;
-}
-
-.general_button a{
-	font-size: 120%;
-	letter-spacing: 0.1rem;
-	color: white;
+	cursor: pointer;
 }
 
 .scroll_button{
