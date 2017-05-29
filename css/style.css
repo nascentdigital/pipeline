@@ -26,6 +26,10 @@ h2,h3{
 	font-weight: 400;
 }
 
+button{
+	cursor: pointer;
+}
+
 .container{
 	display: inline-block;
 	width: 100vw;
@@ -49,7 +53,6 @@ h2,h3{
 
 .hero_content{
 	background-position: center;
-	
 	background-repeat: no-repeat;
 	background-size: cover;
 	width: auto;
@@ -113,7 +116,6 @@ pre.prettyprint{
 	margin-top: 1rem;
 	border-radius: 5px;
 	background-color: #007ea7;
-	cursor: pointer;
 }
 
 .scroll_button{
@@ -171,7 +173,7 @@ pre.prettyprint{
 
 /*background color*/
 .dark-container{
-	background-color: 007ea7;
+	background-color: #007ea7;
 	color: white;
 }
 

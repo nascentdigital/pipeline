@@ -45,10 +45,10 @@ $(document).ready(function(){
 			$.each(v,function(key,value){
 				var method = HTMLEncode(value.MethodKey) + "_content";
 				$(groupSection).append('<div class="methods" id="' + method + '"">');
-				var name_data = '<h2>' + value.MethodName + "</h2>";
+				var name_data = '<h2>' + HTMLEncode(value.MethodSignature) + "</h2>";
 				$('#'+method).append(name_data);
 				$('#'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +HTMLEncode(value.Key) + '</li>');
-				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' +value.MethodName + '</li>');
+				$('.mobile_menu_list #'+k+'_sub').append('<li id="' + HTMLEncode(value.MethodKey) + '">' + value.MethodName + '</li>');
 				var paramDescription = [];
 
 				// parse comments
@@ -72,7 +72,9 @@ $(document).ready(function(){
 					
 					if(typeof m != 'undefined' || typeof n != 'undefined'){
 						param_data = "<p>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + "</p>";
-						
+						if(n.ParamDescrip != undefined){
+							param_data+="<p>" + HTMLEncode(n.ParamDescrip)+"</p>";
+						}
 					}
 					$('#'+method).append(param_data);
 				});
