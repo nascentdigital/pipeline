@@ -53,13 +53,8 @@ $(document).ready(function(){
 
 				// parse comments
 				if(typeof value.Comment != 'undefined'){
-					var comment = value.Comment.replace(new RegExp('\\*','g'),'')
-						.replace(new RegExp(/\//,'g'),'')
-						.replace(new RegExp(/<p>||<\/p>/, 'g'), '')
-						.replace(new RegExp(/<i>||<\/i>/,'g'),'');
-						var comment_data = "<p>" + HTMLEncode(comment) + "</p>";
+						var comment_data = "<p>" + value.Comment + "</p>";
 						$('#'+method).append(comment_data);
-					
 				}
 
 				$('#'+method).append("<h3>Parameters: </h3>");
@@ -76,9 +71,9 @@ $(document).ready(function(){
 
 					$.each(value.Parameters,function(m,n){
 						if(typeof m != 'undefined' || typeof n != 'undefined'){
-							param_data = "<p><i>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + "</i></p>";
+							param_data = "<p><i>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + ": </i>";
 							if(n.ParamDescrip != undefined){
-								param_data+="<p>" + HTMLEncode(n.ParamDescrip)+"</p>";
+								param_data+="       " + HTMLEncode(n.ParamDescrip)+"</p>";
 							}
 						}
 						$('#'+method).append(param_data);
@@ -89,7 +84,7 @@ $(document).ready(function(){
 				// if there's exception
 				if(value.Throws != ""){
 					$('#'+method).append("<h3>Throws: </h3>")
-					var exception_data = "<p>" + HTMLEncode(value.Throws) + "</p>";
+					var exception_data = "<p>" + value.Throws + "</p>";
 					$('#'+method).append(exception_data);
 				}
 
