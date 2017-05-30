@@ -57,27 +57,42 @@ $(document).ready(function(){
 						.replace(new RegExp(/\//,'g'),'')
 						.replace(new RegExp(/<p>||<\/p>/, 'g'), '')
 						.replace(new RegExp(/<i>||<\/i>/,'g'),'');
-					var arr = comment.split("@param");
+						var comment_data = "<p>" + HTMLEncode(comment) + "</p>";
+						$('#'+method).append(comment_data);
 					
-					for (var c in arr){
-							var comment_data = "<p>" + HTMLEncode(arr[c]) + "</p>";
-							$('#'+method).append(comment_data);
-					}
 				}
 
 				$('#'+method).append("<h3>Parameters: </h3>");
 				var count = 1;
-				$.each(value.Parameters,function(m,n){
-					var param_data = "No Parameters";
-					
-					if(typeof m != 'undefined' || typeof n != 'undefined'){
-						param_data = "<p>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + "</p>";
-						if(n.ParamDescrip != undefined){
-							param_data+="<p>" + HTMLEncode(n.ParamDescrip)+"</p>";
-						}
-					}
+				var param_data;
+
+				// displaying parameter info
+				if(value.Parameters.length==0){
+
+					param_data = "No Parameters";
 					$('#'+method).append(param_data);
-				});
+
+				}else{
+
+					$.each(value.Parameters,function(m,n){
+						if(typeof m != 'undefined' || typeof n != 'undefined'){
+							param_data = "<p><i>" + HTMLEncode(n.Type) + " " + HTMLEncode(n.Name) + "</i></p>";
+							if(n.ParamDescrip != undefined){
+								param_data+="<p>" + HTMLEncode(n.ParamDescrip)+"</p>";
+							}
+						}
+						$('#'+method).append(param_data);
+					});
+
+				}
+
+				// if there's exception
+				if(value.Throws != ""){
+					$('#'+method).append("<h3>Throws: </h3>")
+					var exception_data = "<p>" + HTMLEncode(value.Throws) + "</p>";
+					$('#'+method).append(exception_data);
+				}
+
 				$('#'+method).append("<h3>Returns: </h3>")
 				var returnType_data = "<p>" + HTMLEncode(value.ReturnType) + "</p>";
 				$('#'+method).append(returnType_data);
@@ -85,7 +100,7 @@ $(document).ready(function(){
 				$('#'+method).append("<h3>Example:</h3>");
 				var sample_code = '<div class = "sample_code"><pre class="prettyprint java">'
 				+ HTMLEncode(value.Example) + 
-				 '</pre></div>';
+				'</pre></div>';
 				PR.prettyPrint();
 				$('#'+method).append(sample_code);
 				$(groupSection).append('</div>');
