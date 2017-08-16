@@ -127,6 +127,10 @@ pre.prettyprint {
     font-family: 'Montserrat';
 }
 
+.general_button:hover {
+	background-color: #87daf4;
+}
+
 .general_button {
 	width: 24%;
 	max-width: 260px;
