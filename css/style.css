@@ -95,6 +95,7 @@ button {
 .horizontal_nav { 
 	font-family: 'Montserrat', 'san-serif';
 	display: inline-block;
+	color: #fe4a49;
 }
 
 .code_style {
