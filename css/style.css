@@ -10,6 +10,7 @@ p {
 	font-size: 18px;
 	letter-spacing: 0px;
 	line-height: 1.5;
+	margin: 0;
 }
 
 ul {
@@ -30,25 +31,18 @@ h2 {
 	font-weight: 500;
 	letter-spacing: 2.1px;
 	line-height: 2.08;
+	margin: 0;
 }
 
 h3 {
 	line-height: 2.78;
 	letter-spacing: 1.6px;
 	font-weight: 400;
+	margin: 0;
 }
 
 button {
 	cursor: pointer;
-}
-
-.homepage_hr {
-	width: 90%;
-	border-left: 0;
-	border-top: 0;
-	border-right: 0;
-	border-bottom: 1px solid #007ea7;
-	padding-top: 30px;
 }
 
 .container {
@@ -95,7 +89,6 @@ button {
 .horizontal_nav { 
 	font-family: 'Montserrat', 'san-serif';
 	display: inline-block;
-	color: #fe4a49;
 }
 
 .code_style {
@@ -180,6 +173,7 @@ pre.prettyprint {
 
 /* css for the features section */
 .content_title {
+	padding: 1.5rem 0;
 	color: #007ea7;
 	padding-top: 30px;
 	text-align: center;
@@ -264,6 +258,14 @@ pre.prettyprint {
 	margin-left: 1rem;
 }
 
+.inline_links {
+	color: #007ea7;
+}
+
+.inline_links:hover {
+	border-bottom: 2px solid #007ea7;
+}
+
 /** styling specifically for desktop view **/
 @media only screen and (min-width: 720px) {
 	.hero_content{
@@ -273,6 +275,7 @@ pre.prettyprint {
 	.browser-text-alignment{
 		text-align: right;
 	}	
+
 	.usage_content{
 		padding-right: 20%;
 	}
@@ -339,6 +342,19 @@ pre.prettyprint {
 
 	.nascent_logo{
 		height: 15px;
+	}
+
+	.usage_headings {
+		margin-top: 0;
+	}
+
+	.usage_content,
+	.usage_install_containers {
+		padding: 0 1rem;
+	}
+
+	.feature_container .col-one-third {
+		padding-bottom: 2rem;
 	}
 
 }
