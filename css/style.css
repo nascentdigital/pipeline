@@ -8,7 +8,7 @@ body {
 
 p {
 	font-size: 18px;
-	letter-spacing: .5px;
+	letter-spacing: 0px;
 	line-height: 1.5;
 }
 
@@ -60,6 +60,10 @@ button {
 .light_container {
 	padding-bottom: 4rem;
 	background-color: white; 
+}
+
+.light_container h2 {
+	color: #fe4a49;
 }
 
 #hero {
@@ -121,31 +125,41 @@ pre.prettyprint {
 }
 
 .footer_button {
+	background-color: transparent;
 	color: white;
-    border: 2px solid white !important;
+    border: 2px solid white;
     font-weight: 500;
     font-family: 'Montserrat';
 }
 
-.general_button:hover {
-	background-color: #87daf4;
+.footer_button:hover {
+	background-color: white;
+	color: #007ea7;
+}
+
+.hero_button:hover {
+	background-color: #fe4a49;
+	color: white;
 }
 
 .general_button {
 	width: 24%;
 	max-width: 260px;
 	display: inline-block;
-	border: none;
-	font-size: 100%;
+	font-size: 14px;
 	font-family: 'Montserrat';
     font-weight: 500;
 	letter-spacing: 0.1rem;
 	padding: 0.7rem 1.4rem;
-	color: white;
 	text-align: center;
 	margin-top: 1rem;
 	border-radius: 5px;
-	background-color: #007ea7;
+}
+
+.hero_button {
+	color: #fe4a49;
+	background-color: white;
+	border: 2px solid #fe4a49;
 }
 
 .scroll_button {
@@ -161,15 +175,6 @@ pre.prettyprint {
 .usage_install_container {
 	margin-top: 1rem;
 }
-
-.usage_content {
-	margin-top: 2rem;
-}
-
-.usage_content p {
-	margin: 0 1.5rem;
-}
-
 
 /* css for the features section */
 .content_title {
@@ -224,6 +229,10 @@ pre.prettyprint {
 	float: left;
 	width: 100%;
 	box-sizing: border-box;
+}
+
+.instruction-2 {
+	margin-top: 2rem;
 }
 
 .getting_started{
@@ -288,6 +297,7 @@ pre.prettyprint {
 		display: block;
 		margin-right: 2.3576515979%;
 		width: 31.7615656014%;
+		padding-bottom: 2rem;
 	}
 	.col-one-third:last-child{
 		margin-right: 0;
