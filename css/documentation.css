@@ -1,10 +1,14 @@
 h2{
 	color: #007ea7;
 }
+
 p{
 	line-height: 180%;
 }
 
+body {
+	background: white !important;
+}
 
 .hamburger_button{
 	color: white;
@@ -26,8 +30,7 @@ p{
 	z-index: 1;
     box-shadow: 0px 8px 6px -6px #999;
 	position: fixed;
-	padding-top: 1.25rem;
-	padding-bottom: 1.25rem;
+	padding: 1.25rem 0;
 	width: 100%;
 }
 
@@ -41,7 +44,8 @@ p{
 
 .inner{
 	background-color: white; 
-	padding-bottom: 5%;
+	padding: 0 2rem 2rem;
+	margin-top: 68px;
 }
 
 .documentation_navbar a{
@@ -53,7 +57,7 @@ p{
 	overflow: auto;
 	width: inherit;
 	background-color: #F5F7F7;
-	padding: 1rem 1rem 1rem 1rem;
+	padding: 1rem;
 }
 
 
@@ -105,10 +109,7 @@ p{
 
 	.inner{
 		width: calc(100% - 320px);
-		margin-top: 68px;
 		margin-left: 320px;
-		padding-right: 2rem;
-		padding-left: 2rem;
 	}
 
 	.hamburger_menu{
@@ -134,9 +135,6 @@ p{
 	}
 	.inner{
 		width: 100%;
-		margin-top: 68px;
-		padding-left: 2rem;
-		padding-right: 2rem;
 	}
 	
 	.mobile_menu_list{
@@ -156,8 +154,7 @@ p{
 		color: white;
 	}
 	#mobile_menu{
-		background-image: url('../images/navbar.png');
-		background-color: #4c5c68;
+		background: #4c5c68 url('../images/navbar.png');
 		overflow: auto;
 		height: 100%;
 		transition: 0.5s;

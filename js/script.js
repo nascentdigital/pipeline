@@ -16,9 +16,5 @@ $(document).ready(function () {
         	scrollTop: $(".feature_container").offset().top},
         'slow');
 	});
-
-	var button_width = $(".doc_button").outerWidth();
-	$(".git_button").css("width",button_width);
-
 	
 });

@@ -1,43 +1,64 @@
-@font-face{
-	font-family: "Avenir";
-	src:url('Avenir.ttc'),
-	url('Avenir.ttc');
-}
-
-body{
-	font-family: Avenir,'san-serif';
+body {
+	font-family: 'Hind','san-serif';
 	margin: 0px 0px 0px 0px; 
-	background-color: #f0f0f0; 
+	box-sizing: border-box;
+	background: #007ea7;
+	-webkit-font-smoothing: antialiased;
 }
 
-p{
-	line-height: 180%;
+p {
+	font-size: 18px;
+	letter-spacing: .5px;
+	line-height: 1.5;
 }
 
-ul{
+ul {
 	text-align: center;
 }
 
-a{
+a {
 	text-decoration: none;
 }
 
-h2{
+h2, 
+h3, 
+h4 {
+	font-family: 'Montserrat', 'san-serif';
+}
+
+h2 {
+	font-weight: 500;
+	letter-spacing: 2.1px;
+	line-height: 2.08;
+}
+
+h3 {
+	line-height: 2.78;
+	letter-spacing: 1.6px;
 	font-weight: 400;
 }
 
-button{
+button {
 	cursor: pointer;
 }
 
-.container{
-	display: inline-block;
+.homepage_hr {
+	width: 90%;
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 1px solid #007ea7;
+	padding-top: 30px;
+}
+
+.container {
 	width: 100vw;
-	padding-bottom: 40px;
+	display: inline-block;
 }
 
 
-.light_container{
+.light_container {
+	padding-bottom: 4rem;
 	background-color: white; 
 }
 
@@ -46,14 +67,12 @@ button{
 	position: relative;
 	width: 100vw;
 	height: inherit;
-	
 	min-height: 500px;
 	
 }
 
-.hero_content{
-	background-position: center;
-	background-repeat: no-repeat;
+.hero_content {
+	background: no-repeat center;
 	background-size: cover;
 	width: auto;
 	padding-top: 10%;
@@ -61,56 +80,63 @@ button{
 	bottom: 0;
 }
 
-.hero_title{
+.hero_title {
 	color: #007ea7;
 	letter-spacing: 0.5rem;
 	font-family: Comfortaa;
 	font-size: 230%;
-	margin-top: 0;
-	margin-bottom: 1.5rem;
+	margin: 0 0 1.5rem;
 }
 
-.horizontal_nav{ 
+.horizontal_nav { 
 	display: inline-block;
 }
 
-.code_style{
+.code_style {
 	overflow: auto;
 	color: #3c515b;
 	font-size: 1.3rem;
-	padding: 1rem 2rem 1rem 2rem;
+	padding: 1rem 2rem;
 	background-color:  #F5F7F7;
 }
 
-.scroll{
+.scroll {
 	margin-top: 3%;
 	padding-bottom: 3%;
 	display: block;
 }
 
-pre.prettyprint{
+pre.prettyprint {
 	overflow: auto;
 	font-size: 1.1rem;
 	border: none !important;
 }
 
-.hero_description{
+.hero_description {
 	line-height: 180%;
 	font-size: 105%;
 	width: 60%;
 	color: #3c515b;
 	margin: 0 auto;
-	text-align: center;
 }
 
+.footer_button {
+	color: white;
+    border: 2px solid white !important;
+    font-weight: 500;
+    font-family: 'Montserrat';
+}
 
-.general_button{
-	box-sizing: border-box;
+.general_button {
+	width: 24%;
+	max-width: 260px;
 	display: inline-block;
 	border: none;
 	font-size: 100%;
+	font-family: 'Montserrat';
+    font-weight: 500;
 	letter-spacing: 0.1rem;
-	padding: 0.7rem 1.4rem 0.7rem 1.4rem;
+	padding: 0.7rem 1.4rem;
 	color: white;
 	text-align: center;
 	margin-top: 1rem;
@@ -118,52 +144,61 @@ pre.prettyprint{
 	background-color: #007ea7;
 }
 
-.scroll_button{
+.scroll_button {
 	background-color: transparent; 
 	border-color: transparent;
 }
 
-.scroll_button img{
+.scroll_button img {
 	height: 30px; 
 	width: 30px; 
 }
 
-.usage_install_container{
+.usage_install_container {
 	margin-top: 1rem;
 }
 
-.usage_content{
+.usage_content {
 	margin-top: 2rem;
+}
+
+.usage_content p {
+	margin: 0 1.5rem;
 }
 
 
 /* css for the features section */
-.content_title{
+.content_title {
 	color: #007ea7;
 	padding-top: 30px;
 	text-align: center;
 }
 
-.feature_subtitle{
+.feature_subtitle {
 	text-align: center;
+	color: white;
 }
 
-.feature_icons{
+.feature_container p {
+	color: white;
+}
+
+.feature_container h2 {
+	color: white;
+}
+
+.feature_icons {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
 	margin-bottom: 20px;
 }
 .icon{
 	height: 125px;
 	width: 125px;
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	margin:0 auto;
 }
 .content_text{
-	padding-left: 2rem;
-	padding-right: 2rem;
+	padding: 0 2rem;
 }
 
 /* company logo css */
@@ -188,16 +223,22 @@ pre.prettyprint{
 }
 
 .getting_started{
-	padding-bottom: 0;
-	background-size: cover;
-	background-image: url('../images/footer.png');
+    text-align: center;
+    padding-bottom: 0;
+    color: white;
+    background-size: 100%;
+    background-image: url(../images/footer.png);
+    background-repeat: no-repeat;
+    background-position: bottom;
 }
+
+.getting_started h2 {
+	color: white;
+}
+
 .footer{
+	color: white;
 	margin-top: 3rem;
-}
-.footer li{
-	margin-right: 2rem;
-	margin-left: 2rem;
 }
 
 .footer ul{
@@ -226,8 +267,7 @@ pre.prettyprint{
 	}
 
 	.general_button{
-		margin-right: 1.2rem;
-		margin-left: 1.2rem;
+		margin: 0 1.2rem;
 	}
 
 	.hero_description{
@@ -261,16 +301,16 @@ pre.prettyprint{
 
 /** styling specifically for mobile **/
 @media only screen and (max-width: 719px) {
+	.general_button {
+		width: 60%;
+		min-width: 170px;
+	}
+
 	.hero_content{
 		background-image: url('../images/mobile_hero.png');
 	}
 	.browser-text-alignment{
 		text-align: center;
-	}
-
-	.button_container{
-		margin-right: 3rem;
-		margin-left: 3rem;
 	}
 
 	.footer li{
