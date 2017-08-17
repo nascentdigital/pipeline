@@ -29,7 +29,7 @@ body {
 
 .wordmark:hover,
 .right_nav:hover {
-	text-decoration: underline;
+	color: #fe4a49;
 }
 
 .documentation_navbar{
