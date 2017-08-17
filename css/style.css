@@ -21,6 +21,10 @@ a {
 	text-decoration: none;
 }
 
+a:visited {
+	color: #007ea7;
+}
+
 h2, 
 h3, 
 h4 {
