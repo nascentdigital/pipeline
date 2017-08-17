@@ -1,8 +1,8 @@
-h2{
+h2 {
 	color: #007ea7;
 }
 
-p{
+p {
 	line-height: 180%;
 }
 
@@ -10,18 +10,18 @@ body {
 	background: white !important;
 }
 
-.hamburger_button{
+.hamburger_button {
 	color: #007ea7;
 }
 
-.hamburger_menu{
+.hamburger_menu {
 	display: inline-block;
 	float: right;
 	color: white;
 	margin-right: 2rem;
 }
 
-.right_nav{
+.right_nav {
 	float: right;
 	margin-right: 2rem;
 	color: #007ea7;
@@ -32,7 +32,7 @@ body {
 	color: #fe4a49;
 }
 
-.documentation_navbar{
+.documentation_navbar {
 	z-index: 1;
     box-shadow: 0px 8px 6px -6px #999;
 	position: fixed;
@@ -40,25 +40,25 @@ body {
 	width: 100%;
 }
 
-.dark_color{
+.dark_color {
 	background-color: white;
 }
 
-.light_color{
+.light_color {
 	background-color: #007ea7;
 }
 
-.inner{
+.inner {
 	background-color: white; 
 	padding: 0 2rem 2rem;
 	margin-top: 68px;
 }
 
-.documentation_navbar a{
+.documentation_navbar a {
 	margin-left: 2rem;
 }
 
-.sample_code{
+.sample_code {
 	overflow: auto;
 	width: inherit;
 	background-color: #F5F7F7;
@@ -67,9 +67,9 @@ body {
 
 
 /** css for desktop view **/
-@media only screen and (min-width:720px){
+@media only screen and (min-width:720px) {
 
-	.vertical_menu{
+	.vertical_menu {
 		height: 100%;
 		position: fixed;
 		margin-top:3.8rem;
@@ -82,85 +82,90 @@ body {
 		color: white;
 	}
 
-	.vertical_menu li{
+	.vertical_menu li {
 		text-align: left;
 		cursor: pointer;
 		margin-top: 1.5rem; 
 		display: block;
 	}
 
-	.submenu{
+	.submenu {
 		font-size: 70%;
 		font-weight: 500;
 		padding-left: 1.2rem;
 		display: none;
 	}
-	.submenu li{
+	.submenu li {
 		margin-top: 0.8rem;
 	}
 
-	.vertical_menu a{
+	.vertical_menu a {
 		color: black;
 	}
 
-	.sub_menu{
+	.sub_menu {
 		font-size: 90%;
 		padding-left: 1rem;
 		display: none;
 	}
-	.wordmark{
+	.wordmark {
 		font-family: Comfortaa;
 		letter-spacing:0.5rem;
 		color: #007ea7;
 	}
 
-	.inner{
+	.inner {
 		width: calc(100% - 320px);
 		margin-left: 320px;
 	}
 
-	.hamburger_menu{
+	.hamburger_menu {
 		display: none;
 	}
 
-	#mobile_menu{
+	#mobile_menu {
 		display: none;
 	}
 }
 
 /** css for mobile view **/
-@media only screen and (max-width:719px){
-	h1{
+@media only screen and (max-width:719px) {
+	h1 {
 		font-size: 1.7em;
 	}
-	.vertical_menu{
+
+	.vertical_menu {
 		display: none;
 	}
-	.wordmark{
+
+	.wordmark {
 		font-family: Comfortaa;
 		letter-spacing:0.3rem;
 	}
-	.inner{
+
+	.inner {
 		width: 100%;
 	}
 	
-	.mobile_menu_list{
+	.mobile_menu_list {
 		padding-left: 0;
 		margin-bottom: 6rem;
 		margin-top: 0;
 	}
 
-	.mobile_menu_list li{
+	.mobile_menu_list li {
 		margin-bottom: 2rem;
 		text-align: left;
 		transition: 0.5s;
 		padding-left: 2.5rem;
 		display: block;
 	}
-	.mobile_menu_list a{
+
+	.mobile_menu_list a {
 		color: white;
 	}
-	#mobile_menu{
+
+	#mobile_menu {
 		background: #4c5c68 url('../images/navbar.png');
 		overflow: auto;
 		height: 100%;
@@ -173,16 +178,17 @@ body {
 		right: 0px;
 	}
 
-	.mobile_submenu{
+	.mobile_submenu {
 		transition: 0.3s;
 		display: none;
 	}
-	.mobile_submenu li{
+
+	.mobile_submenu li {
 		padding-left: 0;
 		margin-top: 1rem;
 	}
 
-	.closebtn{
+	.closebtn {
 		color: white;
 		font-size: 3rem;
 		margin-left: 85%;
