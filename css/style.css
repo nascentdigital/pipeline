@@ -224,7 +224,7 @@ pre.prettyprint {
     text-align: center;
     padding-bottom: 0;
     color: white;
-    background-size: 100%;
+    background-size: auto 100%;
     background-image: url(../images/footer.svg);
     background-repeat: no-repeat;
     background-position: bottom;
