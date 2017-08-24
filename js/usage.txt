@@ -11,12 +11,12 @@
 
 <span style="color: #888888">// create list of families</span>
 List<span style="color: #333333">&lt;</span>Familiy<span style="color: #333333">&gt;</span> families <span style="color: #333333">=</span> <span style="color: #333333">...;</span>
-<span style="color: #888888">// get all single mom&#39;s</span>
+<span style="color: #888888">&#10;// get all single mom&#39;s</span>
 List<span style="color: #333333">&lt;</span>Person<span style="color: #333333">&gt;</span> singleMothers <span style="color: #333333">=</span> Pipeline<span style="color: #333333">.</span><span style="color: #0000CC">from</span><span style="color: #333333">(</span>families<span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">where</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">dad</span> <span style="color: #333333">==</span> <span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">map</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">mom</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">toList</span><span style="color: #333333">();</span>
-<span style="color: #888888">// get all unique teenager names</span>
+<span style="color: #888888">&#10;// get all unique teenager names</span>
 List<span style="color: #333333">&lt;</span>String<span style="color: #333333">&gt;</span> uniqueTeenNames <span style="color: #333333">=</span> Pipeline<span style="color: #333333">.</span><span style="color: #0000CC">from</span><span style="color: #333333">(</span>families<span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">flatMap</span><span style="color: #333333">(</span>f <span style="color: #333333">-&gt;</span> f<span style="color: #333333">.</span><span style="color: #0000CC">children</span><span style="color: #333333">)</span>
     <span style="color: #333333">.</span><span style="color: #0000CC">where</span><span style="color: #333333">(</span>c <span style="color: #333333">-&gt;</span> c<span style="color: #333333">.</span><span style="color: #0000CC">age</span> <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">13</span> <span style="color: #333333">&amp;&amp;</span> c<span style="color: #333333">.</span><span style="color: #0000CC">age</span> <span style="color: #333333">&lt;=</span> <span style="color: #0000DD; font-weight: bold">19</span><span style="color: #333333">)</span>

@@ -4,16 +4,16 @@ blue: #007ea7
 **/
 
 body {
-	font-family: 'Hind','san-serif';
-	margin: 0px 0px 0px 0px; 
 	box-sizing: border-box;
+	margin: 0; 
 	background: #007ea7;
+	font-family: 'Hind','san-serif';
 	-webkit-font-smoothing: antialiased;
 }
 
 p {
 	font-size: 18px;
-	letter-spacing: 0px;
+	letter-spacing: 0;
 	line-height: 1.5;
 	margin: 0;
 }
@@ -136,7 +136,7 @@ button {
 .content_title {
 	padding: 1.5rem 0;
 	color: #007ea7;
-	padding-top: 30px;
+	padding-top: 3rem;
 	text-align: center;
 }
 
@@ -171,8 +171,14 @@ button {
 	color: #fe4a49;
 }
 
-.usage_install_container {
-	margin-top: 1rem;
+.usage_install_containers {
+	margin-top: 32px;
+}
+
+.usage_install_containers::after {
+	clear: both;
+    content: ' ';
+    display: block;
 }
 
 .usage_headings {
@@ -216,7 +222,7 @@ pre.prettyprint {
 	box-sizing: border-box;
 }
 
-.instruction-2 {
+.instruction {
 	margin-top: 2rem;
 }
 
@@ -237,6 +243,7 @@ pre.prettyprint {
 .footer {
 	color: white;
 	margin-top: 3rem;
+	margin-bottom: .5rem;
 }
 
 .footer ul {
@@ -296,7 +303,7 @@ pre.prettyprint {
 		display: block;
 		margin-right: 2.3576515979%;
 		width: 31.7615656014%;
-		padding-bottom: 2rem;
+		padding-bottom: 3rem;
 	}
 
 	.col-one-third:last-child,

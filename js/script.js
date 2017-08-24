@@ -5,9 +5,14 @@ $(document).ready(function () {
 		$(".usage_code").append(code);
 	});
 
-	$.get("js/installation.txt",function(data){
+	$.get("js/installationOne.txt",function(data){
 		var code = "<pre>" + data + "</pre>";
-		$(".install_code").append(code);
+		$(".install_code_One").append(code);
+	});
+
+	$.get("js/installationTwo.txt",function(data){
+		var code = "<pre>" + data + "</pre>";
+		$(".install_code_Two").append(code);
 	});
 
 	//for scrolling in main page

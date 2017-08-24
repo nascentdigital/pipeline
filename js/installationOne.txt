@@ -1,0 +1,10 @@
+
+						<!-- HTML generated using hilite.me --><div style=" overflow:auto;width:auto;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">allprojects <span style="color: #333333">{</span>
+    repositories <span style="color: #333333">{</span>
+        jcenter<span style="color: #333333">()</span>
+        maven <span style="color: #333333">{</span>
+            url  <span style="background-color: #fff0f0">&quot;http://dl.bintray.com/nascent/Maven&quot;</span>
+        <span style="color: #333333">}</span>
+    <span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+</pre></div>
