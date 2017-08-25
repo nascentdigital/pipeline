@@ -1,9 +1,12 @@
 ```
-Integer[] arr1 = {2,4,5,6};
-Integer result1 = Pipeline.from(arr1)
+// create array
+Integer[] array = new Integer[] {
+        2,
+        4,
+        5,
+        6
+};
+// use pipeline
+Integer result = Pipeline.from(array)
         .firstOrDefault();
-        
-Integer[] arr2 = {};
-Integer result2 = Pipeline.from(arr2)
-        .firstOrDefault();
-//result1 is 2 and result2 is null
+// result is 2

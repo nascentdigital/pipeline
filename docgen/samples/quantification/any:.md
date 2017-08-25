@@ -1,5 +1,9 @@
 ```
-Integer[] arr = {2};
-boolean result = Pipeline.from(arr)
+// create array
+Integer[] array = new Integer[] {
+        2
+};
+// use pipeline
+boolean result = Pipeline.from(array)
         .any();
-//result is true
+// result is true

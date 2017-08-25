@@ -19,7 +19,7 @@ Map<String, People> map = Pipeline.from(arr)
             String key = m.name + m.age;
             return key;
             });
-//map is {Amy30 = People("Amy",30),
-//       Jane28 = People("Jane",28),
-//       John28 = People("John",28),
-//       Rick29 = People("Rick",29)};
+// map is {Amy30 = People("Amy",30),
+//        Jane28 = People("Jane",28),
+//        John28 = People("John",28),
+//        Rick29 = People("Rick",29)};

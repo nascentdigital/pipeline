@@ -7,23 +7,23 @@ package com.nascentdigital.pipeline.annotations;
 public enum GroupType {
 
     Undefined("Undefined"),
-    Creation("Creation"),
-    Concatenation("Concatenation"),
-    Projection("Projection"),
-    Filtering("Filtering"),
-    PartitionOperators("Partition Operators"),
     Aggregation("Aggregation"),
-    Grouping("Grouping"),
-    Quantification("Quantification"),
-    ElementOperators("Element Operators"),
+    Concatenation("Concatenation"),
     ConversionOperations("Converstion Operations"),
-    Repetition("Repetition"),
-    Reduce("Reduce"),
-    Sum("Sum"),
-    Min("Min"),
+    Creation("Creation"),
+    ElementOperators("Element Operators"),
+    Filtering("Filtering"),
+    Grouping("Grouping"),
+    InterfaceIterator("Interface Iterator"),
     Max("Max"),
+    Min("Min"),
+    PartitionOperators("Partition Operators"),
+    Projection("Projection"),
+    Quantification("Quantification"),
+    Reduce("Reduce"),
+    Repetition("Repetition"),
     SetOperations("Set Operations"),
-    InterfaceIterator("Interface Iterator");
+    Sum("Sum");
 
     public final String name;
 

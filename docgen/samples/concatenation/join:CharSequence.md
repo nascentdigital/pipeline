@@ -1,4 +1,10 @@
 ```
-String [] arr = {"a", "b", "c"};
-String result = Pipeline.from(arr).join(" ");
-//result becomes "a b c"
+// create array
+String[] array = new String[] {
+        "a",
+        "b",
+        "c"
+};
+String result = Pipeline.from(array)
+        .join(" ");
+// result becomes "a b c"

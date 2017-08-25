@@ -1,111 +1,86 @@
 package com.nascentdigital.pipeline;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 
+/**
+ * Created by kitty on 2017-05-25.
+ */
 
-public class TakeWhileTest extends PipelineTest {
+public class SkipWhileTest extends PipelineTest {
 
     // region null source
 
-   @Test
-   public void firstSourceNull_shouldReturnAllIncludingNull(){
+    @Test
+    public void firstSourceNull_shouldReturnAllIncludingNull() {
 
-       // create array
-       final Integer[] source = new Integer[] {
-               null,
-               9,
-               10,
-               11
-       };
+        // create array
+        final Integer[] source = new Integer[] {
+                null,
+                8,
+                9,
+                10
+        };
 
-       // use pipeline
-       Integer[] array = Pipeline.from(source)
-               .takeWhile(i -> true)
-               .toArray(Integer.class);
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> false)
+                .toArray(Integer.class);
 
-       // assert
-       assertNotNull(array);
-       assertEquals(source.length, array.length);
-       assertArrayEquals(source, array);
-       assertNotSame(source, array);
-   }
+        // assert
+        assertNotNull(array);
+        assertNull(array[0]);
+    }
 
-   @Test
-   public void lastSourceNull_shouldReturnAllIncludingNull(){
+    @Test
+    public void lastSourceNull_shouldReturnAllIncludingNull(){
 
-       // create array
-       final Integer[] source = new Integer[] {
-               9,
-               10,
-               11,
-               null
-       };
+        // create array
+        final Integer[] source = new Integer[] {
+                8,
+                9,
+                10,
+                null
+        };
 
-       // use pipeline
-       Integer[] array = Pipeline.from(source)
-               .takeWhile(i -> true)
-               .toArray(Integer.class);
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> false)
+                .toArray(Integer.class);
 
-       // assert
-       assertNotNull(array);
-       assertEquals(source.length, array.length);
-       assertArrayEquals(source, array);
-       assertNotSame(source, array);
-   }
+        // assert
+        assertNotNull(array);
+        assertNull(array[array.length - 1]);
+    }
 
-   @Test
-   public void sourceContainsSingleNull_shouldReturnAllIncludingNull(){
+    @Test
+    public void sourceContainsMultipleNull_shouldReturnAll(){
 
-       // create array
-       final Integer[] source = new Integer[] {
-               9,
-               10,
-               null,
-               11,
-               12
-       };
+        // create array
+        final Integer[] source = new Integer[] {
+                8,
+                9,
+                null,
+                null,
+                10,
+                11
+        };
 
-       // use pipeline
-       Integer[] array = Pipeline.from(source)
-               .takeWhile(i -> true)
-               .toArray(Integer.class);
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> false)
+                .toArray(Integer.class);
 
-       // assert
-       assertNotNull(array);
-       assertEquals(source.length, array.length);
-       assertArrayEquals(source, array);
-       assertNotSame(source, array);
-   }
-
-   @Test
-   public void sourceContainsMultipleNull_shouldReturnAllIncludingNull(){
-
-       // create array
-       final Integer[] source = new Integer[] {
-               8,
-               9,
-               null,
-               null,
-               10,
-               11
-       };
-
-       // use pipeline
-       Integer[] array = Pipeline.from(source)
-               .takeWhile(i -> true)
-               .toArray(Integer.class);
-
-       // assert
-       assertNotNull(source);
-       assertEquals(source.length, array.length);
-       assertArrayEquals(source, array);
-       assertNotSame(source, array);
-   }
+        // assert
+        assertNotNull(array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
+    }
 
     // endregion
 
@@ -113,15 +88,15 @@ public class TakeWhileTest extends PipelineTest {
     // region empty source
 
     @Test
-    public void emptySouce_shouldReturnEmpty() {
+    public void emptySource_shouldReturnEmpty() {
 
         // create array
-        final Integer[] source = new Integer[]{
+        Integer[] source = new Integer[] {
         };
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> true)
+                .skipWhile(i -> i > 0)
                 .toArray(Integer.class);
 
         // assert
@@ -137,61 +112,14 @@ public class TakeWhileTest extends PipelineTest {
     @Test
     public void singletonSource_shouldReturnOne() {
 
-        // create array
+        // create Array
         final Integer[] source = new Integer[] {
                 9
         };
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i > 0)
-                .toArray(Integer.class);
-
-        // assert
-        assertNotNull(array);
-        assertEquals(1, array.length);
-        assertArrayEquals(source, array);
-        assertNotSame(source, array);
-    }
-
-    @Test
-    public void singletonSouce_shouldReturnEmpty() {
-
-        // create array
-        final Integer[] source = new Integer[] {
-                9
-        };
-
-        // use pipeline
-        Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i >10)
-                .toArray(Integer.class);
-
-        // assert
-        assertNotNull(array);
-        assertEquals(0, array.length);
-    }
-
-    // endregion
-
-
-    // region many source
-
-    @Test
-    public void manySource_shouldReturnAll_whenAllMatch() {
-
-        // create array
-        final Integer[] source = new Integer[] {
-                8,
-                9,
-                10,
-                11,
-                12
-        };
-
-        // use pipeline
-        Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i > 0)
+                .skipWhile(i -> i < 0)
                 .toArray(Integer.class);
 
         // assert
@@ -202,9 +130,32 @@ public class TakeWhileTest extends PipelineTest {
     }
 
     @Test
-    public void manySource_shouldReturnEmpty_whenNoneMatch() {
+    public void singletonSource_shouldReturnEmpty() {
 
-        // create array
+        // create Array
+        final Integer[] source = new Integer[] {
+                9
+        };
+
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> i > 0)
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(0, array.length);
+    }
+
+    // endregion
+
+
+    // region multiple source
+
+    @Test
+    public void manySource_shouldReturnAll() {
+
+        // create Array
         final Integer[] source = new Integer[] {
                 8,
                 9,
@@ -214,83 +165,109 @@ public class TakeWhileTest extends PipelineTest {
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i < 0)
+                .skipWhile(i -> i < 0)
                 .toArray(Integer.class);
 
         // assert
         assertNotNull(array);
-        assertEquals(0, array.length);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
     }
 
     @Test
-    public void manySource_shouldReturnAllbutLast_whenLastIsFalse() {
+    public void manySource_shouldReturnEmpty() {
 
-        // create array
-        final Integer[] source = new Integer[] {
-                8,
-                9,
-                0
-        };
-
-        // use pipeline
-        Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i >0)
-                .toArray(Integer.class);
-
-        // assert
-        assertNotNull(array);
-        assertEquals(source.length - 1, array.length);
-        assertEquals(source[0], array[0]);
-        assertEquals(source[1], array[1]);
-    }
-
-    @Test
-    public void manySource_shouldReturnEmpty_whenFirstIsFalse() {
-
-        // create array
-        final Integer[] source = new Integer[] {
-                0,
-                8,
-                9,
-                10
-        };
-
-        // use pipeline
-        Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i > 0)
-                .toArray(Integer.class);
-
-        // assert
-        assertNotNull(array);
-        assertEquals(0, array.length);
-    }
-
-    @Test
-    public void manySource_shouldReturnSome_whenSomeMatch() {
-
-        // create array
+        // create Array
         final Integer[] source = new Integer[] {
                 8,
                 9,
                 10,
-                3,
-                12
+                11
         };
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> i < 10)
+                .skipWhile(i -> i > 0)
                 .toArray(Integer.class);
 
-        Integer[] result = new Integer[]{
+        // assert
+        assertNotNull(array);
+        assertEquals(0, array.length);
+    }
+
+    @Test
+    public void manySource_shouldReturnAll_whenFirstSourceIsFalse() {
+
+        // create Array
+        final Integer[] source = new Integer[] {
+                -1,
                 8,
-                9
+                9,
+                10,
+                11
+        };
+
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> i > 0)
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(source.length, array.length);
+        assertArrayEquals(source, array);
+        assertNotSame(source, array);
+    }
+
+    @Test
+    public void manySource_shouldReturnLastSource_whenLastSourceIsFalse() {
+
+        // create Array
+        final Integer[] source = new Integer[] {
+                8,
+                9,
+                10,
+                11,
+                -1
+        };
+
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> i > 0)
+                .toArray(Integer.class);
+
+        // assert
+        assertNotNull(array);
+        assertEquals(1, array.length);
+        assertEquals(source[source.length - 1], array[0]);
+    }
+
+    @Test
+    public void manySource_shouldReturnSome() {
+
+        // create Array
+        final Integer[] source = new Integer[] {
+                8,
+                9,
+                -1,
+                11
+        };
+
+        // use pipeline
+        Integer[] array = Pipeline.from(source)
+                .skipWhile(i -> i > 0)
+                .toArray(Integer.class);
+
+        Integer[] result = new Integer[] {
+                -1,
+                11
         };
 
         // assert
         assertNotNull(array);
         assertEquals(result.length, array.length);
-        assertArrayEquals(array, result);
+        assertArrayEquals(result, array);
     }
 
     // endregion
@@ -311,28 +288,25 @@ public class TakeWhileTest extends PipelineTest {
 
         // create pipeline
         Pipeline<Integer> pipeline = Pipeline.from(source)
-                .takeWhile(i -> i > 0);
+                .skipWhile(i -> i < 0);
 
         // use pipeline
         Integer[] array = pipeline.toArray(Integer.class);
 
         // assert
-        assertNotNull(array);
+        assertNotNull(source);
         assertEquals(source.length, array.length);
         assertArrayEquals(source, array);
-        assertNotSame(source, array);
 
         // modify source
-        source[source.length - 1] = 100;
+        source[source.length - 1] = 12;
 
-        // reuse pipeline
         array = pipeline.toArray(Integer.class);
 
-        //assert
-        assertNotNull(array);
+        // assert
+        assertNotNull(source);
         assertEquals(source.length, array.length);
         assertArrayEquals(source, array);
-        assertNotSame(source, array);
     }
 
     // endregion
@@ -355,7 +329,7 @@ public class TakeWhileTest extends PipelineTest {
 
         // use pipeline
         Integer[] array = Pipeline.from(source)
-                .takeWhile(i -> 12%i == 0)
+                .skipWhile(i -> 12%i == 0)
                 .toArray(Integer.class);
 
         // assert

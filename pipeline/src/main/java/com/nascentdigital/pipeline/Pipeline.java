@@ -261,7 +261,8 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
     }
 
     /**
-     * Returns all elements in a sequence, for which the predicate is TRUE
+     * Returns a sequence of contiguous elements from the start until the specified condition
+     * is <c>false</c>.
      *
      * @param predicate A function to test each element for a condition.
      */
@@ -306,6 +307,9 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // region count
 
+    /**
+     * Returns the number of elements in a sequence.
+     */
     @Group(type = GroupType.Aggregation)
     public int count() {
 
@@ -1200,6 +1204,9 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
 
     // region Iterable<TElement> interface
 
+    /**
+     * Returns an iterator over a collection.
+     */
     @Override
     @Group(type = GroupType.InterfaceIterator)
     public Iterator<TElement> iterator() {

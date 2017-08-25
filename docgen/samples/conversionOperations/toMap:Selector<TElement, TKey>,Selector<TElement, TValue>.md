@@ -16,4 +16,4 @@ People[] arr =  new People[] {
 
 Map<String, Integer> map = Pipeline.from(arr)
         .toMap(m -> m.name, m -> (m.name + 10));
-//map is {John = 38, Rick = 39, Amy = 40, Jane = 38}
+// map is {John = 38, Rick = 39, Amy = 40, Jane = 38}

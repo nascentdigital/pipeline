@@ -17,6 +17,6 @@ People[] lst = new People[] {
 
 Pipeline<Grouping<Integer, People>> result = Pipeline.from(lst)
         .groupBy(p -> p.age);
-//result is {{28,[People("Anna",28)]}
+// result is {{28,[People("Anna",28)]}
 //           {29,[People("Rick",29),People("John",29)]}
 //           {30,[People("Amy",30)]}}
