@@ -38,17 +38,30 @@ List<String> uniqueTeenNames = Pipeline.from(families)
 
 ## Installation
 
-1. Add the following to your build.gradle:
+1. Include the project repository and dependency in your module's build.grade file:
 ```groovy
+
+repositories {
+    maven {
+        url  "https://dl.bintray.com/nascent/Maven"
+    }
+}
+
 dependencies {
-    compile 'com.nascentdigital:pipeline:1.3.0'
+    implementation 'com.nascentdigital:pipeline:1.4.2'
 }
 ```
 
-2. On Android, install the [Retrolambda](https://github.com/evant/gradle-retrolambda) plugin for a much cleaner syntax.
+2. On Android, sure that you've included Java 8 support for simplified Lambda syntax *(requires Android Studio 3+)*:
+```groovy
 
-
-
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
 
 
 ## Roadmap
