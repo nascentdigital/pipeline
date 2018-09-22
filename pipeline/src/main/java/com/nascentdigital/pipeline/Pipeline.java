@@ -20,12 +20,11 @@ import com.nascentdigital.pipeline.operations.TakeWhileOperation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 /**
@@ -78,6 +77,21 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
         return new Pipeline<>(new IterableSourceOperation<>(source));
     }
 
+    /**
+     * Creates a new {@link Pipeline} using the underlying {@link java.util.Map.Entry} set of the
+     * specified {@link Map} as a provider of the initial sequence source.
+     *
+     * @param map       A map whose entries will be used as a sequence source.
+     * @param <TKey>    The type of the map keys.
+     * @param <TValue>  The type of the map values.
+     */
+    @Group(type = GroupType.Creation)
+    @SuppressWarnings("unchecked")
+    public static <TKey, TValue> Pipeline<Entry<TKey, TValue>> from(Map<TKey, TValue> map) {
+        Iterable<Entry<TKey, TValue>> source = map.entrySet();
+        return new Pipeline<>(new IterableSourceOperation<>(source));
+    }
+
     // endregion
 
 
@@ -113,7 +127,6 @@ public final class Pipeline<TElement> implements Iterable<TElement> {
             return this;
         }
 
-        // TODO: create custom array concatenator for performance
         // or return new pipeline using array
         return new Pipeline<>(new ConcatOperation<>(this, Arrays.asList(addition)));
     }

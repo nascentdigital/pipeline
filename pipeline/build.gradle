@@ -18,7 +18,7 @@ apply from: 'install.gradle'
 apply from: 'bintray.gradle'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 sourceCompatibility = "1.7"

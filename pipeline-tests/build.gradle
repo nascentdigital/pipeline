@@ -12,12 +12,12 @@ apply plugin: 'java'
 
 dependencies {
 
-    compile project(':pipeline')
+    implementation project(':pipeline')
 
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.+'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.22.0'
 }
 
 sourceCompatibility = "1.8"
